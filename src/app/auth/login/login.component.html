@@ -1,0 +1,50 @@
+<div class="fondo-difuminado"></div> <!-- Fondo difuminado -->
+
+<div class="rectangulo-encuesta">
+  <div class="contenedor-titulo-logo">
+    <h1 class="bienvenido">Bienvenido a IDER</h1>
+    <div class="image1">
+      <img src="../../../assets/imagenes/Captura de pantalla 2024-09-22 154544.png" alt="Logo IDER">
+    </div>
+  </div>
+  
+  <div class="login-card">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- Campo de Usuario -->
+      <div class="campo">
+        <label class="usuario-text" for="username">Usuario</label>
+        <input class="input" id="username" formControlName="username" type="text">
+      </div>
+
+      <!-- Campo de Contraseña -->
+      <div class="campo">
+        <label class="contraseña-text" for="password">Contraseña</label>
+        
+        <!-- Cambia el type dinámicamente entre "password" y "text" -->
+        <input class="input" id="password" formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'">
+      </div>
+
+      <!-- Opciones adicionales (Mostrar contraseña y Olvidé contraseña) -->
+      <div class="opciones">
+        <label class="mostrar-contraseña">
+          <input type="checkbox" (change)="togglePasswordVisibility()"> Mostrar contraseña
+        </label>
+        <a class="olvide-contrasena" (click)="goToRecoverPassword()">¿Olvidó su contraseña?</a>
+      </div>
+
+      <!-- Botón Ingresar -->
+      <button class="boton-ingresar" type="submit" [disabled]="loginForm.invalid">Ingresar</button>
+
+      <!-- Registro -->
+      <div class="registro">
+        No tiene cuenta? 
+        <a class="registrarse" (click)="goToRegister()">Registrarse</a>
+      </div>
+      
+    </form>
+
+    <!-- Acerca del IDER -->
+    <a class="acerca-del-ider" href="/acerca-del-ider">Acerca del IDER</a>
+  </div>
+</div>
