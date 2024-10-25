@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service'; // Verifica que la ruta del servicio esté correcta
+import { AuthService } from '../../auth/auth.service'; // Verifica que la ruta del servicio esté correcta
 
 @Component({
   selector: 'app-recover-password',
