@@ -1,13 +1,13 @@
+
+<!-- input-field.component.html -->
 <div class="form-group">
-    <label>{{ label }}</label>
-    <input
-      [type]="type"
-      [formControl]="control"
-      [placeholder]="placeholder"
-      class="form-control"
-    />
-    <div *ngIf="control.invalid && control.touched">
-      <small class="error">Campo inválido: {{ label }}</small>
-    </div>
+  <label>{{ label }}</label>
+  <input
+    [type]="type"
+    [value]="control.value"
+    class="input"    
+  />
+  <div *ngIf="control?.invalid && control?.touched">
+    <small class="error">Campo inválido: {{ label }}</small>
   </div>
-  
+</div>

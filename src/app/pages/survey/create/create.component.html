@@ -1,0 +1,10 @@
+
+<h2>Crear Nueva Encuesta</h2>
+<form [formGroup]="surveyForm" (ngSubmit)="onSubmit()">
+  <app-input-field formControlName="title" label="Título de la Encuesta"></app-input-field>
+  <app-input-field formControlName="description" label="Descripción de la Encuesta"></app-input-field>
+  <app-input-field formControlName="startDate" label="Fecha Inicial" type="date"></app-input-field>
+  <app-input-field formControlName="endDate" label="Fecha Final" type="date"></app-input-field>
+  
+  <app-button type="submit" [disabled]="surveyForm.invalid">Crear Encuesta</app-button>
+</form>

@@ -1,0 +1,58 @@
+<div class="home-container container">
+  <h1>CREACIÓN DE ENCUESTA</h1>
+
+  <!-- Información de la Encuesta -->
+  <section class="survey-info row">
+    <div class="col-12 col-md-6">
+      <app-input-field label="ID de Encuesta" [(ngModel)]="surveyData.id"></app-input-field>
+    </div>
+    <div class="col-12 col-md-6">
+      <app-input-field label="Fecha Inicial" [(ngModel)]="surveyData.startDate"></app-input-field>
+    </div>
+    <div class="col-12 col-md-6">
+      <app-input-field label="Fecha Final" [(ngModel)]="surveyData.endDate"></app-input-field>
+    </div>
+    <div class="col-12 col-md-6">
+      <app-input-field label="Título de la Encuesta" [(ngModel)]="surveyData.title"></app-input-field>
+    </div>
+    <div class="col-12">
+      <app-input-field label="Descripción de la Encuesta" [(ngModel)]="surveyData.description"></app-input-field>
+    </div>
+    <div class="col-12">
+      <app-button (click)="onContinue()" label="Seguir"></app-button>
+    </div>
+  </section>
+
+  <!-- Lista de Secciones -->
+  <section *ngFor="let section of sections" class="section-item">
+    <h2>{{ section.title }}</h2>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <app-input-field label="ID de Sección" [(ngModel)]="section.id"></app-input-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <app-input-field label="Título de la Sección" [(ngModel)]="section.title"></app-input-field>
+      </div>
+      <div class="col-12">
+        <app-input-field label="Descripción de la Sección" [(ngModel)]="section.description"></app-input-field>
+      </div>
+      <div class="col-12">
+        <app-button (click)="onSaveSection(section)" label="Guardar"></app-button>
+        <app-button (click)="onNextSection()" label="Siguiente"></app-button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lista de Preguntas -->
+  <section class="question-list">
+    <h3>PREGUNTAS</h3>
+    <ul>
+      <li *ngFor="let question of questions">
+        <p>{{ question }}</p>
+        <label>Si</label><input type="radio" [name]="question" value="yes">
+        <label>No</label><input type="radio" [name]="question" value="no">
+      </li>
+    </ul>
+    <app-button (click)="onAddQuestion()" label="Añadir Pregunta"></app-button>
+  </section>
+</div>

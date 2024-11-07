@@ -1,0 +1,23 @@
+/* Campos de Entrada */
+.campo {
+    margin-bottom: 1rem;
+    text-align: left;
+    width: 100%;  /* Asegura que el campo ocupe el 100% */
+  }
+  
+  .campo label {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .input {
+    width: 100%;       /* Ocupa todo el ancho */
+    padding: 1.5rem;   /* Aumenta el padding para hacerlo más grande */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1.2rem;  /* Aumenta el tamaño de la fuente */
+    height: 60px;      /* Aumenta la altura */
+  }
+  

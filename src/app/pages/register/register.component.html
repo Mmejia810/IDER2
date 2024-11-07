@@ -1,23 +1,45 @@
+<!-- Barra Superior -->
+<div class="barra-superior">
+  <div class="logo-container">
+    <img src="../../../assets/imagenes/logoIder.png" alt="" class="logo">
+  </div>
+  <p class="texto-barra">
+    ¡Cartagena se transforma! Estamos trabajando de sur a norte para transformar la calidad de vida de todos los cartageneros.
+  </p>
+  <div class="botones">
+    <button class="boton-sesion">Iniciar sesión</button>
+    <button class="boton-registro">Registrarse</button>
+  </div>
+</div>
+
+<!-- Fondo Difuminado -->
 <div class="fondo-difuminado"></div>
 
-<div class="register-card">
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <h1>Registro</h1>
-    
-    <div>
-      <label for="email">Correo Electrónico</label>
-      <input id="email" formControlName="email" type="email" placeholder="Ingrese su correo electrónico">
-    </div>
+<!-- Formulario de Registro -->
+<div class="register-container">
+  <div class="register-card">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <h1>Registro</h1>
 
-    <div>
-      <label for="password">Contraseña</label>
-      <input id="password" formControlName="password" type="password" placeholder="Ingrese su contraseña">
-    </div>
+      <!-- Campo Correo Electrónico -->
+      <div class="campo">
+        <label for="email">Correo Electrónico</label>
+        <input id="email" formControlName="email" type="email" placeholder="Ingrese su correo electrónico">
+      </div>
 
-    <button type="submit" [disabled]="registerForm.invalid">Registrarse</button>
+      <!-- Campo Contraseña -->
+      <div class="campo">
+        <label for="password">Contraseña</label>
+        <input id="password" formControlName="password" type="password" placeholder="Ingrese su contraseña">
+      </div>
 
-    <div>
-      <a (click)="goToLogin()">¿Ya tienes una cuenta? Volver</a>
-    </div>
-  </form>
+      <!-- Botón de Registro -->
+      <button type="submit" class="boton-ingresar" [disabled]="registerForm.invalid">Registrarse</button>
+
+      <!-- Enlace para Iniciar Sesión -->
+      <div class="registro">
+        <a (click)="goToLogin()">¿Ya tienes una cuenta? Volver</a>
+      </div>
+    </form>
+  </div>
 </div>

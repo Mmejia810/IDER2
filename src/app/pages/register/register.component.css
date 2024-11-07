@@ -1,74 +1,210 @@
-/* Fondo difuminado */
+/* Barra Superior */
+.barra-superior {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 200px;
+}
+
+.texto-barra {
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  color: #333;
+}
+
+.botones {
+  display: flex;
+  gap: 10px;
+}
+
+.boton-sesion, .boton-registro {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.boton-sesion {
+  background-color: #007bff;
+  color: white;
+}
+
+.boton-registro {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Fondo Difuminado */
 .fondo-difuminado {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    background-image: url('../../../assets/imagenes/Captura\ de\ pantalla\ 2024-09-22\ 154544.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+  z-index: -1;
 }
 
-/* Estilo del formulario */
+/* Contenedor Principal */
+body, .login-container, .register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #FFFFFF;
+  margin: 0;
+}
+
+/* Tarjeta de Registro */
 .register-card {
-    width: 350px;
-    background-color: #fff;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-    padding: 30px;
-    margin: 50px auto;
-    position: relative;
-    z-index: 1;
-    text-align: center;
+  width: 450px; /* Tamaño más pequeño que antes */
+  padding: 1.5rem; /* Ajustado para que no esté tan espacioso */
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: Arial, sans-serif;
 }
 
-h1 {
-    font-family: 'Arial', sans-serif;
-    font-size: 24px;
-    margin-bottom: 20px;
+.register-card h1 {
+  font-size: 1.6rem; /* Un poco más pequeño */
+  color: #333;
+  margin-bottom: 1.5rem;
 }
 
-label {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    display: block;
-    margin-bottom: 5px;
+/* Campos de Entrada */
+.campo {
+  margin-bottom: 1.2rem; /* Ajustada la distancia entre los campos */
+  text-align: left;
+  width: 100%;
 }
 
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 16px;
+.campo label {
+  display: block;
+  font-size: 1rem;  /* Tamaño de texto más pequeño */
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
-button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
+.input {
+  width: 100%;
+  padding: 1.2rem;  /* Padding reducido */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;  /* Reducido el tamaño de la fuente */
+  height: 50px; /* Ajustada la altura */
+  box-sizing: border-box;
 }
 
-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+/* Estilo para los campos de correo electrónico y contraseña */
+#email, #password {
+  width: 70%;
+  padding: 1.2rem; /* Ajustado el padding */
+  height: 20px;    /* Reducida la altura */
+  font-size: 1rem; /* Reducido el tamaño de la fuente */
 }
 
-/* Enlace a login */
+/* Estilo para el botón de registro */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem; /* Reducido el tamaño de la fuente */
+  margin-top: 1.5rem;
+}
+
+button[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Enlace para redirigir al login */
 a {
-    color: #0056b3;
-    text-decoration: underline;
-    cursor: pointer;
+  display: block;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #007bff;
+  text-decoration: none;
 }
 
 a:hover {
-    color: #003d80;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .barra-superior {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding: 10px;
+  }
+
+  .texto-barra {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+
+  .botones {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .register-card {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .campo {
+    margin-bottom: 1rem;
+  }
+
+  .input {
+    padding: 1.2rem;
+    font-size: 1rem;
+    height: 50px;
+  }
+
+  button[type="submit"] {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+
+  a {
+    font-size: 0.9rem;
+  }
+
+  /* Iconos de redes sociales */
+  .social-icons {
+    gap: 15px;
+  }
+
+  .social-icon {
+    width: 30px;
+    height: 30px;
+  }
 }

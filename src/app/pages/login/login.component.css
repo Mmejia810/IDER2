@@ -1,132 +1,254 @@
-/* Fondo difuminado */
+/* Barra Superior */
+.barra-superior {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 200px;
+}
+
+.texto-barra {
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  color: #333;
+}
+
+.botones {
+  display: flex;
+  gap: 10px;
+}
+
+.boton-sesion, .boton-registro {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.boton-sesion {
+  background-color: #007bff;
+  color: white;
+}
+
+.boton-registro {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Fondo Difuminado */
 .fondo-difuminado {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    background-image: url('../../../assets/imagenes/Captura\ de\ pantalla\ 2024-09-22\ 154544.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: blur(8px); /* Difumina el fondo */
-  }
-  
-  /* Rectángulo Principal */
-  .rectangulo-encuesta {
-    width: 900px;
-    background: url('../../../assets/imagenes/rectangulo\ encuesta.png') no-repeat center;
-    background-size: cover;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-    padding: 50px;
-    margin: 50px auto;
-    position: relative;
-    z-index: 1;
-  }
-  
-  /* Contenedor para el texto y el logo */
-  .contenedor-titulo-logo {
-    display: flex;
-    align-items: center; 
-    justify-content: left;
-    margin-bottom: 20px;
-  }
-  
-  /* Título */
-  .bienvenido {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-    margin-right: 10px; 
-  }
-  
-  /* Logo */
-  .image1 img {
-    width: 200px; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+  z-index: -1;
+}
+
+/* Contenedor Principal */
+body, .login-container, .register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #FFFFFF;
+  margin: 0;
+}
+
+/* Tarjeta de Login */
+.login-card {
+  width: 500px;
+  padding: 2rem;
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.bienvenido {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Campos de Entrada */
+.campo {
+  margin-bottom: 1.5rem;
+  text-align: left;
+  width: 100%;
+}
+
+.campo label {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 1.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  height: 70px;
+}
+
+#username, #password {
+  width: 70%;
+  padding: 1.2rem; /* Ajustado el padding */
+  height: 20px;    /* Reducida la altura */
+  font-size: 1rem; /* Reducido el tamaño de la fuente */
+}
+
+/* Opciones Adicionales */
+.opciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  gap: 10px; /* Agrega espacio entre "Mostrar contraseña" y "Olvidé mi contraseña" */
+}
+
+.mostrar-contraseña {
+  display: flex;
+  align-items: center;
+}
+
+.olvide-contrasena {
+  color: #007bff;
+  text-decoration: none;
+  margin-left: 10px; /* Reduce la distancia con el checkbox de mostrar contraseña */
+}
+
+.olvide-contrasena:hover {
+  text-decoration: underline;
+}
+
+/* Botón de Ingreso */
+.boton-ingresar {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.boton-ingresar:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Registro */
+.registro {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.registrarse {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.registrarse:hover {
+  text-decoration: underline;
+}
+
+/* Iconos de Redes Sociales */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 1.5rem;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Responsive para dispositivos móviles */
+@media (max-width: 768px) {
+  .barra-superior {
+    flex-direction: column;
+    align-items: flex-start;
     height: auto;
+    padding: 10px;
   }
-  
-  /* Contenedor de cada campo */
-  .campo {
-    display: flex;
-    flex-direction: column; /* Distribuye los elementos en columna */
-    align-items: flex-start; /* Alinea a la izquierda */
-    margin-bottom: 20px; /* Añade espacio entre campos */
-  }
-  
-  /* Etiquetas de Usuario y Contraseña */
-  .usuario-text,
-  .contraseña-text {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px; /* Añade espacio entre la etiqueta y la caja de texto */
-  }
-  
-  /* Campos de entrada */
-  .input {
-    width: 35%; /* Hace que las cajas ocupen el ancho total */
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  /* Botón de Ingresar */
-  .boton-ingresar {
-    width: 30%;
-    padding: 15px;
-    background-color: #006400;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  
-  .boton-ingresar:hover {
-    background-color: #004d00;
-  }
-  
-  /* Registro */
-  .registro {
+
+  .texto-barra {
     text-align: left;
-    margin-top: 20px;
-    font-size: 14px;
+    font-size: 0.9rem;
+    margin-top: 10px;
   }
-  
-  .registrarse {
-    color: #4caf50;
-    text-decoration: none;
-    font-weight: bold;
+
+  .botones {
+    flex-direction: column;
+    gap: 8px;
   }
-  
-  .registrarse:hover {
-    text-decoration: underline;
+
+  .login-card {
+    width: 90%;
+    padding: 1.5rem;
   }
-  
-  /* Olvidé mi contraseña */
-  .olvide-contrasena {
-    font-size: 14px;
-    color: #ff5722;
-    text-decoration: none;
+
+  .bienvenido {
+    font-size: 1.5rem;
   }
-  
-  .olvide-contrasena:hover {
-    text-decoration: underline;
+
+  .campo {
+    margin-bottom: 1rem;
   }
-  
-  /* Acerca del IDER */
-  .acerca-del-ider {
-    display: block;
-    margin-top: 30px;
-    font-size: 14px;
-    color: #ff0000;
-    text-decoration: none;
+
+  .input {
+    padding: 1.2rem;
+    font-size: 1rem;
+    height: 50px;
   }
-  
-  .acerca-del-ider:hover {
-    text-decoration: underline;
+
+  .boton-ingresar {
+    padding: 0.75rem;
+    font-size: 1rem;
   }
-  
+
+  .social-icons {
+    gap: 15px;
+  }
+
+  .social-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .registro {
+    font-size: 0.9rem;
+  }
+}

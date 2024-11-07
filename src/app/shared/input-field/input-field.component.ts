@@ -1,6 +1,6 @@
-
+// input-field.component.ts
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms'; 
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-input-field',
@@ -8,8 +8,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./input-field.component.scss']
 })
 export class InputFieldComponent {
-  @Input() label!: string;
-  @Input() placeholder!: string;
-  @Input() control!: FormControl;
+  @Input() label: string = "";
+  @Input() control = new FormControl(); // Permitir que control sea null
   @Input() type: string = 'text';
 }

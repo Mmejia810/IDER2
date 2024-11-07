@@ -2,10 +2,11 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-button',
-  template: `<button [type]="type">{{ label }}</button>`,
-  styles: [`button { padding: 10px; }`]
+  templateUrl: './button.component.html',
+  styleUrls: ['./button.component.css']
 })
 export class ButtonComponent {
-  @Input() label: string = 'Button';
-  @Input() type: string = 'button';
+  @Input() color: string = 'primary'; // color del botón
+  @Input() label: string = 'Button'; // texto del botón
+  @Input() disabled: boolean = false; // para deshabilitar el botón
 }

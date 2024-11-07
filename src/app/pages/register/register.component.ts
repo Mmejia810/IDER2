@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
-
+import { ToastmService } from '../../shared/services/toast/toastm.service';
 
 @Component({
   selector: 'app-register',
@@ -11,11 +11,14 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup; // Aserción no definida aún
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private toastSer: ToastmService) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+  }
+  showToast() {
+    this.toastSer.show('Esto es un mensaje de prueba');
   }
 
   ngOnInit() {}
