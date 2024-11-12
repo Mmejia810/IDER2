@@ -1,14 +1,14 @@
+// src/app/home/home-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component'; // Ajusta la ruta según sea necesario
+import { HomeComponent } from './home.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  // Otras rutas...
+  { path: '', component: HomeComponent }, // Ruta principal para Home
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)], // Usamos forChild porque es un módulo hijo
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class HomeRoutingModule {}

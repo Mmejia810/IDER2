@@ -7,9 +7,12 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module'; // Mantén esta importación
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+
 @NgModule({
   declarations: [
     AppComponent,
+    
+   
      // No incluyas InputFieldComponent aquí
   ],
   imports: [

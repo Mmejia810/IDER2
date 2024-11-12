@@ -1,58 +1,41 @@
-<div class="home-container container">
-  <h1>CREACIÓN DE ENCUESTA</h1>
+<div class="home-content">
+  <!-- Barra superior -->
+  <div class="top-bar">
+    <div class="logo-container">
+      <div class="menu-icon" (click)="toggleSidebar()">
+        <img src="../../../assets/imagenes/lista.png" alt="Menú" />
+      </div>
+      <span class="app-title">ENCUESTAS</span>
+      <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo" />
+    </div>
+    <div class="top-bar-options">
+      <div (click)="logOut()" class="logout-btn">
+        <img src="../../../assets/imagenes/cerrar-sesion.png" alt="Cerrar Sesión" class="logout-icon" />
+      </div>
+    </div>
+  </div>
 
-  <!-- Información de la Encuesta -->
-  <section class="survey-info row">
-    <div class="col-12 col-md-6">
-      <app-input-field label="ID de Encuesta" [(ngModel)]="surveyData.id"></app-input-field>
-    </div>
-    <div class="col-12 col-md-6">
-      <app-input-field label="Fecha Inicial" [(ngModel)]="surveyData.startDate"></app-input-field>
-    </div>
-    <div class="col-12 col-md-6">
-      <app-input-field label="Fecha Final" [(ngModel)]="surveyData.endDate"></app-input-field>
-    </div>
-    <div class="col-12 col-md-6">
-      <app-input-field label="Título de la Encuesta" [(ngModel)]="surveyData.title"></app-input-field>
-    </div>
-    <div class="col-12">
-      <app-input-field label="Descripción de la Encuesta" [(ngModel)]="surveyData.description"></app-input-field>
-    </div>
-    <div class="col-12">
-      <app-button (click)="onContinue()" label="Seguir"></app-button>
-    </div>
-  </section>
+  <!-- Barra lateral (sidebar) -->
+  <app-sidebar [isActive]="isSidebarActive"></app-sidebar>
 
-  <!-- Lista de Secciones -->
-  <section *ngFor="let section of sections" class="section-item">
-    <h2>{{ section.title }}</h2>
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <app-input-field label="ID de Sección" [(ngModel)]="section.id"></app-input-field>
-      </div>
-      <div class="col-12 col-md-6">
-        <app-input-field label="Título de la Sección" [(ngModel)]="section.title"></app-input-field>
-      </div>
-      <div class="col-12">
-        <app-input-field label="Descripción de la Sección" [(ngModel)]="section.description"></app-input-field>
-      </div>
-      <div class="col-12">
-        <app-button (click)="onSaveSection(section)" label="Guardar"></app-button>
-        <app-button (click)="onNextSection()" label="Siguiente"></app-button>
-      </div>
-    </div>
-  </section>
+  <!-- Overlay para opacar contenido cuando el sidebar esté activo -->
+  <div class="overlay" *ngIf="isSidebarActive" (click)="toggleSidebar()"></div>
 
-  <!-- Lista de Preguntas -->
-  <section class="question-list">
-    <h3>PREGUNTAS</h3>
-    <ul>
-      <li *ngFor="let question of questions">
-        <p>{{ question }}</p>
-        <label>Si</label><input type="radio" [name]="question" value="yes">
-        <label>No</label><input type="radio" [name]="question" value="no">
-      </li>
-    </ul>
-    <app-button (click)="onAddQuestion()" label="Añadir Pregunta"></app-button>
-  </section>
+  <!-- Contenido principal -->
+  <div class="content" [class.sidebar-active]="isSidebarActive">
+    <!-- Tarjeta de saludo -->
+    <div class="greeting-card">
+      <div class="greeting-text">
+        <p>Bienvenido, Daniel Andres</p>
+        <p>¡Ten un excelente Dia!</p>
+      </div>
+      <img src="../../../assets/imagenes/encuesta-online.png" alt="Imagen del Usuario" class="user-image" />
+    </div>
+
+    <!-- Tarjeta de Crear Encuesta -->
+    <div class="create-survey-card" (click)="createSurvey()">
+      <img src="../../../assets/imagenes/votacion.png" alt="Crear Encuesta" class="card-icon" />
+      <span class="card-text">Crear Encuesta</span>
+    </div>
+  </div>
 </div>

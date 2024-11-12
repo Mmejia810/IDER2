@@ -1,0 +1,35 @@
+/* Barra lateral */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Inicialmente oculto */
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    transition: left 0.3s ease; /* Animación para que aparezca suavemente */
+    z-index: 2;
+  }
+  
+  .sidebar.active {
+    left: 0; /* Cuando la clase 'active' está presente, el sidebar se muestra */
+  }
+  
+  .sidebar-links {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-links li {
+    padding: 15px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Agregar transiciones */
+  }
+  
+  .sidebar-links li:hover {
+    background-color: #444;
+    transform: translateX(10px); /* Mueve el elemento hacia adelante */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Efecto de brillo */
+  }
+  

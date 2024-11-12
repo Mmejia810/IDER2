@@ -11,14 +11,16 @@ import { ToastmService } from '../../shared/services/toast/toastm.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup; // Aserción no definida aún
+  
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private toastSer: ToastmService) {
     this.registerForm = this.fb.group({
+      identificacion: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]], // Validación para identificación
+      nombre: ['', [Validators.required, Validators.minLength(2)]],
+      apellido: ['', [Validators.required, Validators.minLength(2)]],
+      estado: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      pass: ['', [Validators.required, Validators.minLength(6)]]
     });
-  }
-  showToast() {
-    this.toastSer.show('Esto es un mensaje de prueba');
   }
 
   ngOnInit() {}
@@ -28,6 +30,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(this.registerForm.value).subscribe(
         (response: any) => {
           console.log('Registro exitoso', response);
+          this.router.navigate(['/login']); // Redirigir al login después de registro exitoso
         },
         (error: any) => {
           console.error('Error en el registro', error);
@@ -36,7 +39,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  goToLogin() {
-    this.router.navigate(['/login']); // Método para redirigir al login
+  logOut() {
+    this.router.navigate(['/login']); // Redirigir al login cuando se hace clic en el icono de cerrar sesión
   }
 }
