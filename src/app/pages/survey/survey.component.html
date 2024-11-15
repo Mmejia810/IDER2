@@ -1,0 +1,87 @@
+<!-- Barra superior -->
+<div class="top-bar">
+  <div class="logo-container">
+    <div class="menu-icon" (click)="toggleSidebar()">
+      <img src="../../../assets/imagenes/lista.png" alt="Menú" />
+    </div>
+    <span class="app-title">CREACIÓN DE ENCUESTA</span>
+    <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo" />
+  </div>
+  <div class="top-bar-options">
+    <div (click)="logOut()" class="logout-btn">
+      <img src="../../../assets/imagenes/cerrar-sesion.png" alt="Cerrar Sesión" class="logout-icon" />
+    </div>
+  </div>
+</div>
+
+<!-- Barra lateral -->
+<app-sidebar [isActive]="isSidebarActive" (closeSidebar)="closeSidebar()"></app-sidebar>
+
+<!-- Tarjeta para la creación de la encuesta -->
+<mat-expansion-panel expanded="true" class="creation-card">
+  <mat-expansion-panel-header>
+    <mat-panel-title>ID DE ENCUESTA</mat-panel-title>
+  </mat-expansion-panel-header>
+  <div>
+    <p>FECHA INICIAL: {{ startDate }}</p>
+    <input type="text" placeholder="FECHA FINAL: dd/mm/yy" [(ngModel)]="endDate">
+    <input type="text" placeholder="TÍTULO DE LA ENCUESTA" [(ngModel)]="surveyTitle">
+    <textarea placeholder="DESCRIPCIÓN DE LA ENCUESTA" [(ngModel)]="surveyDescription"></textarea>
+    <button (click)="addSection()" class="btn-follow">Crear sección encuesta</button>
+    <button (click)="saveSurvey()" class="btn-save">GUARDAR</button>
+  </div>
+</mat-expansion-panel>
+
+<!-- Tarjetas para la creación de secciones -->
+<mat-expansion-panel *ngFor="let section of sections; let i = index" [expanded]="i === sections.length - 1" class="section-card">
+  <mat-expansion-panel-header>
+    <mat-panel-title>SECCIÓN {{ section.title }}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <div>
+    <input type="text" placeholder="ID DE ENCUESTA" [value]="surveyId" readonly>
+    <input type="text" placeholder="TÍTULO DE LA SECCIÓN" [(ngModel)]="section.title">
+    
+    <!-- Botones de acciones en la sección -->
+    <div class="section-actions">
+      <button (click)="askQuestionType(section.id)" class="btn-create-questions">
+        <mat-icon>add_circle_outline</mat-icon> Crear Pregunta
+      </button>
+      <button (click)="saveSection(section)" class="btn-save-section">
+        <mat-icon>save</mat-icon> Guardar Sección
+      </button>
+      <button (click)="deleteSection(section.id)" class="btn-delete-section">
+        <mat-icon>delete</mat-icon> Eliminar Sección
+      </button>
+    </div>
+  </div>
+
+  <!-- Tarjetas para agregar preguntas a cada sección -->
+  <div *ngFor="let question of section.questions" class="questions-card">
+    <input type="text" placeholder="ID DE SECCIÓN" [value]="section.id" readonly>
+    <input type="text" placeholder="Tipo de pregunta: Abierta o Múltiple" [(ngModel)]="question.type">
+    <textarea placeholder="Pregunta" [(ngModel)]="question.text"></textarea>
+
+    <!-- Opciones para preguntas múltiples -->
+    <div *ngIf="question.type === 'multiple'">
+      <div *ngFor="let option of question.options" class="option-input">
+        <input type="text" placeholder="Opción" [(ngModel)]="option.text">
+        <button (click)="deleteOption(section.id, question, option)" class="btn-delete-option">
+          <mat-icon>remove_circle_outline</mat-icon>
+        </button>
+      </div>
+      <button (click)="addOption(section.id, question)" class="btn-add-option">
+        <mat-icon>add_circle_outline</mat-icon> Añadir Opción
+      </button>
+    </div>
+
+    <!-- Botones de acciones para cada pregunta -->
+    <div class="question-actions">
+      <button (click)="saveQuestion(section.id, question)" class="btn-save-question">
+        <mat-icon>save</mat-icon> Guardar Pregunta
+      </button>
+      <button (click)="deleteQuestion(section.id, question)" class="btn-delete-question">
+        <mat-icon>delete</mat-icon> Eliminar Pregunta
+      </button>
+    </div>
+  </div>
+</mat-expansion-panel>

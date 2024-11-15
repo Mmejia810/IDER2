@@ -19,6 +19,8 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) // Ruta para cargar HomeModule
   },
+  { path: 'survey', loadChildren: () => import('./pages/survey/survey.module').then(m => m.SurveyModule) },
+  
   { path: '**', redirectTo: 'login' } // Ruta para manejar rutas no encontradas
 ];
 

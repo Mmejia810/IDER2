@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'; // Añadido FormsModule
 import { ButtonComponent } from './button/button.component';
 import { InputFieldComponent } from './input-field/input-field.component';
 
@@ -10,12 +10,15 @@ import { InputFieldComponent } from './input-field/input-field.component';
     InputFieldComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,       // Importa FormsModule si necesitas trabajar con formularios en otros módulos
+    ReactiveFormsModule // Para formularios reactivos
   ],
   exports: [
     ButtonComponent,
+    InputFieldComponent, // Exporta los componentes para usarlos en otros módulos
     ReactiveFormsModule,
-    InputFieldComponent // Exporta los componentes para usarlos en otros módulos
+    FormsModule          // Exporta FormsModule también para su uso en otros módulos
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

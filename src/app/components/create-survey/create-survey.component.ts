@@ -1,5 +1,3 @@
-// src/app/components/create-survey/create-survey.component.ts
-
 import { Component } from '@angular/core';
 
 @Component({

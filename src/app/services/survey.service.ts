@@ -1,31 +1,36 @@
-// src/app/services/survey.service.ts
 import { Injectable } from '@angular/core';
-import { Survey } from '../models/surveyModels';  // Asegúrate de importar el modelo correctamente
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Survey } from '../models/surveyModels';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SurveyService {
-  private apiUrl = 'http://localhost:9085/encuesta/todas'; // Cambia esta URL por la de tu API
+  private apiUrl = 'http://localhost:9085/encuesta'; // Reemplaza esto por tu URL real
 
   constructor(private http: HttpClient) {}
 
-  // Obtener encuestas desde la API
-  getSurveys(): Observable<Survey[]> {
-    return this.http.get<Survey[]>(this.apiUrl);
+   // Método para obtener las encuestas
+   getSurveys(): Observable<Survey[]> {
+    return this.http.get<Survey[]>(`${this.apiUrl}/surveys`);
   }
 
-  sortSurveysAlphabetically(surveys: Survey[]): Survey[] {
-    return [...surveys].sort((a, b) => a.name.localeCompare(b.name));
+  // Otros métodos que puedas tener para crear, eliminar, o actualizar encuestas
+  createSurvey(surveyData: Survey): Observable<Survey> {
+    return this.http.post<Survey>(`${this.apiUrl}/surveys`, surveyData);
   }
 
-  sortSurveysByDate(surveys: Survey[]): Survey[] {
-    return [...surveys].sort((a, b) => {
-      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-      return dateA - dateB;
-    });
+  createQuestion(surveyId: number, sectionId: number, questionData: any): Observable<any> {
+    // Aquí haces una solicitud POST para enviar la nueva pregunta al backend
+    const url = `${this.apiUrl}/survey/${surveyId}/section/${sectionId}/question`;
+    return this.http.post(url, questionData);
   }
+
+  createOption(questionId: number, optionData: any): Observable<any> {
+    const url = `${this.apiUrl}/question/${questionId}/option`;
+    return this.http.post(url, optionData);
+  }
+
+  // Aquí podrías agregar otros métodos para eliminar o editar opciones si es necesario.
 }

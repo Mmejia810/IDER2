@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   surveys: Survey[] = [];
-  isSidebarActive: boolean = false; // Controla la visibilidad del sidebar
+  isSidebarActive: boolean = false;
+  greetingMessage: string = ''; // Mensaje de saludo
 
   constructor(private surveyService: SurveyService, private router: Router) {}
 
@@ -27,26 +28,45 @@ export class HomeComponent implements OnInit {
         console.error('Error al obtener las encuestas', error);
       }
     );
+    
+    this.setGreetingMessage(); // Establece el mensaje de saludo
+  }
+
+  setGreetingMessage() {
+    const hour = new Date().getHours();
+    let timeOfDay = 'día'; // Establecer valor predeterminado
+
+    // Condición para la tarde
+    if (hour >= 12 && hour < 18) {
+      timeOfDay = 'tarde';
+    } 
+    // Condición para la noche
+    else if (hour >= 18 || hour < 6) {
+      timeOfDay = 'noche';
+    }
+
+    // Cambiar el mensaje según la hora
+    if (timeOfDay === 'día') {
+      this.greetingMessage = `Bienvenido a la creación de encuestas. ¡Ten un excelente día!`;
+    } else {
+      this.greetingMessage = `Bienvenido a la creación de encuestas. ¡Ten una excelente ${timeOfDay}!`;
+    }
   }
 
   toggleSidebar() {
     this.isSidebarActive = !this.isSidebarActive;
   }
 
-  /**
-   * Método para navegar a diferentes rutas.
-   * @param route - Ruta a la que se desea navegar.
-   */
   navigateTo(route: string) {
     this.router.navigate([`/${route}`]);
-    this.toggleSidebar(); // Cierra el sidebar después de navegar
+    this.toggleSidebar();
   }
 
   logOut() {
-    this.router.navigate(['/login'])
+    this.router.navigate(['/login']);
   }
 
   createSurvey() {
-    this.router.navigate(['/create-survey']);
+    this.router.navigate(['/survey']);
   }
 }

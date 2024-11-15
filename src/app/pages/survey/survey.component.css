@@ -1,0 +1,207 @@
+/* Barra superior */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .menu-icon {
+    width: 20px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .menu-icon img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .top-bar-options {
+    margin-right: 20px; /* Ajustado para acercar el botón de cerrar sesión */
+  }
+  
+  .logout-btn {
+    cursor: pointer;
+  }
+  
+  .logout-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Logo más pequeño */
+  .logo-container .logo {
+    width: 150px;  /* Ajusta el tamaño según lo necesites */
+    height: auto;
+  }
+  
+  /* Cambiar color del texto "ENCUESTAS" a negro */
+  .app-title {
+    color: #000;  /* Cambia el color a negro */
+  }
+  
+  /* Sidebar desplegable */
+  app-sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #343a40;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+    transition: left 0.3s ease;
+    z-index: 10;
+  }
+  
+  app-sidebar.active {
+    left: 0;
+  }
+  
+  .sidebar-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-links li {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .sidebar-links li:hover {
+    background-color: #495057;
+    transform: translateX(10px); /* Mueve el elemento hacia adelante */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Efecto de brillo */
+  }
+  
+  /* Overlay */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 5;
+  }
+  
+  /* Estilo de las tarjetas */
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  /* Campos de las tarjetas */
+  .creation-card input,
+  .section-card input,
+  .questions-card textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Botones */
+  .btn-follow,
+  .btn-save,
+  .btn-save-survey {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-follow:hover,
+  .btn-save:hover,
+  .btn-save-survey:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Estilo de la tarjeta de saludo */
+  .greeting-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Posiciona el texto y la imagen en extremos */
+    padding: 50px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin: 30px auto 20px; /* Centra la tarjeta horizontalmente */
+    width: 50%; /* La tarjeta ocupa el 50% del ancho */
+    min-width: 400px; /* Para asegurar que no sea demasiado pequeña en pantallas grandes */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Añade sombra para darle más énfasis */
+  }
+  
+  .greeting-text {
+    color: #333;
+    font-size: 30px;
+    font-weight: 600;
+  }
+  
+  .user-image {
+    width: 200px; /* Aumenta el tamaño de la imagen */
+    height: 200px;
+    border-radius: 0%;
+    margin-left: 10px; /* Reduce el espacio entre la imagen y el texto */
+  }
+  
+  @media (max-width: 768px) {
+    .greeting-card {
+      width: 80%; /* Aumenta el tamaño en pantallas más pequeñas */
+    }
+  }
+  
+  /* Tarjeta de crear encuesta */
+  .create-survey-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background-color: #949494;
+    color: #fff;
+    border-radius: 8px;
+    margin: 60px 70px 10px;
+    width: 100px;
+    height: 100px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .create-survey-card:hover {
+    background-color: #0094f7;
+  }
+  
+  .card-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 15px;
+    text-align: center;
+  }
+  
