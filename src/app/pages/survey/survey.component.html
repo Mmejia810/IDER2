@@ -17,36 +17,46 @@
 <!-- Barra lateral -->
 <app-sidebar [isActive]="isSidebarActive" (closeSidebar)="closeSidebar()"></app-sidebar>
 
-<!-- Tarjeta para la creación de la encuesta -->
+<!-- Creación de la encuesta -->
 <mat-expansion-panel expanded="true" class="creation-card">
   <mat-expansion-panel-header>
     <mat-panel-title>ID DE ENCUESTA</mat-panel-title>
   </mat-expansion-panel-header>
   <div>
     <p>FECHA INICIAL: {{ startDate }}</p>
-    <input type="text" placeholder="FECHA FINAL: dd/mm/yy" [(ngModel)]="endDate">
-    <input type="text" placeholder="TÍTULO DE LA ENCUESTA" [(ngModel)]="surveyTitle">
+
+    <mat-form-field appearance="fill" class="long-datepicker">
+      <mat-label>FECHA FINAL</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="endDate" placeholder="Seleccione la fecha final" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <input matInput type="text" placeholder="TÍTULO DE LA ENCUESTA" [(ngModel)]="surveyTitle">
     <textarea placeholder="DESCRIPCIÓN DE LA ENCUESTA" [(ngModel)]="surveyDescription"></textarea>
-    <button (click)="addSection()" class="btn-follow">Crear sección encuesta</button>
-    <button (click)="saveSurvey()" class="btn-save">GUARDAR</button>
+    <button (click)="addSection()" class="btn-follow" [disabled]="!isSurveyValid()">Crear sección encuesta</button>
+    <button (click)="saveSurvey()" class="btn-save" [disabled]="!isSurveyValid()">GUARDAR</button>
   </div>
 </mat-expansion-panel>
 
-<!-- Tarjetas para la creación de secciones -->
-<mat-expansion-panel *ngFor="let section of sections; let i = index" [expanded]="i === sections.length - 1" class="section-card">
+<!-- Sección con validación -->
+<mat-expansion-panel *ngFor="let section of sections; let sIndex = index" [expanded]="sIndex === section.expandedSectionIndex" class="section-card">
   <mat-expansion-panel-header>
-    <mat-panel-title>SECCIÓN {{ section.title }}</mat-panel-title>
+    <mat-panel-title>SECCIÓN {{ section.title }} (ID: {{ section.id }})</mat-panel-title>
   </mat-expansion-panel-header>
   <div>
-    <input type="text" placeholder="ID DE ENCUESTA" [value]="surveyId" readonly>
     <input type="text" placeholder="TÍTULO DE LA SECCIÓN" [(ngModel)]="section.title">
     
-    <!-- Botones de acciones en la sección -->
+    <!-- Mensaje de advertencia si el campo de la sección está vacío -->
+    <div *ngIf="section.title === ''" class="warning-message">
+      <p style="color: red;">El título de la sección es obligatorio.</p>
+    </div>
+    
     <div class="section-actions">
-      <button (click)="askQuestionType(section.id)" class="btn-create-questions">
+      <button (click)="openQuestionTypeSelector(section.id)" class="btn-create-questions" [disabled]="!isSectionValid(section)">
         <mat-icon>add_circle_outline</mat-icon> Crear Pregunta
       </button>
-      <button (click)="saveSection(section)" class="btn-save-section">
+      <button (click)="saveSection(section)" class="btn-save-section" [disabled]="!isSectionValid(section)">
         <mat-icon>save</mat-icon> Guardar Sección
       </button>
       <button (click)="deleteSection(section.id)" class="btn-delete-section">
@@ -54,12 +64,27 @@
       </button>
     </div>
   </div>
+  
+  <!-- Mostrar selector de tipo de pregunta -->
+  <div *ngIf="section.showQuestionTypeSelector" class="question-type-selector">
+    <button (click)="addOpenQuestionInput(section.id)" class="btn-question-type">Pregunta Abierta</button>
+    <button (click)="addMultipleChoiceQuestionInput(section.id)" class="btn-question-type">Pregunta Múltiple</button>
+  </div>
 
-  <!-- Tarjetas para agregar preguntas a cada sección -->
-  <div *ngFor="let question of section.questions" class="questions-card">
-    <input type="text" placeholder="ID DE SECCIÓN" [value]="section.id" readonly>
-    <input type="text" placeholder="Tipo de pregunta: Abierta o Múltiple" [(ngModel)]="question.type">
+  <!-- Tarjetas de preguntas -->
+  <div *ngFor="let question of section.questions; let qIndex = index" class="questions-card">
+    <p>ID DE ENCUESTA: {{ surveyId }}</p>
+    <p>ID DE SECCIÓN: {{ section.id }}</p>
+
+    <h4 class="question-type-title">Tipo de Pregunta: {{ question.type }}</h4>
+
+    <!-- Campo de texto para la pregunta -->
     <textarea placeholder="Pregunta" [(ngModel)]="question.text"></textarea>
+    
+    <!-- Mensaje de advertencia si el campo de la pregunta está vacío -->
+    <div *ngIf="question.text === ''" class="warning-message">
+      <p style="color: red;">La pregunta no puede estar vacía.</p>
+    </div>
 
     <!-- Opciones para preguntas múltiples -->
     <div *ngIf="question.type === 'multiple'">
@@ -76,7 +101,7 @@
 
     <!-- Botones de acciones para cada pregunta -->
     <div class="question-actions">
-      <button (click)="saveQuestion(section.id, question)" class="btn-save-question">
+      <button (click)="saveQuestion(section.id, question, qIndex, sIndex)" class="btn-save-question" [disabled]="!isQuestionValid(question)">
         <mat-icon>save</mat-icon> Guardar Pregunta
       </button>
       <button (click)="deleteQuestion(section.id, question)" class="btn-delete-question">

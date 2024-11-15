@@ -21,16 +21,17 @@ export class HomeComponent implements OnInit {
         console.log(data);
         this.surveys = data.map(survey => ({
           ...survey,
-          createdAt: survey.createdAt || new Date()
+          createdAt: survey.createdAt || new Date().toISOString() // Asigna la fecha actual si no existe 'createdAt'
         }));
       },
       (error) => {
         console.error('Error al obtener las encuestas', error);
       }
     );
-    
+  
     this.setGreetingMessage(); // Establece el mensaje de saludo
   }
+  
 
   setGreetingMessage() {
     const hour = new Date().getHours();

@@ -10,6 +10,10 @@ import { SurveyService } from '../../services/survey.service';
 import { SidebarModule } from '../../sidebar/sidebar.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -24,7 +28,11 @@ import { MatIconModule } from '@angular/material/icon';
     SharedModule, // Importa SharedModule aquí
     SidebarModule,
     MatExpansionModule,
-    MatIconModule
+    MatIconModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatNativeDateModule
   ],
   providers: [SurveyService]
 })

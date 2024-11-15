@@ -16,6 +16,9 @@ interface Section {
   id: number;
   title: string;
   questions: Question[];
+  showQuestionTypeSelector: boolean;
+  expandedSectionIndex: number | null;
+  expandedQuestionIndex: number | null;
 }
 
 @Component({
@@ -29,9 +32,9 @@ export class SurveyComponent implements OnInit {
   surveyTitle = '';
   surveyDescription = '';
   startDate: string = '';
-  endDate: string = '';
+  endDate: Date | null = null;
   sections: Section[] = [];
-  sectionTitle: string = '';
+  sectionIdCounter: number = 1;
 
   constructor(private surveyService: SurveyService, private router: Router) {}
 
@@ -48,91 +51,35 @@ export class SurveyComponent implements OnInit {
     this.isSidebarActive = false;
   }
 
-  addSection() {
-    const newSection: Section = {
-      id: this.sections.length + 1,
-      title: `Sección ${this.sections.length + 1}`,
-      questions: []
-    };
-    this.sections.push(newSection);
-  }
-
-  saveSection(section: Section) {
-    alert(`Sección ${section.title} guardada con éxito`);
-  }
-
-  deleteSection(sectionId: number) {
-    this.sections = this.sections.filter(section => section.id !== sectionId);
-    alert(`Sección ${sectionId} eliminada`);
-  }
-
-  askQuestionType(sectionId: number) {
-    const questionType = prompt('¿Qué tipo de pregunta deseas agregar? (abierta / multiple)');
-    if (questionType === 'abierta') {
-      this.addOpenQuestion(sectionId);
-    } else if (questionType === 'multiple') {
-      this.addMultipleChoiceQuestion(sectionId);
-    } else {
-      alert('Tipo de pregunta no válido. Solo se permiten "abierta" o "multiple".');
-    }
-  }
-
-  addOpenQuestion(sectionId: number) {
-    const section = this.sections.find(sec => sec.id === sectionId);
-    if (section) {
-      section.questions.push({ text: '', type: 'abierta', options: [] });
-    }
-  }
-
-  addMultipleChoiceQuestion(sectionId: number) {
-    const section = this.sections.find(sec => sec.id === sectionId);
-    if (section) {
-      section.questions.push({ text: '', type: 'multiple', options: [{ text: '' }] });
-    }
-  }
-
-  saveQuestion(sectionId: number, question: Question) {
-    const questionData = {
-      text: question.text || '', // Ensure text is not null
-      type: question.type,
-      options: question.options
-    };
-
-    // Call the SurveyService to save the question
-    this.surveyService.createQuestion(this.surveyId, sectionId, questionData).subscribe(response => {
-      alert('Pregunta guardada con éxito');
-    });
-  }
-
-  deleteQuestion(sectionId: number, question: Question) {
-    const section = this.sections.find(sec => sec.id === sectionId);
-    if (section) {
-      section.questions = section.questions.filter(q => q !== question);
-      alert('Pregunta eliminada');
-    }
-  }
-
-  addOption(sectionId: number, question: Question) {
-    if (question.type === 'multiple') {
-      question.options.push({ text: '' });
-    }
-  }
-
-  deleteOption(sectionId: number, question: Question, option: Option) {
-    const section = this.sections.find(sec => sec.id === sectionId);
-    if (section) {
-      const questionToUpdate = section.questions.find(q => q === question);
-      if (questionToUpdate) {
-        questionToUpdate.options = questionToUpdate.options.filter(opt => opt !== option);
-        alert('Opción eliminada');
-      }
-    }
+  // Agregado: Método para validar la encuesta
+  isSurveyValid(): boolean {
+    return this.surveyTitle.trim() !== '' && this.surveyDescription.trim() !== '' && this.endDate !== null;
   }
 
   saveSurvey() {
-    alert('Encuesta creada con éxito');
-    this.incrementSurveyId();
-    this.resetForm();
+    if (!this.isSurveyValid()) {
+      alert('Debe rellenar todos los campos de la encuesta antes de guardarla.');
+      return;
+    }
+    
+    const formattedEndDate = this.endDate ? this.endDate.toLocaleDateString('en-GB') : '';
+  
+    const newSurvey = {
+      id: this.surveyId,
+      name: this.surveyTitle,
+      title: this.surveyTitle,
+      description: this.surveyDescription,
+      startDate: this.startDate,
+      endDate: formattedEndDate,
+      createdAt: new Date().toISOString(),
+      sections: this.sections
+    };
+  
+    this.surveyService.createSurvey(newSurvey).subscribe(response => {
+      alert('Encuesta creada con éxito');
+      this.incrementSurveyId();
+      this.resetForm();
+    });
   }
 
   incrementSurveyId() {
@@ -142,8 +89,103 @@ export class SurveyComponent implements OnInit {
   resetForm() {
     this.surveyTitle = '';
     this.surveyDescription = '';
-    this.endDate = '';
+    this.endDate = null;
     this.sections = [];
+  }
+
+  addSection() {
+    const newSection: Section = {
+      id: this.sectionIdCounter++,  
+      title: `Sección ${this.sectionIdCounter}`,
+      questions: [],
+      showQuestionTypeSelector: false,
+      expandedSectionIndex: null,
+      expandedQuestionIndex: null
+    };
+    this.sections.push(newSection);
+  }
+
+  saveSection(section: Section) {
+    if (this.isSectionValid(section)) {
+      alert(`Sección ${section.title} guardada con éxito`);
+    } else {
+      alert('Debe rellenar el título de la sección antes de guardarla.');
+    }
+  }
+
+  deleteSection(sectionId: number) {
+    this.sections = this.sections.filter(section => section.id !== sectionId);
+    alert(`Sección ${sectionId} eliminada`);
+  }
+
+  isSectionValid(section: Section): boolean {
+    return section.title.trim() !== '';
+  }
+
+  openQuestionTypeSelector(sectionId: number) {
+    const section = this.sections.find(sec => sec.id === sectionId);
+    if (section) {
+      section.showQuestionTypeSelector = !section.showQuestionTypeSelector;
+    }
+  }
+
+  addOpenQuestionInput(sectionId: number) {
+    const section = this.sections.find(sec => sec.id === sectionId);
+    if (section) {
+      section.questions.push({
+        text: '',
+        type: 'abierta',
+        options: []
+      });
+      alert(`Se ha añadido una nueva pregunta abierta en la sección ${sectionId}`);
+    }
+  }
+
+  addMultipleChoiceQuestionInput(sectionId: number) {
+    const section = this.sections.find(sec => sec.id === sectionId);
+    if (section) {
+      section.questions.push({
+        text: '',
+        type: 'multiple',
+        options: [{ text: '' }]
+      });
+      alert(`Se ha añadido una nueva pregunta múltiple en la sección ${sectionId}`);
+    }
+  }
+
+  addOption(sectionId: number, question: Question) {
+    question.options.push({ text: '' });
+  }
+
+  deleteOption(sectionId: number, question: Question, option: Option) {
+    question.options = question.options.filter(opt => opt !== option);
+  }
+
+  saveQuestion(sectionId: number, question: Question, qIndex: number, sIndex: number) {
+    if (this.isQuestionValid(question)) {
+      const section = this.sections.find(sec => sec.id === sectionId);
+      if (section) {
+        section.expandedQuestionIndex = null; // Cierra la tarjeta de la pregunta
+        alert('Pregunta guardada');
+      }
+    } else {
+      alert('Debe rellenar todos los campos de la pregunta.');
+    }
+  }
+
+  isQuestionValid(question: Question): boolean {
+    if (question.type === 'multiple') {
+      return question.text.trim() !== '' && question.options.every(option => option.text.trim() !== '');
+    } else {
+      return question.text.trim() !== '';
+    }
+  }
+
+  deleteQuestion(sectionId: number, question: Question) {
+    const section = this.sections.find(sec => sec.id === sectionId);
+    if (section) {
+      section.questions = section.questions.filter(q => q !== question);
+    }
   }
 
   logOut() {
