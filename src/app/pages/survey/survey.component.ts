@@ -17,8 +17,6 @@ interface Section {
   title: string;
   questions: Question[];
   showQuestionTypeSelector: boolean;
-  expandedSectionIndex: number | null;
-  expandedQuestionIndex: number | null;
 }
 
 @Component({
@@ -27,14 +25,15 @@ interface Section {
   styleUrls: ['./survey.component.css'],
 })
 export class SurveyComponent implements OnInit {
-  isSidebarActive: boolean = false;
+  isSidebarActive = false;
   surveyId = 1;
   surveyTitle = '';
   surveyDescription = '';
   startDate: string = '';
   endDate: Date | null = null;
   sections: Section[] = [];
-  sectionIdCounter: number = 1;
+  sectionIdCounter = 1;
+  expandedSectionIndex: number | null = null;
 
   constructor(private surveyService: SurveyService, private router: Router) {}
 
@@ -51,9 +50,12 @@ export class SurveyComponent implements OnInit {
     this.isSidebarActive = false;
   }
 
-  // Agregado: Método para validar la encuesta
   isSurveyValid(): boolean {
-    return this.surveyTitle.trim() !== '' && this.surveyDescription.trim() !== '' && this.endDate !== null;
+    return (
+      this.surveyTitle.trim() !== '' &&
+      this.surveyDescription.trim() !== '' &&
+      this.endDate !== null
+    );
   }
 
   saveSurvey() {
@@ -61,24 +63,24 @@ export class SurveyComponent implements OnInit {
       alert('Debe rellenar todos los campos de la encuesta antes de guardarla.');
       return;
     }
-    
-    const formattedEndDate = this.endDate ? this.endDate.toLocaleDateString('en-GB') : '';
-  
+
+    const formattedEndDate = this.endDate?.toISOString().slice(0, 10) || '';
+
     const newSurvey = {
-      id: this.surveyId,
-      name: this.surveyTitle,
-      title: this.surveyTitle,
-      description: this.surveyDescription,
-      startDate: this.startDate,
-      endDate: formattedEndDate,
-      createdAt: new Date().toISOString(),
-      sections: this.sections
+      titulo: this.surveyTitle,
+      descripcion: this.surveyDescription,
+      estado: 'activa',
+      fechaCierre: formattedEndDate,
+      usuario: {
+        id: 1
+      },
     };
-  
-    this.surveyService.createSurvey(newSurvey).subscribe(response => {
+
+    this.surveyService.createSurvey(newSurvey).subscribe(() => {
       alert('Encuesta creada con éxito');
       this.incrementSurveyId();
       this.resetForm();
+      this.router.navigate(['/encuestas']);
     });
   }
 
@@ -95,27 +97,41 @@ export class SurveyComponent implements OnInit {
 
   addSection() {
     const newSection: Section = {
-      id: this.sectionIdCounter++,  
-      title: `Sección ${this.sectionIdCounter}`,
+      id: this.sectionIdCounter++,
+      title: '',
       questions: [],
       showQuestionTypeSelector: false,
-      expandedSectionIndex: null,
-      expandedQuestionIndex: null
     };
     this.sections.push(newSection);
   }
 
   saveSection(section: Section) {
     if (this.isSectionValid(section)) {
-      alert(`Sección ${section.title} guardada con éxito`);
+      const sectionData = {
+        titulo: section.title,
+        encuesta: { id: this.surveyId },
+      };
+
+      this.surveyService.saveSection(sectionData).subscribe(
+        (response) => {
+          alert(`Sección "${section.title}" guardada con éxito`);
+          this.resetSectionForm();
+        },
+        (error) => {
+          console.error('Error al guardar la sección:', error);
+          alert('Hubo un error al guardar la sección.');
+        }
+      );
     } else {
       alert('Debe rellenar el título de la sección antes de guardarla.');
     }
   }
 
-  deleteSection(sectionId: number) {
-    this.sections = this.sections.filter(section => section.id !== sectionId);
-    alert(`Sección ${sectionId} eliminada`);
+  resetSectionForm() {
+    this.sections.forEach((section) => {
+      section.title = '';
+      section.questions = [];
+    });
   }
 
   isSectionValid(section: Section): boolean {
@@ -123,31 +139,31 @@ export class SurveyComponent implements OnInit {
   }
 
   openQuestionTypeSelector(sectionId: number) {
-    const section = this.sections.find(sec => sec.id === sectionId);
+    const section = this.sections.find((sec) => sec.id === sectionId);
     if (section) {
       section.showQuestionTypeSelector = !section.showQuestionTypeSelector;
     }
   }
 
   addOpenQuestionInput(sectionId: number) {
-    const section = this.sections.find(sec => sec.id === sectionId);
+    const section = this.sections.find((sec) => sec.id === sectionId);
     if (section) {
       section.questions.push({
         text: '',
         type: 'abierta',
-        options: []
+        options: [],
       });
       alert(`Se ha añadido una nueva pregunta abierta en la sección ${sectionId}`);
     }
   }
 
   addMultipleChoiceQuestionInput(sectionId: number) {
-    const section = this.sections.find(sec => sec.id === sectionId);
+    const section = this.sections.find((sec) => sec.id === sectionId);
     if (section) {
       section.questions.push({
         text: '',
         type: 'multiple',
-        options: [{ text: '' }]
+        options: [{ text: '' }],
       });
       alert(`Se ha añadido una nueva pregunta múltiple en la sección ${sectionId}`);
     }
@@ -158,34 +174,42 @@ export class SurveyComponent implements OnInit {
   }
 
   deleteOption(sectionId: number, question: Question, option: Option) {
-    question.options = question.options.filter(opt => opt !== option);
+    question.options = question.options.filter((opt) => opt !== option);
   }
 
   saveQuestion(sectionId: number, question: Question, qIndex: number, sIndex: number) {
     if (this.isQuestionValid(question)) {
-      const section = this.sections.find(sec => sec.id === sectionId);
-      if (section) {
-        section.expandedQuestionIndex = null; // Cierra la tarjeta de la pregunta
-        alert('Pregunta guardada');
-      }
+      this.surveyService.createQuestion(this.surveyId, sectionId, question).subscribe(
+        () => {
+          alert(`Pregunta guardada en la sección ${sectionId}, pregunta ${qIndex + 1}`);
+        },
+        (error) => {
+          alert('Hubo un error al guardar la pregunta.');
+          console.error(error);
+        }
+      );
     } else {
       alert('Debe rellenar todos los campos de la pregunta.');
     }
   }
 
   isQuestionValid(question: Question): boolean {
-    if (question.type === 'multiple') {
-      return question.text.trim() !== '' && question.options.every(option => option.text.trim() !== '');
-    } else {
-      return question.text.trim() !== '';
-    }
+    return (
+      question.text.trim() !== '' &&
+      (question.type !== 'multiple' ||
+        question.options.every((option) => option.text.trim() !== ''))
+    );
   }
 
   deleteQuestion(sectionId: number, question: Question) {
-    const section = this.sections.find(sec => sec.id === sectionId);
+    const section = this.sections.find((sec) => sec.id === sectionId);
     if (section) {
-      section.questions = section.questions.filter(q => q !== question);
+      section.questions = section.questions.filter((q) => q !== question);
     }
+  }
+
+  deleteSection(sectionId: number) {
+    this.sections = this.sections.filter((section) => section.id !== sectionId);
   }
 
   logOut() {

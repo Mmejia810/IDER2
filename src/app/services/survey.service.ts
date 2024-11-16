@@ -1,36 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Survey } from '../models/surveyModels';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SurveyService {
-  private apiUrl = 'http://localhost:9085/encuesta'; // Reemplaza esto por tu URL real
+  private apiUrlEncuesta = 'http://localhost:9085/encuesta/crear';
+  private apiUrlSecciones = 'http://localhost:9085/secciones';
+  private apiUrlPreguntas = 'http://localhost:9085/preguntas';
+  private apiUrlOpciones = 'http://localhost:9085/opciones';
 
   constructor(private http: HttpClient) {}
 
-   // Método para obtener las encuestas
-   getSurveys(): Observable<Survey[]> {
-    return this.http.get<Survey[]>(`${this.apiUrl}/surveys`);
+  createSurvey(survey: any): Observable<any> {
+    return this.http.post(this.apiUrlEncuesta, survey);
   }
 
-  // Otros métodos que puedas tener para crear, eliminar, o actualizar encuestas
-  createSurvey(surveyData: Survey): Observable<Survey> {
-    return this.http.post<Survey>(`${this.apiUrl}/surveys`, surveyData);
+  saveSection(sectionData: any): Observable<any> {
+    return this.http.post(this.apiUrlSecciones, sectionData);
   }
 
   createQuestion(surveyId: number, sectionId: number, questionData: any): Observable<any> {
-    // Aquí haces una solicitud POST para enviar la nueva pregunta al backend
-    const url = `${this.apiUrl}/survey/${surveyId}/section/${sectionId}/question`;
-    return this.http.post(url, questionData);
-  }
+  const url = `${this.apiUrlSecciones}/${sectionId}/encuesta/${surveyId}/pregunta`;
+  return this.http.post(url, questionData, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
 
   createOption(questionId: number, optionData: any): Observable<any> {
-    const url = `${this.apiUrl}/question/${questionId}/option`;
+    const url = `${this.apiUrlPreguntas}/${questionId}/opcion`;
     return this.http.post(url, optionData);
   }
 
-  // Aquí podrías agregar otros métodos para eliminar o editar opciones si es necesario.
+  getSurveys(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrlSecciones);
+  }
 }
