@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module'; // Mantén esta importación
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -23,7 +24,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    SharedModule // Asegúrate de importar el SharedModule
+    SharedModule, // Asegúrate de importar el SharedModule
+    FormsModule
   ],
   providers: [
     provideClientHydration(),

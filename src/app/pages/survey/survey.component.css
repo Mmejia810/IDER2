@@ -6,6 +6,7 @@ body {
   padding: 0;
 }
 
+/* Estilo para las tarjetas (cards) */
 .card {
   background-color: #ffffff;
   border-radius: 8px;
@@ -15,54 +16,45 @@ body {
   max-width: 800px;
 }
 
-/* Aplica estilos al contenedor de mat-form-field */
+/* Estilos para el input de fecha */
 .long-datepicker {
-  width: 250px; /* Ajusta el ancho */
+  width: 250px;
 }
 
-/* Estilos para el input */
 .long-datepicker input {
-  background-color: transparent !important;  /* Elimina el fondo gris */
-  border: 1px solid #ffffff;  /* Añade un borde sutil */
-  border-radius: 4px;  /* Esquinas redondeadas */
-  height: 1px;  /* Ajusta la altura */
-  padding: 0 10px;  /* Añade espacio interno */
+  background-color: transparent !important;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  height: 40px;
+  padding: 0 10px;
 }
 
-/* Elimina la línea de subrayado de mat-form-field */
 .long-datepicker .mat-form-field-underline {
-  display: none !important;  /* Elimina la línea de subrayado */
+  display: none !important;
 }
 
-/* Elimina el fondo gris del mat-form-field */
 .long-datepicker .mat-form-field-ripple {
-  display: none !important;  /* Elimina la animación de onda */
+  display: none !important;
 }
 
-/* Elimina el fondo del mat-form-field */
 .long-datepicker .mat-form-field-fill {
-  background-color: transparent !important;  /* Asegura que no tenga color de fondo */
+  background-color: transparent !important;
 }
 
-/* Estilo para los iconos de calendario */
 .mat-datepicker-toggle {
   background-color: transparent !important;
   border: none !important;
   color: inherit;
 }
 
-
-
-
-
-
+/* Barra superior */
 .top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #ffffff;
   padding: 10px 20px;
-  color: #fff;
+  color: white;
 }
 
 .logo-container {
@@ -86,6 +78,10 @@ body {
   cursor: pointer;
 }
 
+.top-bar-options .logout-btn {
+  cursor: pointer;
+}
+
 .creation-card,
 .section-card {
   margin: 15px 0;
@@ -95,8 +91,10 @@ mat-expansion-panel {
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
+  margin: 10px 0;
 }
 
+/* Estilo para el header de los paneles de expansión */
 mat-expansion-panel-header {
   background-color: #1976d2;
   color: #fff;
@@ -109,7 +107,7 @@ mat-panel-title {
   font-size: 16px;
 }
 
-.creation-card p,
+/* Estilos de los inputs dentro de los panels */
 .creation-card input,
 .creation-card textarea,
 .section-card input,
@@ -126,40 +124,23 @@ textarea {
   resize: vertical;
 }
 
-.btn-follow,
-.btn-save,
-.btn-create-questions,
-.btn-save-section,
-.btn-delete-section,
-.btn-save-question,
-.btn-delete-question,
-.btn-add-option,
-.btn-delete-option {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+/* Estilo para los botones */
+button {
   background-color: #1976d2;
   color: #fff;
   border: none;
-  padding: 10px;
+  padding: 8px 16px; /* Botones más compactos */
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s;
 }
 
-.btn-follow:hover,
-.btn-save:hover,
-.btn-create-questions:hover,
-.btn-save-section:hover,
-.btn-delete-section:hover,
-.btn-save-question:hover,
-.btn-delete-question:hover,
-.btn-add-option:hover,
-.btn-delete-option:hover {
+button:hover {
   background-color: #155a9c;
 }
 
+/* Estilos para los botones dentro de la sección */
 .section-actions,
 .question-actions {
   display: flex;
@@ -169,7 +150,7 @@ textarea {
 
 .questions-card {
   background-color: #f9f9f9;
-  padding: 15px;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin: 10px 0;
@@ -186,31 +167,7 @@ input[readonly] {
   cursor: not-allowed;
 }
 
-/* Especificaciones adicionales para mejor visualización */
-.id-titulo h3, .id-titulo h4 {
-  margin: 5px 0;
-  color: #333;
-}
-
-#tipoPregunta, #fechaFinal {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-.fecha input {
-  padding: 8px;
-  width: calc(100% - 16px);
-}
-
-.question-type-selector {
-  display: flex;
-  gap: 10px;
-}
-
+/* Estilos para los botones de tipo de pregunta */
 .btn-question-type {
   padding: 10px;
   background-color: #4caf50;
@@ -221,7 +178,86 @@ input[readonly] {
 }
 
 .btn-question-type:hover {
-  background-color: #45a049;
+  background-color: #1976d2;
 }
 
+/* Ajustes para los botones de la sección */
+.btn-create-questions {
+  background-color: #1976d2;
+  color: white;
+}
 
+.btn-create-questions:hover {
+  background-color: #1976d2;
+}
+
+.btn-save-section,
+.btn-delete-section {
+  background-color: #1976d2;
+  color: white;
+  width: auto; /* Los botones de la sección no serán tan largos */
+  display: inline-block;
+}
+
+.btn-save-section:hover,
+.btn-delete-section:hover {
+  background-color: #155a9c;
+}
+
+/* Alineación de los botones de "Guardar Sección" y "Eliminar Sección" */
+.section-card .section-actions {
+  justify-content: flex-end; /* Alinea los botones a la derecha */
+}
+
+.section-card .btn-save-section,
+.section-card .btn-delete-section {
+  width: auto; /* Los botones serán más compactos */
+  margin-right: 10px;
+}
+
+/* Ajuste para el estilo de los formularios */
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+#tipoPregunta,
+#fechaFinal {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.fecha input {
+  padding: 8px;
+  width: 100%;
+}
+
+/* Estilos para los botones de las preguntas */
+.btn-save-section,
+.btn-delete-section {
+  padding: 8px 12px; /* Botones más compactos */
+  font-size: 13px; /* Texto más pequeño */
+  margin-top: 10px;
+  display: inline-block;
+}
+
+mat-card {
+  margin: 10px 0;
+}
+
+mat-card-title {
+  font-size: 16px;
+}

@@ -11,4 +11,5 @@ export class InputFieldComponent {
   @Input() label: string = "";
   @Input() control = new FormControl(); // Permitir que control sea null
   @Input() type: string = 'text';
+  
 }

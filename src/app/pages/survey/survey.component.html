@@ -15,9 +15,8 @@
 </div>
 
 <!-- Barra lateral -->
-<app-sidebar [isActive]="isSidebarActive" (closeSidebar)="closeSidebar()"></app-sidebar>
+<app-sidebar [isActive]="isSidebarActive"></app-sidebar>
 
-<!-- Creación de la encuesta -->
 <mat-expansion-panel expanded="true" class="creation-card">
   <mat-expansion-panel-header>
     <mat-panel-title>ID DE ENCUESTA</mat-panel-title>
@@ -32,77 +31,87 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <input matInput type="text" placeholder="TÍTULO DE LA ENCUESTA" [(ngModel)]="surveyTitle">
+    <input matInput type="text" placeholder="TÍTULO DE LA ENCUESTA" [(ngModel)]="surveyTitle" />
     <textarea placeholder="DESCRIPCIÓN DE LA ENCUESTA" [(ngModel)]="surveyDescription"></textarea>
-    <button (click)="addSection()" class="btn-follow" [disabled]="!isSurveyValid()">Crear sección encuesta</button>
+    <button (click)="addSection()" class="btn-follow">Crear sección encuesta</button>
     <button (click)="saveSurvey()" class="btn-save" [disabled]="!isSurveyValid()">GUARDAR</button>
   </div>
 </mat-expansion-panel>
 
-<!-- Sección con validación -->
 <mat-expansion-panel *ngFor="let section of sections; let sIndex = index" [expanded]="sIndex === expandedSectionIndex" class="section-card">
   <mat-expansion-panel-header>
-    <mat-panel-title>SECCIÓN {{ section.title }} (ID: {{ section.id }})</mat-panel-title>
+    <mat-panel-title>
+      SECCIÓN {{ section.title }}
+      <ng-container *ngIf="section.id !== null"> (ID: {{ section.id }})</ng-container>
+    </mat-panel-title>
   </mat-expansion-panel-header>
   <div>
-    <input type="text" placeholder="TÍTULO DE LA SECCIÓN" [(ngModel)]="section.title">
-    <div *ngIf="section.title === ''" class="warning-message">
+    <input type="text" placeholder="TÍTULO DE LA SECCIÓN" [(ngModel)]="section.title" />
+    <div *ngIf="!section.title" class="warning-message">
       <p style="color: red;">El título de la sección es obligatorio.</p>
     </div>
     <div class="section-actions">
-      <button (click)="openQuestionTypeSelector(section.id)" class="btn-create-questions" [disabled]="!isSectionValid(section)">
+      <button (click)="openQuestionTypeSelector(section.id)" class="btn-create-questions" [disabled]="!surveyId">
         <mat-icon>add_circle_outline</mat-icon> Crear Pregunta
       </button>
-      <button (click)="saveSection(section)" class="btn-save-section" [disabled]="!isSectionValid(section)">
+      <button (click)="saveSection(section)" class="btn-save-section" [disabled]="!surveyId">
         <mat-icon>save</mat-icon> Guardar Sección
       </button>
-      <button (click)="deleteSection(section.id)" class="btn-delete-section">
+      <button (click)="deleteSection(section.id)" class="btn-delete-section" [disabled]="section.questions.length > 0">
         <mat-icon>delete</mat-icon> Eliminar Sección
       </button>
+      <div *ngIf="section.questions.length > 0" class="warning-message">
+        <p style="color: red;">No se puede eliminar una sección con preguntas existentes.</p>
+      </div>
     </div>
   </div>
 
-  <!-- Mostrar selector de tipo de pregunta -->
   <div *ngIf="section.showQuestionTypeSelector" class="question-type-selector">
     <button (click)="addOpenQuestionInput(section.id)" class="btn-question-type">Pregunta Abierta</button>
     <button (click)="addMultipleChoiceQuestionInput(section.id)" class="btn-question-type">Pregunta Múltiple</button>
   </div>
 
-  <!-- Preguntas -->
   <div *ngFor="let question of section.questions; let qIndex = index">
     <div *ngIf="question.type === 'abierta'" class="open-question-card">
       <mat-form-field appearance="fill">
         <mat-label>Pregunta abierta {{ qIndex + 1 }}</mat-label>
-        <input matInput [(ngModel)]="question.text" placeholder="Escriba la pregunta abierta">
+        <input matInput [(ngModel)]="question.text" placeholder="Escriba la pregunta abierta" />
       </mat-form-field>
+      <button (click)="saveQuestion(section.id, question)" class="btn-save-question" [disabled]="!question.text">
+        <mat-icon>save</mat-icon> Guardar Pregunta
+      </button>
+      <button (click)="deleteQuestion(section.id, question)" class="btn-delete-question">
+        <mat-icon>delete</mat-icon> Eliminar Pregunta
+      </button>
     </div>
 
     <div *ngIf="question.type === 'multiple'" class="multiple-choice-card">
       <mat-form-field appearance="fill">
         <mat-label>Pregunta múltiple {{ qIndex + 1 }}</mat-label>
-        <input matInput [(ngModel)]="question.text" placeholder="Escriba la pregunta">
+        <input matInput [(ngModel)]="question.text" placeholder="Escriba la pregunta" />
       </mat-form-field>
-      <div *ngFor="let option of question.options; let oIndex = index">
+    
+      <div *ngFor="let option of question.options; let oIndex = index" class="option-container">
         <mat-form-field appearance="fill">
           <mat-label>Opción {{ oIndex + 1 }}</mat-label>
-          <input matInput [(ngModel)]="option.text" placeholder="Escriba la opción">
+          <input matInput [(ngModel)]="option.texto" placeholder="Escriba la opción" />
         </mat-form-field>
-        <button (click)="deleteOption(sIndex, question, option)" class="btn-delete-option">
-          <mat-icon>delete</mat-icon>
+        <mat-checkbox [(ngModel)]="option.seleccionable">Seleccionable</mat-checkbox>
+        <button (click)="removeOption(section.id, question, oIndex)" class="btn-delete-option">
+          <mat-icon>delete</mat-icon> Eliminar Opción
         </button>
       </div>
-      <button (click)="addOption(sIndex, question)" class="btn-add-option">
-        <mat-icon>add</mat-icon> Añadir opción
+    
+      <button (click)="addOption(section.id, question)" class="btn-add-option">
+        <mat-icon>add</mat-icon> Agregar Opción
       </button>
-    </div>
-
-    <div class="question-actions">
-      <button (click)="saveQuestion(sIndex, question, qIndex, sIndex)" class="btn-save-question">
+    
+      <button (click)="saveQuestion(section.id, question)" class="btn-save-options" [disabled]="!question.text">
         <mat-icon>save</mat-icon> Guardar Pregunta
       </button>
-      <button (click)="deleteQuestion(sIndex, question)" class="btn-delete-question">
-        <mat-icon>delete</mat-icon> Eliminar Pregunta
+    
+      <button (click)="saveOptions(question)" class="btn-save-options" [disabled]="!question.id || question.options.length === 0">
+        <mat-icon>save</mat-icon> Guardar Opciones
       </button>
     </div>
-  </div>
-</mat-expansion-panel>
+    
