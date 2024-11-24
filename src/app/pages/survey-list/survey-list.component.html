@@ -1,0 +1,44 @@
+<div class="survey-container">
+    <!-- Encabezado con búsqueda y filtro -->
+    <div class="header">
+      <input
+        type="text"
+        placeholder="Buscar encuestas..."
+        [(ngModel)]="searchTerm"
+        (input)="filterSurveys()"
+      />
+      <select [(ngModel)]="selectedFilter" (change)="filterSurveys()">
+        <option *ngFor="let option of filterOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+      <button (click)="logOut()">Cerrar Sesión</button>
+    </div>
+  
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="loading">
+      Cargando encuestas...
+    </div>
+  
+    <!-- Lista de encuestas -->
+    <div *ngIf="!isLoading && filteredSurveys.length > 0" class="survey-list">
+      <div
+        *ngFor="let survey of filteredSurveys"
+        class="survey-item"
+        (click)="openSurvey(survey.id)"
+      >
+        <h3>{{ survey.titulo }}</h3>
+        <p>ID: {{ survey.id }}</p>
+        <p>Fecha de Creación: {{ survey.fecha_creacion | date: 'shortDate' }}</p>
+        <p>Fecha de Cierre: {{ survey.fecha_cierre | date: 'shortDate' }}</p>
+        <p>Descripción: {{ survey.descripcion }}</p>
+        <p>Estado: {{ survey.estado }}</p>
+      </div>
+    </div>
+  
+    <!-- Mensaje cuando no hay encuestas -->
+    <div *ngIf="!isLoading && filteredSurveys.length === 0" class="no-surveys">
+      No se encontraron encuestas.
+    </div>
+  </div>
+  

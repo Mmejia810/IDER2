@@ -21,7 +21,6 @@
   <!-- Overlay para opacar contenido cuando el sidebar esté activo -->
   <div class="overlay" *ngIf="isSidebarActive" (click)="toggleSidebar()"></div>
 
-  <!-- Contenido principal -->
   <div class="content" [class.sidebar-active]="isSidebarActive">
     <!-- Tarjeta de saludo -->
     <div class="greeting-card">
@@ -30,11 +29,38 @@
       </div>
       <img src="../../../assets/imagenes/encuesta-online.png" alt="Imagen del Usuario" class="user-image" />
     </div>
-
-    <!-- Tarjeta de Crear Encuesta -->
-    <div class="create-survey-card" (click)="createSurvey()">
-      <img src="../../../assets/imagenes/votacion.png" alt="Crear Encuesta" class="card-icon" />
-      <span class="card-text">Crear Encuesta</span>
+  
+    <!-- Contenedor de las tarjetas -->
+    <div class="cards-container">
+      <!-- Tarjeta de Crear Encuesta -->
+      <div class="card create-survey-card" (click)="createSurvey()">
+        <img src="../../../assets/imagenes/votacion.png" alt="Crear Encuesta" class="card-icon" />
+        <span class="card-text">Crear Encuesta</span>
+      </div>
+  
+      <!-- Tarjeta de Listas Encuestas -->
+      <div class="card list-surveys-card" (click)="redirectToListSurveys()">
+        <img src="../../../assets/imagenes/lista.png" alt="Listas Encuestas" class="card-icon" />
+        <span class="card-text">Listas Encuestas</span>
+      </div>
+  
+      <!-- Tarjeta de Ver Perfil -->
+      <div class="card view-profile-card" (click)="viewProfile()">
+        <img src="../../../assets/imagenes/perfil.png" alt="Ver Perfil" class="card-icon" />
+        <span class="card-text">Ver Perfil</span>
+      </div>
+  
+      <!-- Tarjeta de Actualizar Perfil -->
+      <div class="card update-profile-card" (click)="updateProfile()">
+        <img src="../../../assets/imagenes/actualizar-perfil.png" alt="Actualizar Perfil" class="card-icon" />
+        <span class="card-text">Actualizar Perfil</span>
+      </div>
+  
+      <!-- Tarjeta de Actualizar Perfiles de Usuario -->
+      <div class="card update-user-profiles-card" (click)="updateUserProfiles()">
+        <img src="../../../assets/imagenes/usuarios.png" alt="Actualizar Perfiles de Usuario" class="card-icon" />
+        <span class="card-text">Actualizar Usuarios</span>
+      </div>
     </div>
   </div>
-</div>
+  

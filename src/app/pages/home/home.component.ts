@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SurveyService } from '../../services/survey.service';
-import { Survey } from '../../models/surveyModels';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,30 +7,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  surveys: Survey[] = [];
   isSidebarActive: boolean = false;
   greetingMessage: string = ''; // Mensaje de saludo
 
-  constructor(private surveyService: SurveyService, private router: Router) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
-    this.surveyService.getSurveys().subscribe(
-      (data) => {
-        console.log(data);
-        this.surveys = data.map(survey => ({
-          ...survey,
-          createdAt: survey.createdAt || new Date().toISOString() // Asigna la fecha actual si no existe 'createdAt'
-        }));
-      },
-      (error) => {
-        console.error('Error al obtener las encuestas', error);
-      }
-    );
-  
     this.setGreetingMessage(); // Establece el mensaje de saludo
   }
-  
 
+  // Método para establecer el mensaje de saludo basado en la hora del día
   setGreetingMessage() {
     const hour = new Date().getHours();
     let timeOfDay = 'día'; // Establecer valor predeterminado
@@ -40,7 +24,7 @@ export class HomeComponent implements OnInit {
     // Condición para la tarde
     if (hour >= 12 && hour < 18) {
       timeOfDay = 'tarde';
-    } 
+    }
     // Condición para la noche
     else if (hour >= 18 || hour < 6) {
       timeOfDay = 'noche';
@@ -68,6 +52,25 @@ export class HomeComponent implements OnInit {
   }
 
   createSurvey() {
-    this.router.navigate(['/survey']);
+    this.router.navigate(['/survey']); // Redirige al formulario de creación de encuestas
+  }
+
+  redirectToListSurveys() {
+    this.router.navigate(['/survey-list']); // Solo redirige sin obtener encuestas
+  }
+
+  viewProfile() {
+    // Redirige al perfil del usuario
+    this.router.navigate(['/profile']);
+  }
+
+  updateProfile() {
+    // Redirige para actualizar el perfil
+    this.router.navigate(['/profile/update']);
+  }
+
+  updateUserProfiles() {
+    // Redirige para gestionar otros perfiles
+    this.router.navigate(['/admin/user-profiles']);
   }
 }

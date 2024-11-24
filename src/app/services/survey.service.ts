@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SurveyService {
   private apiUrlEncuesta = 'http://localhost:9085/encuesta/crear';
+  private apiUrl = 'http://localhost:9085/encuesta/todas'; // URL para obtener las encuestas
+
   private apiUrlSecciones = 'http://localhost:9085/secciones';
   private apiUrlPreguntas = 'http://localhost:9085/preguntas';
   private apiUrlOpciones = 'http://localhost:9085/opciones';  // Cambié esta URL
@@ -64,17 +67,20 @@ export class SurveyService {
   }
   
   
-  
-
   // Eliminar opción
   deleteOption(optionId: number): Observable<any> {
     return this.http.delete(`${this.apiUrlOpciones}/${optionId}`);
   }
 
-  // Obtener encuestas
-  getSurveys(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrlEncuesta);
-  }
+// Obtener encuestas desde el backend
+getSurveys(): Observable<any[]> {
+  return this.http.get<any[]>(this.apiUrl).pipe(  // Cambié la URL aquí
+    catchError((error) => {
+      console.error('Error al obtener encuestas:', error);
+      return throwError(() => new Error('Error al obtener encuestas'));
+    })
+  );
+}
 
   // Obtener secciones
   getSections(): Observable<any[]> {
