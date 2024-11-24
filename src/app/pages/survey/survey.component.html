@@ -17,6 +17,7 @@
 <!-- Barra lateral -->
 <app-sidebar [isActive]="isSidebarActive"></app-sidebar>
 
+<!-- Panel de creación de encuesta -->
 <mat-expansion-panel expanded="true" class="creation-card">
   <mat-expansion-panel-header>
     <mat-panel-title>ID DE ENCUESTA</mat-panel-title>
@@ -38,6 +39,7 @@
   </div>
 </mat-expansion-panel>
 
+<!-- Panel de secciones -->
 <mat-expansion-panel *ngFor="let section of sections; let sIndex = index" [expanded]="sIndex === expandedSectionIndex" class="section-card">
   <mat-expansion-panel-header>
     <mat-panel-title>
@@ -66,12 +68,15 @@
     </div>
   </div>
 
+  <!-- Selector de tipo de pregunta -->
   <div *ngIf="section.showQuestionTypeSelector" class="question-type-selector">
     <button (click)="addOpenQuestionInput(section.id)" class="btn-question-type">Pregunta Abierta</button>
     <button (click)="addMultipleChoiceQuestionInput(section.id)" class="btn-question-type">Pregunta Múltiple</button>
   </div>
 
+  <!-- Preguntas -->
   <div *ngFor="let question of section.questions; let qIndex = index">
+    <!-- Pregunta abierta -->
     <div *ngIf="question.type === 'abierta'" class="open-question-card">
       <mat-form-field appearance="fill">
         <mat-label>Pregunta abierta {{ qIndex + 1 }}</mat-label>
@@ -85,6 +90,7 @@
       </button>
     </div>
 
+    <!-- Pregunta múltiple -->
     <div *ngIf="question.type === 'multiple'" class="multiple-choice-card">
       <mat-form-field appearance="fill">
         <mat-label>Pregunta múltiple {{ qIndex + 1 }}</mat-label>
@@ -114,4 +120,5 @@
         <mat-icon>save</mat-icon> Guardar Opciones
       </button>
     </div>
-    
+  </div>
+</mat-expansion-panel>

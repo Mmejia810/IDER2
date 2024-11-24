@@ -62,20 +62,20 @@ export class SurveyComponent implements OnInit {
       alert('Debe rellenar todos los campos de la encuesta antes de guardarla.');
       return;
     }
-
+  
     const formattedEndDate = this.endDate?.toISOString().slice(0, 10) || '';
-
+  
     const newSurvey = {
       titulo: this.surveyTitle,
       descripcion: this.surveyDescription,
       estado: 'activa',
       fechaCierre: formattedEndDate,
-      usuario: { id: 1 }, // Establecer el ID de usuario de manera estática
+      usuario: { id: 1 }, // ID de usuario estático
     };
-
+  
     this.surveyService.saveSurvey(newSurvey).subscribe(
       (response: any) => {
-        this.surveyId = response.id; // Asumir que el backend devuelve el ID de la encuesta guardada
+        this.surveyId = response.id; // Asegúrate de que el backend devuelve el ID
         alert('Encuesta guardada exitosamente.');
       },
       (error: HttpErrorResponse) => {
@@ -84,6 +84,7 @@ export class SurveyComponent implements OnInit {
       }
     );
   }
+  
 
   addSection() {
     if (!this.surveyId) {
@@ -102,27 +103,35 @@ export class SurveyComponent implements OnInit {
   }
 
   saveSection(section: Section) {
-    if (!section.title.trim()) {
-      alert('El título de la sección es obligatorio.');
-      return;
-    }
-
-    const sectionData = {
-      encuestaId: this.surveyId,
-      titulo: section.title,
-    };
-
-    this.surveyService.saveSection(sectionData).subscribe(
-      (response: any) => {
-        section.id = response.id; // Asignar el ID de la sección
-        alert('Sección guardada exitosamente.');
-      },
-      (error: HttpErrorResponse) => {
-        console.error(error);
-        alert('Hubo un error al guardar la sección. Verifique la conexión.');
-      }
-    );
+  if (!this.surveyId) {
+    alert('El ID de la encuesta no está disponible. Guarde la encuesta primero.');
+    return;
   }
+
+  if (!section.title.trim()) {
+    alert('El título de la sección es obligatorio.');
+    return;
+  }
+
+  const sectionData = {
+    encuestaId: this.surveyId, // Pasar el surveyId
+    titulo: section.title,
+  };
+
+  this.surveyService.saveSection(this.surveyId, sectionData).subscribe( // Para Opción 1
+  // O utiliza: this.surveyService.saveSection(sectionData).subscribe( // Para Opción 2
+    (response: any) => {
+      section.id = response.id; // Asignar el ID retornado
+      alert('Sección guardada exitosamente.');
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error al guardar la sección:', error);
+      alert('Hubo un error al guardar la sección. Intente nuevamente.');
+    }
+  );
+}
+
+  
 
   deleteSection(sectionId: number | null) {
     const sectionIndex = this.sections.findIndex((section) => section.id === sectionId);

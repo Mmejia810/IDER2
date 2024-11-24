@@ -8,17 +8,22 @@ import { Router } from '@angular/router';
   styleUrls: ['./survey-list.component.scss'],
 })
 export class SurveyListComponent implements OnInit {
-  isSidebarActive: boolean = false; // Estado del sidebar (colapsable)
-  surveys: any[] = []; // Lista completa de encuestas
-  filteredSurveys: any[] = []; // Lista filtrada de encuestas
-  searchTerm: string = ''; // Término de búsqueda
-  selectedFilter: string = 'all'; // Filtro seleccionado
-  isLoading: boolean = true; // Indicador de carga
+  surveys: any[] = [];
+  filteredSurveys: any[] = [];
+  searchTerm: string = '';
+  selectedFilter: string = 'all';
+  isLoading: boolean = true;
   filterOptions = [
     { label: 'Todas', value: 'all' },
     { label: 'Fecha', value: 'date' },
     { label: 'Alfabéticamente', value: 'alphabetical' },
   ];
+
+  // Nuevas propiedades para almacenar los detalles de la encuesta
+  selectedSurvey: any = null;
+  sections: any[] = [];
+  questions: any[] = [];
+  options: any[] = [];
 
   constructor(private surveyService: SurveyService, private router: Router) {}
 
@@ -26,18 +31,13 @@ export class SurveyListComponent implements OnInit {
     this.loadSurveys(); // Cargar encuestas al inicializar
   }
 
-  // Método para cargar encuestas desde el servicio
   loadSurveys() {
-    this.isLoading = true; // Mostrar indicador de carga
+    this.isLoading = true;
     this.surveyService.getSurveys().subscribe(
       (data: any[]) => {
-        this.surveys = data.map((survey) => ({
-          ...survey,
-          startDate: survey.fecha_creacion || new Date().toISOString(),
-          closeDate: survey.fecha_cierre || new Date().toISOString(),
-        }));
-        this.filteredSurveys = [...this.surveys]; // Inicializar lista filtrada
-        this.isLoading = false; // Ocultar indicador de carga
+        this.surveys = data;
+        this.filteredSurveys = [...this.surveys];
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error al cargar encuestas:', error);
@@ -46,16 +46,10 @@ export class SurveyListComponent implements OnInit {
     );
   }
 
-  // Método para activar/desactivar el sidebar
-  toggleSidebar() {
-    this.isSidebarActive = !this.isSidebarActive;
-  }
-
   // Método para buscar y filtrar encuestas dinámicamente
   filterSurveys() {
     let filtered = [...this.surveys];
 
-    // Filtrar por término de búsqueda
     if (this.searchTerm.trim()) {
       filtered = filtered.filter((survey) =>
         survey.titulo.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -63,7 +57,6 @@ export class SurveyListComponent implements OnInit {
       );
     }
 
-    // Ordenar según el filtro seleccionado
     if (this.selectedFilter === 'date') {
       filtered.sort((a, b) => new Date(a.fecha_creacion).getTime() - new Date(b.fecha_creacion).getTime());
     } else if (this.selectedFilter === 'alphabetical') {
@@ -73,12 +66,23 @@ export class SurveyListComponent implements OnInit {
     this.filteredSurveys = filtered;
   }
 
-  // Método para redirigir a los detalles de la encuesta
   openSurvey(id: string) {
-    this.router.navigate([`/surveys/${id}`]);
+    this.isLoading = true;
+    this.surveyService.getSurveyDetails(id).subscribe(
+      (data: any) => {
+        this.selectedSurvey = data.survey;
+        this.sections = data.sections;
+        this.questions = data.questions;
+        this.options = data.options;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error al cargar los detalles de la encuesta:', error);
+        this.isLoading = false;
+      }
+    );
   }
 
-  // Método para cerrar sesión
   logOut() {
     this.router.navigate(['/home']);
   }

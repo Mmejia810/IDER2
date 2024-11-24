@@ -1,44 +1,81 @@
 <div class="survey-container">
-    <!-- Encabezado con búsqueda y filtro -->
-    <div class="header">
-      <input
-        type="text"
-        placeholder="Buscar encuestas..."
-        [(ngModel)]="searchTerm"
-        (input)="filterSurveys()"
-      />
-      <select [(ngModel)]="selectedFilter" (change)="filterSurveys()">
-        <option *ngFor="let option of filterOptions" [value]="option.value">
-          {{ option.label }}
-        </option>
-      </select>
-      <button (click)="logOut()">Cerrar Sesión</button>
-    </div>
-  
-    <!-- Indicador de carga -->
-    <div *ngIf="isLoading" class="loading">
-      Cargando encuestas...
-    </div>
-  
-    <!-- Lista de encuestas -->
-    <div *ngIf="!isLoading && filteredSurveys.length > 0" class="survey-list">
-      <div
-        *ngFor="let survey of filteredSurveys"
-        class="survey-item"
-        (click)="openSurvey(survey.id)"
-      >
-        <h3>{{ survey.titulo }}</h3>
-        <p>ID: {{ survey.id }}</p>
-        <p>Fecha de Creación: {{ survey.fecha_creacion | date: 'shortDate' }}</p>
-        <p>Fecha de Cierre: {{ survey.fecha_cierre | date: 'shortDate' }}</p>
-        <p>Descripción: {{ survey.descripcion }}</p>
-        <p>Estado: {{ survey.estado }}</p>
-      </div>
-    </div>
-  
-    <!-- Mensaje cuando no hay encuestas -->
-    <div *ngIf="!isLoading && filteredSurveys.length === 0" class="no-surveys">
-      No se encontraron encuestas.
+  <!-- Encabezado con búsqueda y filtro -->
+  <div class="header">
+    <input
+      type="text"
+      placeholder="Buscar encuestas..."
+      [(ngModel)]="searchTerm"
+      (input)="filterSurveys()"
+    />
+    <select [(ngModel)]="selectedFilter" (change)="filterSurveys()">
+      <option *ngFor="let option of filterOptions" [value]="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+    <button (click)="logOut()">Cerrar Sesión</button>
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="isLoading" class="loading">
+    Cargando encuestas...
+  </div>
+
+  <!-- Lista de encuestas -->
+  <div *ngIf="!isLoading && filteredSurveys.length > 0" class="survey-list">
+    <div
+      *ngFor="let survey of filteredSurveys"
+      class="survey-item"
+      (click)="openSurvey(survey.id)"
+    >
+      <h3>{{ survey.titulo }}</h3>
+      <p>ID: {{ survey.id }}</p>
+      <p>Fecha de Creación: {{ survey.fecha_creacion | date: 'shortDate' }}</p>
+      <p>Fecha de Cierre: {{ survey.fecha_cierre | date: 'shortDate' }}</p>
+      <p>Descripción: {{ survey.descripcion }}</p>
+      <p>Estado: {{ survey.estado }}</p>
     </div>
   </div>
-  
+
+  <!-- Mensaje cuando no hay encuestas -->
+  <div *ngIf="!isLoading && filteredSurveys.length === 0" class="no-surveys">
+    No se encontraron encuestas.
+  </div>
+
+  <!-- Detalles de encuesta seleccionada -->
+  <div *ngIf="selectedSurvey" class="survey-details">
+    <h2>Detalles de la Encuesta: {{ selectedSurvey.titulo }}</h2>
+    <p><strong>ID:</strong> {{ selectedSurvey.id }}</p>
+    <p><strong>Fecha de Creación:</strong> {{ selectedSurvey.fecha_creacion | date: 'shortDate' }}</p>
+    <p><strong>Fecha de Cierre:</strong> {{ selectedSurvey.fecha_cierre | date: 'shortDate' }}</p>
+    <p><strong>Descripción:</strong> {{ selectedSurvey.descripcion }}</p>
+    <p><strong>Estado:</strong> {{ selectedSurvey.estado }}</p>
+
+    <!-- Secciones de la encuesta -->
+    <div *ngIf="selectedSurvey.sections && selectedSurvey.sections.length > 0">
+      <h3>Secciones:</h3>
+      <div *ngFor="let section of selectedSurvey.sections" class="section-item">
+        <h4>{{ section.titulo }}</h4>
+        <p>{{ section.descripcion }}</p>
+
+        <!-- Preguntas de la sección -->
+        <div *ngIf="section.questions && section.questions.length > 0">
+          <h5>Preguntas:</h5>
+          <div *ngFor="let question of section.questions" class="question-item">
+            <p>{{ question.texto }}</p>
+            <div *ngIf="question.options && question.options.length > 0">
+              <h6>Opciones:</h6>
+              <ul>
+                <li *ngFor="let option of question.options">{{ option.texto }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje si no hay secciones -->
+    <div *ngIf="!selectedSurvey.sections || selectedSurvey.sections.length === 0">
+      <p>No hay secciones para esta encuesta.</p>
+    </div>
+  </div>
+</div>

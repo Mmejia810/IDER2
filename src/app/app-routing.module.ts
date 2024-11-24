@@ -11,19 +11,23 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule)
   },
+
   {
-    path: 'recover-password',
-    loadChildren: () => import('./pages/recover-password/recover-password.module').then(m => m.RecoverPasswordModule)
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) // Ruta para cargar HomeModule
   },
+  
 
   {
     path: 'survey-list',
     loadChildren: () => import('./pages/survey-list/survey-list.module').then(m => m.SurveyListModule) // Ruta para cargar HomeModule
   },
+
   {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) // Ruta para cargar HomeModule
+    path: 'recover-password',
+    loadChildren: () => import('./pages/recover-password/recover-password.module').then(m => m.RecoverPasswordModule)
   },
+  
 
   
   { path: 'survey', loadChildren: () => import('./pages/survey/survey.module').then(m => m.SurveyModule) },

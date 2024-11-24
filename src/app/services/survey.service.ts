@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
+import { forkJoin } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +11,7 @@ import { catchError } from 'rxjs';
 export class SurveyService {
   private apiUrlEncuesta = 'http://localhost:9085/encuesta/crear';
   private apiUrl = 'http://localhost:9085/encuesta/todas'; // URL para obtener las encuestas
-
+  private apiUrlEncuestaId = 'http://localhost:9085/encuesta';
   private apiUrlSecciones = 'http://localhost:9085/secciones';
   private apiUrlPreguntas = 'http://localhost:9085/preguntas';
   private apiUrlOpciones = 'http://localhost:9085/opciones';  // Cambié esta URL
@@ -26,11 +28,20 @@ export class SurveyService {
     return this.http.post(this.apiUrlEncuesta, survey);
   }
 
-  // Guardar sección
-  saveSection(sectionData: any): Observable<any> {
-    return this.http.post(this.apiUrlSecciones, sectionData);
+  saveSection(surveyId: number, sectionData: any): Observable<any> {
+    const payload = {
+      titulo: sectionData.titulo, // Título de la sección
+      encuesta: { id: surveyId }, // ID de la encuesta asociada
+    };
+  
+    return this.http.post(this.apiUrlSecciones, payload, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
+  
 
+  
+  
   // Crear pregunta en una sección específica de una encuesta
   createQuestion(surveyId: number, sectionId: number, questionData: any): Observable<any> {
     const url = `${this.apiUrlSecciones}/${sectionId}/encuesta/${surveyId}/pregunta`;
@@ -39,10 +50,10 @@ export class SurveyService {
     });
   }
 
-  // Guardar pregunta
-  saveQuestion(questionData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrlPreguntas}`, questionData);
-  }
+    // Guardar pregunta
+    saveQuestion(questionData: any): Observable<any> {
+      return this.http.post<any>(`${this.apiUrlPreguntas}`, questionData);
+    }
 
   // Eliminar sección
   deleteSection(sectionId: number): Observable<any> {
@@ -96,4 +107,21 @@ getSurveys(): Observable<any[]> {
   getOptions(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrlOpciones);
   }
+
+  // Método para obtener los detalles completos de una encuesta
+  getSurveyDetails(surveyId: string): Observable<any> {
+    // Se pueden realizar varias solicitudes en paralelo usando `forkJoin`
+    return forkJoin({
+      survey: this.http.get<any>(`${this.apiUrlEncuestaId}/${surveyId}`), // Obtener detalles de la encuesta
+      sections: this.http.get<any[]>(`${this.apiUrlSecciones}?surveyId=${surveyId}`), // Obtener secciones
+      questions: this.http.get<any[]>(`${this.apiUrlPreguntas}?surveyId=${surveyId}`), // Obtener preguntas
+      options: this.http.get<any[]>(`${this.apiUrlOpciones}?surveyId=${surveyId}`), // Obtener opciones
+    }).pipe(
+      catchError((error) => {
+        console.error('Error al obtener los detalles de la encuesta:', error);
+        return throwError(() => new Error('Error al obtener los detalles de la encuesta'));
+      })
+    );
+  }
 }
+
