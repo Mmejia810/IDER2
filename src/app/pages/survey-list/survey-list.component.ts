@@ -75,7 +75,7 @@ export class SurveyListComponent implements OnInit {
 
   // Método para redirigir a los detalles de la encuesta
   openSurvey(id: string) {
-    this.router.navigate([`/surveys/${id}`]);
+    this.router.navigate([`/survey-details/${id}`]);
   }
 
   // Método para cerrar sesión

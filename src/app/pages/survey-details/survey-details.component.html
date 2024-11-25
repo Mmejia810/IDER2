@@ -1,0 +1,52 @@
+<div class="home-content">
+    <!-- Barra superior -->
+    <div class="top-bar">
+      <div class="logo-container">
+        <div class="menu-icon" (click)="toggleSidebar()">
+          <img src="../../../assets/imagenes/lista.png" alt="Menú" />
+        </div>
+        <span class="app-title">ENCUESTAS COMPLETAS</span>
+        <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo" />
+      </div>
+    </div>
+  
+    <!-- Barra lateral (sidebar) -->
+    <app-sidebar [isActive]="isSidebarActive"></app-sidebar>
+  
+    <!-- Overlay para opacar contenido cuando el sidebar esté activo -->
+    <div class="overlay" *ngIf="isSidebarActive" (click)="toggleSidebar()"></div>
+  
+    <div *ngIf="surveyDetails" class="card survey-card">
+      <h2>{{ surveyDetails.titulo }}</h2>
+      <p>{{ surveyDetails.descripcion }}</p>
+    </div>
+  
+    <div *ngIf="secciones && secciones.length" class="card section-card">
+      <h3>Secciones</h3>
+      <ul>
+        <li *ngFor="let seccion of secciones">
+          <h4>{{ seccion.titulo }}</h4>
+          <p>{{ seccion.descripcion }}</p>
+        </li>
+      </ul>
+    </div>
+  
+    <div *ngIf="preguntas && preguntas.length" class="card question-card">
+      <h3>Preguntas</h3>
+      <ul>
+        <li *ngFor="let pregunta of preguntas">
+          <h4>{{ pregunta.texto }}</h4>
+          <p>{{ pregunta.descripcion }}</p>
+          <div *ngIf="opciones && opciones.length">
+            <h5>Opciones:</h5>
+            <ul>
+              <li *ngFor="let opcion of opciones">
+                {{ opcion.texto }}
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  

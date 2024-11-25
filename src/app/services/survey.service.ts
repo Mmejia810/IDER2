@@ -3,6 +3,8 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
 import { forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';  // Asegúrate de importar tap
+
 
 
 @Injectable({
@@ -38,9 +40,6 @@ export class SurveyService {
       headers: { 'Content-Type': 'application/json' },
     });
   }
-  
-
-  
   
   // Crear pregunta en una sección específica de una encuesta
   createQuestion(surveyId: number, sectionId: number, questionData: any): Observable<any> {
@@ -108,20 +107,30 @@ getSurveys(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrlOpciones);
   }
 
-  // Método para obtener los detalles completos de una encuesta
-  getSurveyDetails(surveyId: string): Observable<any> {
-    // Se pueden realizar varias solicitudes en paralelo usando `forkJoin`
-    return forkJoin({
-      survey: this.http.get<any>(`${this.apiUrlEncuestaId}/${surveyId}`), // Obtener detalles de la encuesta
-      sections: this.http.get<any[]>(`${this.apiUrlSecciones}?surveyId=${surveyId}`), // Obtener secciones
-      questions: this.http.get<any[]>(`${this.apiUrlPreguntas}?surveyId=${surveyId}`), // Obtener preguntas
-      options: this.http.get<any[]>(`${this.apiUrlOpciones}?surveyId=${surveyId}`), // Obtener opciones
-    }).pipe(
+  // Obtener todos los datos de la encuesta: encuesta, secciones, preguntas y opciones
+  // En SurveyService
+
+  getSurveyDetails(id: string): Observable<any> {
+    return forkJoin([
+      this.http.get<any>(`${this.apiUrlEncuestaId}/${id}`),  // Encuesta por ID
+      this.http.get<any[]>(`${this.apiUrlSecciones}?encuestaId=${id}`),  // Secciones asociadas a la encuesta
+      this.http.get<any[]>(`${this.apiUrlPreguntas}?encuestaId=${id}`),  // Preguntas asociadas a la encuesta
+      this.http.get<any[]>(`${this.apiUrlOpciones}?encuestaId=${id}`),  // Opciones asociadas a la encuesta
+    ]).pipe(
+      tap(([survey, secciones, preguntas, opciones]) => {
+        console.log("Encuesta: ", survey);
+        console.log("Secciones: ", secciones);
+        console.log("Preguntas: ", preguntas);
+        console.log("Opciones: ", opciones);
+      }),
       catchError((error) => {
-        console.error('Error al obtener los detalles de la encuesta:', error);
-        return throwError(() => new Error('Error al obtener los detalles de la encuesta'));
+        console.error('Error al cargar los detalles de la encuesta:', error);
+        return throwError(() => new Error('Error al cargar los detalles de la encuesta'));
       })
     );
   }
+  
+  
+
 }
 

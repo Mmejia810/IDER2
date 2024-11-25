@@ -17,11 +17,16 @@ const routes: Routes = [
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) // Ruta para cargar HomeModule
   },
   
-
+  {
+    path: 'survey-details',
+    loadChildren: () => import('./pages/survey-details/survey-details.module').then(m => m.SurveyDetailsModule) // Ruta correcta al módulo de la página
+  },
   {
     path: 'survey-list',
     loadChildren: () => import('./pages/survey-list/survey-list.module').then(m => m.SurveyListModule) // Ruta para cargar HomeModule
   },
+
+  
 
   {
     path: 'recover-password',
