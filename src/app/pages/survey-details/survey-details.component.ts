@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SurveyService } from '../../services/survey.service'; // Ajusta la ruta según sea necesario
+import { SurveyService } from '../../services/survey.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -14,7 +14,6 @@ export class SurveyDetailsComponent implements OnInit {
   opciones: any[] = [];
   encuestaId: string | null = '';
   isSidebarActive: boolean = false;
-
 
   constructor(
     private surveyService: SurveyService,
@@ -49,18 +48,28 @@ export class SurveyDetailsComponent implements OnInit {
     );
   }
 
-  // Filtrar secciones asociadas a la encuesta
   filterSections(secciones: any[], encuestaId: string): any[] {
-    return secciones.filter((seccion) => seccion.encuesta?.id === parseInt(encuestaId));
+    return secciones.filter(
+      (seccion) => seccion.encuesta?.id === parseInt(encuestaId)
+    );
   }
 
-  // Filtrar preguntas asociadas a la encuesta
   filterQuestions(preguntas: any[], encuestaId: string): any[] {
-    return preguntas.filter((pregunta) => pregunta.seccionEncuesta?.encuesta?.id === parseInt(encuestaId));
+    return preguntas.filter(
+      (pregunta) =>
+        pregunta.seccionEncuesta?.encuesta?.id === parseInt(encuestaId)
+    );
   }
 
-  // Filtrar opciones asociadas a las preguntas de la encuesta
   filterOptions(opciones: any[], encuestaId: string): any[] {
-    return opciones.filter((opcion) => opcion.pregunta?.seccionEncuesta?.encuesta?.id === parseInt(encuestaId));
+    return opciones.filter(
+      (opcion) =>
+        opcion.pregunta?.seccionEncuesta?.encuesta?.id === parseInt(encuestaId)
+    );
+  }
+
+  // Función para obtener las opciones relacionadas con una pregunta específica
+  getOptionsForQuestion(preguntaId: number): any[] {
+    return this.opciones.filter((opcion) => opcion.pregunta?.id === preguntaId);
   }
 }

@@ -16,37 +16,51 @@
     <!-- Overlay para opacar contenido cuando el sidebar esté activo -->
     <div class="overlay" *ngIf="isSidebarActive" (click)="toggleSidebar()"></div>
   
+    <!-- Detalles de la encuesta -->
     <div *ngIf="surveyDetails" class="card survey-card">
       <h2>{{ surveyDetails.titulo }}</h2>
       <p>{{ surveyDetails.descripcion }}</p>
     </div>
   
-    <div *ngIf="secciones && secciones.length" class="card section-card">
-      <h3>Secciones</h3>
-      <ul>
-        <li *ngFor="let seccion of secciones">
-          <h4>{{ seccion.titulo }}</h4>
-          <p>{{ seccion.descripcion }}</p>
-        </li>
-      </ul>
-    </div>
+    <div *ngIf="secciones && secciones.length > 0" class="card section-card">
+        <h3>Secciones</h3>
+        <ul>
+          <li *ngFor="let seccion of secciones">
+            <h4>{{ seccion.titulo }}</h4>
+            <p>{{ seccion.descripcion }}</p>
+          </li>
+        </ul>
+      </div>
+      
+      
   
-    <div *ngIf="preguntas && preguntas.length" class="card question-card">
+    <!-- Preguntas de la encuesta -->
+    <div *ngIf="preguntas && preguntas.length > 0" class="card question-card">
       <h3>Preguntas</h3>
       <ul>
         <li *ngFor="let pregunta of preguntas">
           <h4>{{ pregunta.texto }}</h4>
-          <p>{{ pregunta.descripcion }}</p>
-          <div *ngIf="opciones && opciones.length">
+          <p>Descripción: {{ pregunta.descripcion }}</p>
+          <p>Tipo: {{ pregunta.tipo }}</p>
+  
+          <!-- Opciones relacionadas con preguntas de tipo 'Opcion multiple' -->
+          <div *ngIf="pregunta.tipo === 'Opcion multiple'">
             <h5>Opciones:</h5>
             <ul>
-              <li *ngFor="let opcion of opciones">
+              <!-- Filtra y muestra solo las opciones correspondientes a esta pregunta -->
+              <li *ngFor="let opcion of getOptionsForQuestion(pregunta.id)">
                 {{ opcion.texto }}
               </li>
+           
             </ul>
           </div>
         </li>
       </ul>
+    </div>
+  
+    <!-- Mensaje si no hay preguntas -->
+    <div *ngIf="(!preguntas || preguntas.length === 0) && (!secciones || secciones.length === 0)">
+      <p>No hay datos disponibles para esta encuesta.</p>
     </div>
   </div>
   
