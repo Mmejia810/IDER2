@@ -15,9 +15,17 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, credentials, { responseType: 'text' });
   }
 
-  register(userData: { email: string, pass: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, userData);
+  register(userData: { 
+    identificacion: string; 
+    nombre: string; 
+    apellido: string; 
+    estado: string; 
+    email: string; 
+    pass: string; 
+  }): Observable<any> {
+      return this.http.post(`${this.baseUrl}/registrar`, userData);
   }
+  
 
   recoverPassword(email: { email: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/recover-password`, email);
