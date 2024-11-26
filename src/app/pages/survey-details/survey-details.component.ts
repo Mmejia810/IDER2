@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SurveyService } from '../../services/survey.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-survey-details',
@@ -12,12 +12,14 @@ export class SurveyDetailsComponent implements OnInit {
   secciones: any[] = [];
   preguntas: any[] = [];
   opciones: any[] = [];
+  selectedSection: any = null; // Sección seleccionada
   encuestaId: string | null = '';
   isSidebarActive: boolean = false;
 
   constructor(
     private surveyService: SurveyService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
@@ -35,12 +37,9 @@ export class SurveyDetailsComponent implements OnInit {
     this.surveyService.getSurveyDetails(id).subscribe(
       (response) => {
         this.surveyDetails = response[0]; // Encuesta
-        this.secciones = this.filterSections(response[1], id); // Filtrar las secciones
-        this.preguntas = this.filterQuestions(response[2], id); // Filtrar las preguntas
-        this.opciones = this.filterOptions(response[3], id); // Filtrar las opciones
+        this.secciones = this.filterSections(response[1], id); // Secciones asociadas a la encuesta
+        this.opciones = response[3]; // Cargar todas las opciones de la encuesta
         console.log('Secciones:', this.secciones);
-        console.log('Preguntas:', this.preguntas);
-        console.log('Opciones:', this.opciones);
       },
       (error) => {
         console.error('Error al obtener los detalles de la encuesta:', error);
@@ -54,22 +53,32 @@ export class SurveyDetailsComponent implements OnInit {
     );
   }
 
-  filterQuestions(preguntas: any[], encuestaId: string): any[] {
-    return preguntas.filter(
-      (pregunta) =>
-        pregunta.seccionEncuesta?.encuesta?.id === parseInt(encuestaId)
+  loadQuestionsForSection(sectionId: number): void {
+    this.selectedSection = this.secciones.find(
+      (seccion) => seccion.id === sectionId
     );
+
+    if (this.selectedSection) {
+      this.surveyService.getQuestions().subscribe(
+        (allQuestions) => {
+          this.preguntas = allQuestions.filter(
+            (pregunta) => pregunta.seccionEncuesta?.id === sectionId
+          );
+          console.log(`Preguntas de la sección ${sectionId}:`, this.preguntas);
+        },
+        (error) => {
+          console.error(
+            'Error al obtener las preguntas de la sección:',
+            error
+          );
+        }
+      );
+    }
   }
 
-  filterOptions(opciones: any[], encuestaId: string): any[] {
-    return opciones.filter(
-      (opcion) =>
-        opcion.pregunta?.seccionEncuesta?.encuesta?.id === parseInt(encuestaId)
-    );
-  }
-
-  // Función para obtener las opciones relacionadas con una pregunta específica
   getOptionsForQuestion(preguntaId: number): any[] {
     return this.opciones.filter((opcion) => opcion.pregunta?.id === preguntaId);
   }
+
+  
 }
