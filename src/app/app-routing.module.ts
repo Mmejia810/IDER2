@@ -41,14 +41,17 @@ const routes: Routes = [
     path: 'update-survey/:id',  // Definir ruta con parámetro id
     loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule)
   },
-
   {
-    path: 'recover-password',
-    loadChildren: () => import('./pages/recover-password/recover-password.module').then(m => m.RecoverPasswordModule)
+    path: 'show-credentials',
+    loadChildren: () => import('./pages/show-credentials/show-credentials.module').then(m => m.ShowCredentialsModule)
   },
+    
   
-
-  
+  {
+    path: 'show-credentials',
+    loadChildren: () => import('./pages/show-credentials/show-credentials.module').then(m => m.ShowCredentialsModule)
+  },
+    
   { path: 'survey', loadChildren: () => import('./pages/survey/survey.module').then(m => m.SurveyModule) },
   
   { path: '**', redirectTo: 'login' } // Ruta para manejar rutas no encontradas

@@ -1,89 +1,198 @@
+/* Barra superior */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+  
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.menu-icon img {
+  width: 100%;
+  height: auto;
+}
+
+.app-title {
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.logo-container .logo {
+  width: 120px;
+  height: auto;
+}
+
+.top-bar-options {
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.logout-icon {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.logout-btn:hover .logout-icon {
+  transform: scale(1.1);
+}
+
+/* Sidebar desplegable */
+app-sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background-color: #2c3e50;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+app-sidebar.active {
+  left: 0;
+}
+
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-links li {
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.sidebar-links li:hover {
+  background-color: #34495e;
+  transform: translateX(10px);
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 5;
+}
+
+/* Sección de encuestas */
 .survey-container {
-    padding: 1rem;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .header input {
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .header select {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .header button {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .header button:hover {
-    background-color: #0056b3;
-  }
-  
-  .survey-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .survey-item {
-    background-color: #fff;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    height: auto;  /* Ajuste de altura para tarjetas rectangulares */
-  }
-  
-  .survey-item:hover {
-    transform: translateY(-5px);
-  }
-  
-  .survey-item h3 {
-    margin: 0;
-    font-size: 1.2em;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  .survey-item p {
-    margin: 5px 0;
-    color: #666;
-    font-size: 0.95em;
-  }
-  
-  .survey-item p strong {
-    font-weight: bold;
-  }
-  
-  .no-surveys {
-    color: #666;
-    font-size: 1.1em;
-    text-align: center;
-  }
-  
-  .loading {
-    text-align: center;
-    font-size: 1.2em;
-    color: #007bff;
-  }
-  
+  padding: 1rem;
+  margin-top: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.header input,
+.header select {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.header button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.header button:hover {
+  background-color: #0056b3;
+}
+
+.survey-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.survey-item {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.survey-item:hover {
+  transform: translateY(-5px);
+}
+
+.survey-item h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #333;
+  font-weight: bold;
+}
+
+.survey-item p {
+  margin: 5px 0;
+  color: #666;
+  font-size: 0.95em;
+}
+
+.survey-item p strong {
+  font-weight: bold;
+}
+
+.no-surveys {
+  color: #666;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2em;
+  color: #007bff;
+}

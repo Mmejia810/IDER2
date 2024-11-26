@@ -1,35 +1,68 @@
 /* Barra lateral */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: -250px; /* Inicialmente oculto */
-    width: 250px;
-    height: 100%;
-    background-color: #333;
-    transition: left 0.3s ease; /* Animación para que aparezca suavemente */
-    z-index: 2;
-  }
-  
-  .sidebar.active {
-    left: 0; /* Cuando la clase 'active' está presente, el sidebar se muestra */
-  }
-  
-  .sidebar-links {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar-links li {
-    padding: 15px;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Agregar transiciones */
-  }
-  
-  .sidebar-links li:hover {
-    background-color: #444;
-    transform: translateX(10px); /* Mueve el elemento hacia adelante */
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Efecto de brillo */
-  }
-  
+  position: fixed;
+  top: 0;
+  left: -250px; /* Inicialmente oculta */
+  width: 250px;
+  height: 100%;
+  background: linear-gradient(to bottom, #3b3b3b, #222); /* Gradiente sutil para el fondo */
+  transition: left 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+  z-index: 100;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2); /* Sombra suave alrededor de la barra */
+  border-radius: 0 10px 10px 0; /* Bordes redondeados */
+  padding-top: 20px; /* Espaciado superior */
+  overflow-y: auto; /* Permitir el desplazamiento vertical */
+}
+
+/* Barra lateral activa (visible) */
+.sidebar.active {
+  left: 0; /* Cuando la clase 'active' está presente, se desplaza a la izquierda */
+}
+
+/* Lista de enlaces en la barra lateral */
+.sidebar-links {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Estilo de cada elemento de la lista */
+.sidebar-links li {
+  padding: 15px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Efectos de transición */
+  display: flex;
+  align-items: center;
+  padding-left: 20px; /* Espaciado interior a la izquierda */
+}
+
+/* Efecto hover sobre los enlaces */
+.sidebar-links li:hover {
+  background-color: #444; /* Color de fondo al pasar el mouse */
+  transform: translateX(10px); /* Mueve el elemento hacia la derecha */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* Efecto de sombra al pasar el mouse */
+  border-radius: 5px;
+}
+
+/* Estilo para los iconos dentro de la barra lateral (opcional) */
+.sidebar-links li i {
+  margin-right: 10px; /* Espaciado entre el icono y el texto */
+  font-size: 18px; /* Tamaño de los iconos */
+  transition: transform 0.3s ease; /* Efecto suave en los iconos */
+}
+
+/* Efecto al pasar el mouse sobre los iconos */
+.sidebar-links li:hover i {
+  transform: translateX(5px); /* Movimiento suave de los iconos */
+}
+
+/* Agregar un icono a cada enlace, si lo deseas, por ejemplo: */
+.sidebar-links li:nth-child(1) i { content: '\f007'; /* Icono de perfil */ }
+.sidebar-links li:nth-child(2) i { content: '\f015'; /* Icono de inicio */ }
+.sidebar-links li:nth-child(3) i { content: '\f0e8'; /* Icono de encuesta */ }
+.sidebar-links li:nth-child(4) i { content: '\f03d'; /* Icono de lista */ }
+
+/* Si estás usando algún framework como Font Awesome, puedes agregar iconos específicos */

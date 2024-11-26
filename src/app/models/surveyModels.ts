@@ -21,13 +21,12 @@ export interface Section {
 }
 
 export interface Question {
-  questionId: string;
+  questionId: string;  // Asegúrate de que este campo coincida
   id: number;
   texto: string;
-  seccionId: string;  // Cambiar a 'string' para que coincida con 'Section'
+  seccionId: number; // Relación con la sección
   // Agrega otros campos según tu modelo de datos
 }
-
 
 export interface Option {
   id: number;

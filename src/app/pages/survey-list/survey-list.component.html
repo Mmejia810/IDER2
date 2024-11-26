@@ -1,5 +1,30 @@
 <div class="survey-container">
-    <!-- Encabezado con búsqueda y filtro -->
+  <div class="home-content">
+    <!-- Barra superior -->
+    <div class="top-bar">
+      <div class="logo-container">
+        <div class="menu-icon" (click)="toggleSidebar()">
+          <img src="../../../assets/imagenes/lista.png" alt="Menú" />
+        </div>
+        <span class="app-title">ENCUESTAS</span>
+        <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo" />
+      </div>
+      <div class="top-bar-options">
+        <div (click)="logOut()" class="logout-btn">
+          <img src="../../../assets/imagenes/cerrar-sesion.png" alt="Cerrar Sesión" class="logout-icon" />
+        </div>
+      </div>
+    </div>
+  
+    <!-- Barra lateral (sidebar) -->
+    <app-sidebar [isActive]="isSidebarActive"></app-sidebar>
+  
+    <!-- Overlay para opacar contenido cuando el sidebar esté activo -->
+    <div class="overlay" *ngIf="isSidebarActive" (click)="toggleSidebar()"></div>
+  
+ 
+ 
+  <!-- Encabezado con búsqueda y filtro -->
     <div class="header">
       <input
         type="text"

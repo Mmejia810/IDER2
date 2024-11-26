@@ -30,4 +30,26 @@ export class AuthService {
   recoverPassword(email: { email: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/recover-password`, email);
   }
+
+  getUserId(): string | null {
+    return localStorage.getItem('userId');
+  }
+
+  getUserProfile(): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) {
+      throw new Error('No user ID found. Please login first.');
+    }
+    return this.http.get(`${this.baseUrl}/${userId}`);
+  }
+
+  // Nuevo método para actualizar el perfil del usuario
+  updateUserProfile(userProfile: any): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) {
+      throw new Error('No user ID found. Please login first.');
+    }
+    return this.http.put(`${this.baseUrl}/${userId}`, userProfile);
+  }
+  
 }

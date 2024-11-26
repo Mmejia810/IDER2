@@ -117,7 +117,7 @@ getSurveys(): Observable<any[]> {
     ]).pipe(
       tap(([survey, secciones, preguntas, opciones]) => {
         console.log("Encuesta: ", survey);
-        console.log("Secciones: ", secciones);  // Deberías ver solo las secciones asociadas a esta encuesta
+        console.log("Secciones: ", secciones);
         console.log("Preguntas: ", preguntas);
         console.log("Opciones: ", opciones);
       }),
@@ -127,7 +127,6 @@ getSurveys(): Observable<any[]> {
       })
     );
   }
-  
   
   // Actualizar encuesta
   updateSurvey(survey: any): Observable<any> {

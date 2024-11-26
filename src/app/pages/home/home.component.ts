@@ -61,12 +61,7 @@ export class HomeComponent implements OnInit {
 
   viewProfile() {
     // Redirige al perfil del usuario
-    this.router.navigate(['/profile']);
-  }
-
-  updateProfile() {
-    // Redirige para actualizar el perfil
-    this.router.navigate(['/profile/update']);
+    this.router.navigate(['/show-credentials']);
   }
 
   updateUserProfiles() {

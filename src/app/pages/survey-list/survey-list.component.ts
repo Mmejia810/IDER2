@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./survey-list.component.scss'],
 })
 export class SurveyListComponent implements OnInit {
+  isSidebarActive: boolean = false;
+
   surveys: any[] = []; // Lista completa de encuestas
   filteredSurveys: any[] = []; // Lista filtrada de encuestas
   searchTerm: string = ''; // Término de búsqueda
@@ -29,6 +31,10 @@ export class SurveyListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSurveys(); // Cargar encuestas al inicializar
+  }
+
+  toggleSidebar() {
+    this.isSidebarActive = !this.isSidebarActive;
   }
 
   loadSurveys() {
