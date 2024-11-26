@@ -40,7 +40,28 @@
     height: auto;
   }
   
-  /* Sidebar */
+  .top-bar-options {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logout-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logout-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+  
+  .logout-btn:hover .logout-icon {
+    transform: scale(1.1);
+  }
+  
+  /* Sidebar desplegable */
   app-sidebar {
     position: fixed;
     top: 0;

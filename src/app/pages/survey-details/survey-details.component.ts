@@ -79,6 +79,8 @@ export class SurveyDetailsComponent implements OnInit {
   getOptionsForQuestion(preguntaId: number): any[] {
     return this.opciones.filter((opcion) => opcion.pregunta?.id === preguntaId);
   }
-
+  logOut() {
+    this.router.navigate(['/login']);
+  }
   
 }

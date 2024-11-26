@@ -107,8 +107,6 @@ getSurveys(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrlOpciones);
   }
 
-  // Obtener todos los datos de la encuesta: encuesta, secciones, preguntas y opciones
-  // En SurveyService
 
   getSurveyDetails(id: string): Observable<any> {
     return forkJoin([
@@ -119,7 +117,7 @@ getSurveys(): Observable<any[]> {
     ]).pipe(
       tap(([survey, secciones, preguntas, opciones]) => {
         console.log("Encuesta: ", survey);
-        console.log("Secciones: ", secciones);
+        console.log("Secciones: ", secciones);  // Deberías ver solo las secciones asociadas a esta encuesta
         console.log("Preguntas: ", preguntas);
         console.log("Opciones: ", opciones);
       }),
@@ -130,6 +128,26 @@ getSurveys(): Observable<any[]> {
     );
   }
   
+  
+  // Actualizar encuesta
+  updateSurvey(survey: any): Observable<any> {
+    return this.http.put(`${this.apiUrlEncuestaId}/actualizar/${survey.id}`, survey);
+  }
+
+  // Actualizar sección
+  updateSection(section: any): Observable<any> {
+    return this.http.put(`${this.apiUrlSecciones}/actualizar/${section.id}`, section);
+  }
+
+  // Actualizar pregunta
+  updateQuestion(question: any): Observable<any> {
+    return this.http.put(`${this.apiUrlPreguntas}/actualizar/${question.id}`, question);
+  }
+
+  // Actualizar opción
+  updateOption(option: any): Observable<any> {
+    return this.http.put(`${this.apiUrlOpciones}/actualizar/${option.id}`, option);
+  }
   
 
 }

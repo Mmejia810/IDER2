@@ -1,0 +1,44 @@
+<!-- LISTA DE ENCUESTAS -->
+<div *ngIf="!surveyDetails && !isLoading" class="survey-list">
+  <h2>Lista de Encuestas</h2>
+  <div
+    *ngFor="let survey of filteredSurveys"
+    class="survey-item"
+    (click)="navigateToSurveyDetails(survey.id)"
+  >
+    <h3>{{ survey.titulo }}</h3>
+    <p>Descripción: {{ survey.descripcion }}</p>
+  </div>
+</div>
+
+<!-- Detalles de la encuesta -->
+<div *ngIf="surveyDetails && !isLoading" class="card survey-card">
+  <h2>Actualizar Encuesta</h2>
+
+  <form (ngSubmit)="updateSurvey()">
+    <div>
+      <label for="titulo">Título</label>
+      <input type="text" id="titulo" [(ngModel)]="surveyDetails.titulo" name="titulo" required />
+    </div>
+
+    <div>
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" [(ngModel)]="surveyDetails.descripcion" name="descripcion" required></textarea>
+    </div>
+
+    <div>
+      <label for="fecha_creacion">Fecha de Creación</label>
+      <input type="date" id="fecha_creacion" [(ngModel)]="surveyDetails.fecha_creacion" name="fecha_creacion" />
+    </div>
+
+    <div>
+      <label for="fecha_cierre">Fecha de Cierre</label>
+      <input type="date" id="fecha_cierre" [(ngModel)]="surveyDetails.fecha_cierre" name="fecha_cierre" />
+    </div>
+
+    <button type="submit" [disabled]="isLoading">Actualizar Encuesta</button>
+  </form>
+</div>
+
+<!-- Mensaje de carga -->
+<div *ngIf="isLoading">Cargando...</div>

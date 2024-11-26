@@ -12,21 +12,35 @@ const routes: Routes = [
     loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule)
   },
 
+  
+
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) // Ruta para cargar HomeModule
   },
+
   
   {
     path: 'survey-details',
     loadChildren: () => import('./pages/survey-details/survey-details.module').then(m => m.SurveyDetailsModule) // Ruta correcta al módulo de la página
   },
+
+  
+  
   {
     path: 'survey-list',
     loadChildren: () => import('./pages/survey-list/survey-list.module').then(m => m.SurveyListModule) // Ruta para cargar HomeModule
   },
 
-  
+  {
+    path: 'update-survey',
+     loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule)
+   },
+
+   {
+    path: 'update-survey/:id',  // Definir ruta con parámetro id
+    loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule)
+  },
 
   {
     path: 'recover-password',

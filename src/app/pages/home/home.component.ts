@@ -73,4 +73,18 @@ export class HomeComponent implements OnInit {
     // Redirige para gestionar otros perfiles
     this.router.navigate(['/admin/user-profiles']);
   }
+
+  updateSurvey() {
+    console.log('Actualizar Encuesta');
+  
+    this.router.navigate(['/update-survey']); // Cambiar por la ruta correspondiente
+  }
+
+  deleteSurvey() {
+    console.log('Eliminar Encuesta');
+    // Lógica para navegación o confirmación de eliminación
+    this.router.navigate(['/delete-survey']); // Cambiar por la ruta correspondiente
+  }
+  
+  
 }
