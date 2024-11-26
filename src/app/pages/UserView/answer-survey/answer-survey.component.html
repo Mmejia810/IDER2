@@ -1,0 +1,54 @@
+
+
+
+<div class="home-content">
+    <!-- Detalles de la encuesta -->
+    <div *ngIf="surveyDetails" class="card survey-card">
+      <h2>{{ surveyDetails.titulo }}</h2>
+      <p>{{ surveyDetails.descripcion }}</p>
+    </div>
+  
+    <!-- Secciones de la encuesta -->
+    <div *ngIf="secciones && secciones.length > 0" class="card section-card">
+      <h3>Secciones</h3>
+      <ul>
+        <li *ngFor="let seccion of secciones" (click)="loadQuestionsForSection(seccion.id)">
+          <h4>{{ seccion.titulo }}</h4>
+          <p>{{ seccion.descripcion }}</p>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Preguntas de la sección seleccionada -->
+    <div *ngIf="preguntas && preguntas.length > 0" class="card question-card">
+      <h3>Preguntas de la sección: {{ selectedSection?.titulo }}</h3>
+      <ul>
+        <li *ngFor="let pregunta of preguntas">
+          <h4>{{ pregunta.texto }}</h4>
+          <p>Descripción: {{ pregunta.descripcion }}</p>
+          <p>Tipo: {{ pregunta.tipo }}</p>
+  
+          <!-- Opciones para preguntas de tipo "Opción múltiple" -->
+          <div *ngIf="pregunta.tipo === 'Opcion multiple'">
+            <h5>Opciones:</h5>
+            <ul>
+              <li *ngFor="let opcion of getOptionsForQuestion(pregunta.id)">
+                {{ opcion.texto }}
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Mensaje si no hay preguntas -->
+    <div *ngIf="(!preguntas || preguntas.length === 0) && selectedSection">
+      <p>No hay preguntas disponibles para esta sección.</p>
+    </div>
+  
+    <!-- Mensaje si no hay secciones -->
+    <div *ngIf="!secciones || secciones.length === 0">
+      <p>No hay secciones disponibles para esta encuesta.</p>
+    </div>
+  </div>
+  

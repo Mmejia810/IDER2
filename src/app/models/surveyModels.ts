@@ -8,6 +8,7 @@ export interface Survey {
   startDate: string;
   endDate: string;
   createdAt: string;
+  state: string;
   sections: Section[];
 }
 

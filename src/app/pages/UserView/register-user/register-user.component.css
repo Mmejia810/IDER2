@@ -1,0 +1,141 @@
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Desenfoque de fondo */
+  .fondo-difuminado {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.7));
+    z-index: -1;
+  }
+  
+  /* Barra superior */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo-container .logo {
+    height: 50px;
+  }
+  
+  .texto-barra {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+    padding: 0 20px;
+  }
+  
+  .top-bar-options .logout-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+  
+  /* Contenedor de registro */
+  .register-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    min-height: calc(100vh - 80px); /* Ajustar altura para excluir la barra superior */
+    background-color: #EEE9E9;
+    padding-top: 40px;
+  }
+  
+  /* Tarjeta de registro */
+  .register-card {
+    width: 100%;
+    max-width: 850px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  /* Cuadrícula del formulario */
+  .register-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Dos columnas si el espacio lo permite */
+    gap: 20px;
+  }
+  
+  .input-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-field label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .input-field input,
+  .input-field select {
+    padding: 16px; /* Espaciado dentro del campo de entrada */
+    font-size: 1.1rem; /* Ajuste del tamaño de fuente */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* Corregido el nombre de la propiedad */
+  }
+  
+  /* Botón de registro */
+  .register-button {
+    margin-top: 20px;
+    width: auto; /* El botón tomará solo el espacio necesario */
+    padding: 14px 70px; /* Espaciado adecuado dentro del botón */
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #008cfe;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block; /* Para que el botón no ocupe todo el ancho */
+    margin-left: 70%; /* Centra el botón en el contenedor */
+    margin-right: auto; /* Centra el botón en el contenedor */
+  }
+  
+  .register-button:hover {
+    background-color: #45a049;
+  }
+  
+  
+  .register-button:hover {
+    background-color: #45a049;
+  }
+  
+  .register-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Enlace de retroceso */
+  .registro {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1rem;
+  }
+  
+  .registro a {
+    color: #333;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  

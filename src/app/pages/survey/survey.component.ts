@@ -307,5 +307,5 @@ export class SurveyComponent implements OnInit {
   
   logOut() {
     this.router.navigate(['/login']);
-  }
+  }
 }

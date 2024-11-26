@@ -25,7 +25,7 @@ export class SurveyService {
     return this.http.post(this.apiUrlEncuesta, survey);
   }
 
-  // Guardar encuesta (alias de `createSurvey`)
+  // Guardar encuesta (alias de createSurvey)
   saveSurvey(survey: any): Observable<any> {
     return this.http.post(this.apiUrlEncuesta, survey);
   }
@@ -127,10 +127,10 @@ getSurveys(): Observable<any[]> {
         console.error('Error al cargar los detalles de la encuesta:', error);
         return throwError(() => new Error('Error al cargar los detalles de la encuesta'));
       })
-    );
-  }
-  
-  
+    );
+  }
+  
+  
 
 }
 

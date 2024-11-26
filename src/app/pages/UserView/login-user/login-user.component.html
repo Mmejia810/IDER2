@@ -1,0 +1,61 @@
+<!-- Barra superior -->
+<div class="top-bar">
+    <div class="logo-container">
+      <img src="../../../assets/imagenes/logoIder.png" alt="Logo de IDER" class="logo">
+    </div>
+    <p class="app-title">¡Cartagena se transforma! Estamos trabajando de sur a norte para transformar la calidad de vida de todos los cartageneros.</p>
+    <div class="top-bar-options">
+      <button class="boton-registro" (click)="goToRegister()">Registrarse</button>
+    </div>
+  </div>
+  
+  <!-- Fondo Difuminado -->
+  <div class="fondo-difuminado"></div>
+  
+  <!-- Contenedor de Login -->
+  <div class="login-container">
+    <!-- Tarjeta de Login -->
+    <div class="login-card">
+      <!-- Título -->
+      <div class="contenedor-titulo-logo">
+        <h1 class="bienvenido">Bienvenido a IDER</h1>
+      </div>
+  
+      <!-- Formulario de Login -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="campo">
+          <label for="email">Correo electrónico</label>
+          <input id="email" class="input" formControlName="email" type="email" placeholder="Ingrese su correo electrónico">
+        </div>
+        <div class="campo">
+          <label for="password">Contraseña</label>
+          <input id="password" class="input" formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Ingrese su contraseña">
+        </div>
+        <div class="opciones">
+          <label>
+            <input type="checkbox" (change)="togglePasswordVisibility()"> Mostrar contraseña
+          </label>
+          <a (click)="goToRecoverPassword()">¿Olvidó su contraseña?</a>
+        </div>
+        <button class="boton-ingresar" type="submit" [disabled]="loginForm.invalid">Ingresar</button>
+        
+      </form>
+      
+      <!-- Iconos de Redes Sociales -->
+      <div class="social-icons">
+        <a href="https://www.instagram.com/ider_ctg/?hl=es" target="_blank">
+          <img src="../../../assets/imagenes/instagram.png" alt="Instagram" class="social-icon">
+        </a>
+        <a href="https://x.com/idercartagena?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank">
+          <img src="../../../assets/imagenes/twitter.png" alt="Twitter" class="social-icon">
+        </a>
+        <a href="https://www.facebook.com/ider.gov.co" target="_blank">
+          <img src="../../../assets/imagenes/facebook.png" alt="Facebook" class="social-icon">
+        </a>
+      </div>
+  
+      <!-- Acerca del IDER -->
+      <a class="acerca-del-ider" href="/acerca-del-ider">Acerca del IDER</a>
+    </div>
+  </div>
+  
