@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SurveyService } from '../../services/survey.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../auth/auth.service';
 
 interface Option {
   id?: number;
@@ -38,7 +39,8 @@ export class SurveyComponent implements OnInit {
   sections: Section[] = [];
   expandedSectionIndex: number | null = null;
 
-  constructor(private surveyService: SurveyService, private router: Router) {}
+  constructor(private surveyService: SurveyService, private router: Router, private authService: AuthService // Inyectar el servicio de autenticación
+  ) {}
 
   ngOnInit() {
     const today = new Date();
@@ -64,13 +66,20 @@ export class SurveyComponent implements OnInit {
     }
   
     const formattedEndDate = this.endDate?.toISOString().slice(0, 10) || '';
+
+    const userId = this.authService.getUserId(); // Obtener el ID del usuario logueado
+  
+    if (!userId) {
+      alert('No se ha podido obtener el ID del usuario logueado.');
+      return;
+    }
   
     const newSurvey = {
       titulo: this.surveyTitle,
       descripcion: this.surveyDescription,
       estado: 'activa',
       fechaCierre: formattedEndDate,
-      usuario: { id: 1 }, // ID de usuario estático
+      usuario: { id: userId }, // ID de usuario estático
     };
   
     this.surveyService.saveSurvey(newSurvey).subscribe(

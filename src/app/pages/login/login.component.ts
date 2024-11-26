@@ -31,28 +31,33 @@ export class LoginComponent implements OnInit {
       };
   
       this.authService.login(credentials).subscribe(
-        (response: string) => {
+        (response) => { // Ya no es necesario especificar el tipo explícitamente
           console.log('Login exitoso', response);
   
-          // Verifica si la respuesta es "Login successful" y maneja el flujo
-          if (response === 'Login successful') {
-            // Si es exitoso, redirige y almacena el token (suponiendo que lo recibes del backend)
-            // Aquí deberías obtener el token si el backend lo devuelve y guardarlo
-            localStorage.setItem('authToken', 'your-jwt-token'); // Ejemplo de almacenamiento del token
+          // Verifica si la respuesta tiene 'message' y 'userId'
+          if (response.message === 'Login successful' && response.userId) {
+            // Almacenar el userId en localStorage
+            localStorage.setItem('userId', response.userId.toString()); // Guardamos el userId en localStorage
+  
+            // Si se espera un token JWT o algo similar, puedes almacenarlo aquí
+            // localStorage.setItem('authToken', 'your-jwt-token'); // Si tienes un token para almacenar
+  
             this.router.navigate(['/home']);
           } else {
             // Si no es "Login successful", muestra un mensaje de error
-            this.errorMessage = 'Error: No se recibió el token de autenticación.';
+            this.errorMessage = 'Error: No se recibió el userId o el mensaje de login.';
             console.error(this.errorMessage);
           }
         },
-        (error: any) => {
+        (error) => {
           console.error('Error de login', error);
           this.errorMessage = 'Error en el servidor o credenciales incorrectas.';
         }
       );
     }
   }
+  
+  
 
   // Navegar al registro
   goToRegister() {

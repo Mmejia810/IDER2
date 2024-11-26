@@ -10,10 +10,10 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(credentials: { email: string, pass: string }): Observable<any> {
-    // Asegúrate de que la respuesta sea de tipo texto
-    return this.http.post(`${this.baseUrl}/login`, credentials, { responseType: 'text' });
+  login(credentials: { email: string, pass: string }): Observable<{ message: string, userId: number }> {
+    return this.http.post<{ message: string, userId: number }>(`${this.baseUrl}/login`, credentials);
   }
+  
 
   register(userData: { 
     identificacion: string; 
