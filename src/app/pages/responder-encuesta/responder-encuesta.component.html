@@ -1,0 +1,15 @@
+<div class="container">
+    <h2>Responde la Encuesta</h2>
+    
+    <form [formGroup]="respuestaForm" (ngSubmit)="enviarRespuesta()">
+      <div>
+        <label for="respuesta">Tu Respuesta:</label>
+        <textarea id="respuesta" formControlName="respuesta" rows="4"></textarea>
+      </div>
+  
+      <div>
+        <button type="submit" [disabled]="!respuestaForm.valid">Enviar Respuesta</button>
+      </div>
+    </form>
+  </div>
+  

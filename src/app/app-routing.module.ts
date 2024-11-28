@@ -41,15 +41,16 @@ const routes: Routes = [
     path: 'update-survey/:id',  // Definir ruta con parámetro id
     loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule)
   },
-  {
-    path: 'show-credentials',
-    loadChildren: () => import('./pages/show-credentials/show-credentials.module').then(m => m.ShowCredentialsModule)
-  },
-    
+  
   
   {
     path: 'show-credentials',
     loadChildren: () => import('./pages/show-credentials/show-credentials.module').then(m => m.ShowCredentialsModule)
+  },
+
+  {
+    path: 'responder-encuesta',
+    loadChildren: () => import('./pages/responder-encuesta/responder-encuesta.module').then(m => m.ResponderEncuestaModule)
   },
     
   { path: 'survey', loadChildren: () => import('./pages/survey/survey.module').then(m => m.SurveyModule) },

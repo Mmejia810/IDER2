@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyService } from '../../services/survey.service';
-import { Section, Question, Option } from '../../models/surveyModels';  // Ajusta la ruta de importación según sea necesario
+import { Section, Question, Option } from '../../models/surveyModels';  
 
 @Component({
   selector: 'app-update-survey',
@@ -52,9 +52,8 @@ export class UpdateSurveyComponent implements OnInit {
     this.isLoading = true;
     this.surveyService.getSurveyDetails(id).subscribe(
       (response) => {
-        console.log("Full response:", response);  // Verifica la respuesta completa
+        console.log("Full response:", response);  
   
-        // Accedemos a los elementos de la respuesta
         const [encuesta, secciones, preguntas, opciones] = response;
   
         console.log("Survey Details:", encuesta);
@@ -62,7 +61,6 @@ export class UpdateSurveyComponent implements OnInit {
         console.log("Questions:", preguntas);
         console.log("Options:", opciones);
   
-        // Asignamos los datos a las variables del componente
         this.surveyDetails = encuesta;
         this.sections = secciones;
         this.questions = preguntas;

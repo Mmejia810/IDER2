@@ -4,7 +4,7 @@ import { SurveyComponent } from './survey.component';
 import { SurveyRoutingModule } from './survey-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { SharedModule } from '../../shared/shared.module'; // Asegúrate de importar el SharedModule aquí
+import { SharedModule } from '../../shared/shared.module'; 
 import { SurveyService } from '../../services/survey.service';
 import { SidebarModule } from '../../sidebar/sidebar.module';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -13,7 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatCardModule } from '@angular/material/card';  // Importa MatCardModule aquí
+import { MatCardModule } from '@angular/material/card';  
 
 @NgModule({
   declarations: [SurveyComponent],
@@ -23,7 +23,7 @@ import { MatCardModule } from '@angular/material/card';  // Importa MatCardModul
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    SharedModule, // Importa SharedModule aquí
+    SharedModule, 
     SidebarModule,
     MatExpansionModule,
     MatIconModule,
@@ -31,7 +31,7 @@ import { MatCardModule } from '@angular/material/card';  // Importa MatCardModul
     MatInputModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    MatCardModule // Corrige la importación aquí
+    MatCardModule,
   ],
   providers: [SurveyService]
 })

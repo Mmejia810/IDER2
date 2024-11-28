@@ -1,4 +1,3 @@
-<!-- LISTA DE ENCUESTAS -->
 <div *ngIf="!surveyDetails && !isLoading" class="survey-list">
   <h2>Lista de Encuestas</h2>
   <div
@@ -11,7 +10,6 @@
   </div>
 </div>
 
-<!-- Detalles de la encuesta -->
 <div *ngIf="surveyDetails && !isLoading" class="card survey-card">
   <h2>Actualizar Encuesta</h2>
 
@@ -40,5 +38,4 @@
   </form>
 </div>
 
-<!-- Mensaje de carga -->
 <div *ngIf="isLoading">Cargando...</div>

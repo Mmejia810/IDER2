@@ -9,7 +9,7 @@ import { RecoverPasswordRoutingModule } from '../recover-password/recover-routin
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RecoverPasswordRoutingModule // Aquí lo importamos
+    RecoverPasswordRoutingModule 
   ]
 })
 export class RecoverPasswordModule { }

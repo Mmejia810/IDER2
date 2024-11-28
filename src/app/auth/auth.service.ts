@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:9085/usuario'; // Cambia esto a tu URL de backend
+  private baseUrl = 'http://localhost:9085/usuario'; 
 
   constructor(private http: HttpClient) { }
 
@@ -43,7 +43,7 @@ export class AuthService {
     return this.http.get(`${this.baseUrl}/${userId}`);
   }
 
-  // Nuevo método para actualizar el perfil del usuario
+  
   updateUserProfile(userProfile: any): Observable<any> {
     const userId = this.getUserId();
     if (!userId) {

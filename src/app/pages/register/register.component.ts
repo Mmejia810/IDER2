@@ -10,11 +10,11 @@ import { ToastmService } from '../../shared/services/toast/toastm.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  registerForm!: FormGroup; // Aserción no definida aún
+  registerForm!: FormGroup; 
   
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private toastSer: ToastmService) {
     this.registerForm = this.fb.group({
-      identificacion: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]], // Validación para identificación
+      identificacion: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]], 
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
       estado: ['', [Validators.required]],

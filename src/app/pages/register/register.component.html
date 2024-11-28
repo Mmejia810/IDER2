@@ -15,7 +15,6 @@
     <h1>Registro Formulario</h1>
     <h2>IDER</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
-      <!-- ID and Name Row -->
       <div class="input-field">
         <label for="identificacion">Identificación</label>
         <input id="identificacion" formControlName="identificacion" type="text" placeholder="Ingrese su identificación">
@@ -25,7 +24,6 @@
         <input id="nombre" formControlName="nombre" type="text" placeholder="Ingrese su nombre">
       </div>
 
-      <!-- Last Name and Status Row -->
       <div class="input-field">
         <label for="apellido">Apellido</label>
         <input id="apellido" formControlName="apellido" type="text" placeholder="Ingrese su apellido">
@@ -38,7 +36,6 @@
         </select>
       </div>
 
-      <!-- Email and Password Row -->
       <div class="input-field">
         <label for="email">Correo Electrónico</label>
         <input id="email" formControlName="email" type="email" placeholder="Ingrese su correo electrónico">
@@ -48,7 +45,6 @@
         <input id="pass" formControlName="pass" type="password" placeholder="Ingrese su contraseña">
       </div>
 
-      <!-- Register Button -->
       <button type="submit" class="register-button" [disabled]="registerForm.invalid">Registrarse</button>
 
     </form>

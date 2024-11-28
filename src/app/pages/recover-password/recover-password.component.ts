@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../auth/auth.service'; // Verifica que la ruta del servicio esté correcta
+import { AuthService } from '../../auth/auth.service'; 
 
 @Component({
   selector: 'app-recover-password',
@@ -8,29 +8,25 @@ import { AuthService } from '../../auth/auth.service'; // Verifica que la ruta d
   styleUrls: ['./recover-password.component.scss']
 })
 export class RecoverPasswordComponent implements OnInit {
-  recoverForm!: FormGroup; // Operador ! para asegurar inicialización antes de uso
+  recoverForm!: FormGroup; 
 
   constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   ngOnInit() {
-    // Inicializa el FormGroup con las validaciones necesarias
     this.recoverForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      verificationCode: ['', Validators.required] // Campo adicional para el código de verificación
+      verificationCode: ['', Validators.required] 
     });
   }
 
   onSubmit() {
     if (this.recoverForm.valid) {
-      // Llamada al servicio de recuperación de contraseña
       this.authService.recoverPassword(this.recoverForm.value).subscribe(
         (response: any) => {
           console.log('Recuperación exitosa', response);
-          // Lógica para manejar el éxito de la recuperación
         },
         (error: any) => {
           console.error('Error en la recuperación de contraseña', error);
-          // Manejo de errores
         }
       );
     }

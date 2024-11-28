@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShowCredentialsRoutingModule } from './show-credentials-routing.module';
 import { ShowCredentialsComponent } from './show-credentials.component';
-import { SidebarModule } from '../../sidebar/sidebar.module'; // Asegúrate de que el SidebarModule esté importado
+import { SidebarModule } from '../../sidebar/sidebar.module'; 
 
 @NgModule({
   declarations: [ShowCredentialsComponent],
@@ -12,7 +12,7 @@ import { SidebarModule } from '../../sidebar/sidebar.module'; // Asegúrate de q
     FormsModule,
     ReactiveFormsModule,
     ShowCredentialsRoutingModule,
-    SidebarModule, // Agrega el SidebarModule aquí
+    SidebarModule, 
   ]
 })
 export class ShowCredentialsModule { }

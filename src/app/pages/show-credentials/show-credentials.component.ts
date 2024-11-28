@@ -11,7 +11,7 @@ export class ShowCredentialsComponent implements OnInit {
   userProfile: any;
   errorMessage: string = '';
   isSidebarActive: boolean = false;
-  isEditing: boolean = false; // Estado para manejar la edición del perfil
+  isEditing: boolean = false; 
 
   constructor(
     private authService: AuthService,
@@ -44,7 +44,7 @@ export class ShowCredentialsComponent implements OnInit {
   }
 
   saveChanges() {
-    // Aquí se puede agregar la lógica para guardar los cambios en el backend
+    
     this.authService.updateUserProfile(this.userProfile).subscribe({
       next: () => {
         this.isEditing = false;
@@ -59,6 +59,6 @@ export class ShowCredentialsComponent implements OnInit {
 
   logOut(): void {
     console.log('Sesión cerrada');
-    // Lógica de cierre de sesión
+    
   }
 }

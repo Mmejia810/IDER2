@@ -1,16 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SurveyDetailsComponent } from './survey-details.component';
+import { ResponderEncuestaComponent } from './responder-encuesta.component';
 
 const routes: Routes = [
-  {
-    path: ':id', 
-    component: SurveyDetailsComponent
-  }
+  { path: '', component: ResponderEncuestaComponent }  // Define la ruta predeterminada
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SurveyDetailsRoutingModule {}
+export class ResponderEncuestaRoutingModule { }

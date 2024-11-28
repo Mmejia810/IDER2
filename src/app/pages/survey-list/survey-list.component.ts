@@ -10,18 +10,18 @@ import { Router } from '@angular/router';
 export class SurveyListComponent implements OnInit {
   isSidebarActive: boolean = false;
 
-  surveys: any[] = []; // Lista completa de encuestas
-  filteredSurveys: any[] = []; // Lista filtrada de encuestas
-  searchTerm: string = ''; // Término de búsqueda
-  selectedFilter: string = 'all'; // Filtro seleccionado
-  isLoading: boolean = true; // Indicador de carga
+  surveys: any[] = []; 
+  filteredSurveys: any[] = []; 
+  searchTerm: string = ''; 
+  selectedFilter: string = 'all'; 
+  isLoading: boolean = true; 
   filterOptions = [
     { label: 'Todas', value: 'all' },
     { label: 'Fecha', value: 'date' },
     { label: 'Alfabéticamente', value: 'alphabetical' },
   ];
 
-  // Datos para edición
+  
   selectedSurvey: any = null;
   selectedSection: any = null;
   selectedQuestion: any = null;
@@ -30,7 +30,7 @@ export class SurveyListComponent implements OnInit {
   constructor(private surveyService: SurveyService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadSurveys(); // Cargar encuestas al inicializar
+    this.loadSurveys(); 
   }
 
   toggleSidebar() {
@@ -52,36 +52,36 @@ export class SurveyListComponent implements OnInit {
     );
   }
 
-  // Método para editar una encuesta
+  
   editSurvey(survey: any) {
-    this.selectedSurvey = { ...survey };  // Clonar la encuesta para edición
+    this.selectedSurvey = { ...survey };  
     this.selectedSection = null;
     this.selectedQuestion = null;
     this.selectedOption = null;
   }
 
-  // Método para editar una sección
+  
   editSection(section: any) {
-    this.selectedSection = { ...section };  // Clonar la sección para edición
+    this.selectedSection = { ...section };  
   }
 
-  // Método para editar una pregunta
+  
   editQuestion(question: any) {
-    this.selectedQuestion = { ...question };  // Clonar la pregunta para edición
+    this.selectedQuestion = { ...question };  
   }
 
-  // Método para editar una opción
+  
   editOption(option: any) {
-    this.selectedOption = { ...option };  // Clonar la opción para edición
+    this.selectedOption = { ...option };  
   }
 
-  // Guardar cambios de encuesta
+  
   saveSurvey() {
     if (this.selectedSurvey) {
       this.surveyService.updateSurvey(this.selectedSurvey).subscribe(
         () => {
           alert('Encuesta actualizada');
-          this.loadSurveys();  // Recargar las encuestas
+          this.loadSurveys();  
           this.selectedSurvey = null;
         },
         (error) => console.error('Error al actualizar encuesta:', error)
@@ -89,7 +89,7 @@ export class SurveyListComponent implements OnInit {
     }
   }
 
-  // Guardar cambios de sección
+  
   saveSection() {
     if (this.selectedSection) {
       this.surveyService.updateSection(this.selectedSection).subscribe(
@@ -102,7 +102,7 @@ export class SurveyListComponent implements OnInit {
     }
   }
 
-  // Guardar cambios de pregunta
+  
   saveQuestion() {
     if (this.selectedQuestion) {
       this.surveyService.updateQuestion(this.selectedQuestion).subscribe(
@@ -115,7 +115,7 @@ export class SurveyListComponent implements OnInit {
     }
   }
 
-  // Guardar cambios de opción
+  
   saveOption() {
     if (this.selectedOption) {
       this.surveyService.updateOption(this.selectedOption).subscribe(
@@ -128,7 +128,7 @@ export class SurveyListComponent implements OnInit {
     }
   }
 
-  // Método para buscar y filtrar encuestas
+  
   filterSurveys() {
     let filtered = [...this.surveys];
     if (this.searchTerm.trim()) {
@@ -147,7 +147,7 @@ export class SurveyListComponent implements OnInit {
     this.filteredSurveys = filtered;
   }
 
-  // Método para redirigir a los detalles de la encuesta
+  
   openSurvey(id: string) {
     this.router.navigate([`/survey-details/${id}`]);
   }
