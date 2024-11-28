@@ -1,0 +1,58 @@
+<div class="survey-container">
+  <div class="home-content">
+    
+    <div class="top-bar">
+      <div class="logo-container">
+        <div class="menu-icon" (click)="toggleSidebarU()">
+          <img src="../../../assets/imagenes/lista.png" alt="Menú" />
+        </div>
+        <span class="app-title">ENCUESTAS</span>
+        <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo" />
+      </div>
+      <div class="top-bar-options">
+        <div (click)="logOut()" class="logout-btn">
+          <img src="../../../assets/imagenes/cerrar-sesion.png" alt="Cerrar Sesión" class="logout-icon" />
+        </div>
+      </div>
+    </div>
+    
+    <app-sidebaruser [isActiveU]="isSidebarActiveU"></app-sidebaruser>
+    <div class="overlay" *ngIf="isSidebarActiveU" (click)="toggleSidebarU()"></div>
+
+    <div class="header">
+      <!-- Campo de búsqueda para las encuestas activas -->
+      <input
+        type="text"
+        placeholder="Buscar encuestas activas..."
+        [(ngModel)]="searchTerm"
+        (input)="filterActiveSurveys()"
+      />
+    </div>
+
+    <!-- Mensaje de carga -->
+    <div *ngIf="isLoading" class="loading">
+      Cargando encuestas...
+    </div>
+
+    <!-- Lista de encuestas activas -->
+    <div *ngIf="!isLoading && activeSurveys.length > 0" class="survey-list">
+      <div
+        *ngFor="let survey of activeSurveys"
+        class="survey-item"
+        (click)="openSurvey(survey.id)"
+      >
+        <h3>{{ survey.titulo }}</h3>
+        <p>ID: {{ survey.id }}</p>
+        <p>Fecha de Creación: {{ survey.fecha_creacion | date: 'shortDate' }}</p>
+        <p>Fecha de Cierre: {{ survey.fecha_cierre | date: 'shortDate' }}</p>
+        <p>Descripción: {{ survey.descripcion }}</p>
+        <p>Estado: {{ survey.estado }}</p>
+      </div>
+    </div>
+
+    <!-- Mensaje cuando no se encuentran encuestas activas -->
+    <div *ngIf="!isLoading && activeSurveys.length === 0" class="no-surveys">
+      No se encontraron encuestas activas.
+    </div>
+  </div>
+</div>

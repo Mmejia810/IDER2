@@ -39,13 +39,13 @@ export class HomeUserComponent implements OnInit {
     }
   }
 
-  toggleSidebar() {
+  toggleSidebarU() {
     this.isSidebarActiveU = !this.isSidebarActiveU;
   }
 
   navigateTo(route: string) {
     this.router.navigate([`/${route}`]);
-    this.toggleSidebar();
+    this.toggleSidebarU();
   }
 
   logOut() {
@@ -62,13 +62,10 @@ export class HomeUserComponent implements OnInit {
 
    viewProfile() {
      // Redirige al perfil del usuario
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/show-credentials']);
    }
 
-   updateProfile() {
-     // Redirige para actualizar el perfil
-     this.router.navigate(['/profile/update']);
-   }
+  
 
   // updateUserProfiles() {
   //   // Redirige para gestionar otros perfiles

@@ -87,6 +87,16 @@ getSurveys(): Observable<any[]> {
   );
 }
 
+getActiveSurveys(): Observable<any[]> {
+  const url = `${this.apiUrlEncuestaId}/estado/activa`;
+  return this.http.get<any[]>(url).pipe(
+    catchError((error) => {
+      console.error('Error al obtener encuestas activas:', error);
+      return throwError(() => new Error('Error al obtener encuestas activas'));
+    })
+  );
+}
+
   getSections(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrlSecciones);
   }
@@ -120,7 +130,14 @@ getSurveys(): Observable<any[]> {
       })
     );
   }
+
+  getQuestionsBySection(sectionId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/sections/${sectionId}/questions`);
+  }
   
+  saveResponses(encuestaId: string, respuestas: any[]): Observable<any> {
+    return this.http.post<any>(`/api/surveys/${encuestaId}/responses`, { respuestas });
+  }
   
   updateSurvey(survey: any): Observable<any> {
     return this.http.put(`${this.apiUrlEncuestaId}/actualizar/${survey.id}`, survey);

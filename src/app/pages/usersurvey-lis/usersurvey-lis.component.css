@@ -40,8 +40,29 @@
     height: auto;
   }
   
-  /* Sidebar */
-  app-sidebar {
+  .top-bar-options {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logout-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logout-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+  
+  .logout-btn:hover .logout-icon {
+    transform: scale(1.1);
+  }
+  
+  /* Sidebar desplegable */
+  app-sidebaruser {
     position: fixed;
     top: 0;
     left: -260px;
@@ -104,6 +125,33 @@
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
+
+  /* Estilo para el nuevo textarea para respuestas abiertas */
+textarea {
+  width: 100%;             /* Ocupa todo el ancho disponible */
+  height: 120px;           /* Altura por defecto */
+  padding: 10px;           /* Relleno para que el texto no esté pegado al borde */
+  font-size: 16px;         /* Tamaño de la fuente */
+  border: 1px solid #ccc;  /* Borde gris claro */
+  border-radius: 5px;      /* Bordes redondeados */
+  resize: vertical;        /* Permite redimensionar solo verticalmente */
+  outline: none;           /* Elimina el borde cuando está enfocado */
+  background-color: #f9f9f9; /* Fondo claro */
+  color: #333;             /* Color del texto */
+  box-sizing: border-box;  /* Incluye el padding y border en las dimensiones del ancho y alto */
+  margin-top: 10px;        /* Añade un margen superior para separar del campo anterior */
+}
+
+textarea:focus {
+  border-color: #4CAF50;   /* Borde verde cuando está enfocado */
+  background-color: #fff;  /* Fondo blanco al estar enfocado */
+}
+
+textarea::placeholder {
+  color: #aaa;             /* Color para el texto del placeholder */
+  font-style: italic;      /* Estilo itálico para el placeholder */
+}
+
   
   /* Específicos para cada tipo de card */
   .survey-card {

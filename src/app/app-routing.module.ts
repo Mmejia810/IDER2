@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+
 const routes: Routes = [
   { path: '', redirectTo: 'loginuser', pathMatch: 'full' }, // Redirige a login al inicio
   {
@@ -33,25 +34,20 @@ const routes: Routes = [
   },
 
   {
-   path:  'registeruser',
-    loadChildren: () => import('./pages/UserView/register-user/register-user.module').then(m => m.RegisterUserModule)
-  },
-
-  {
-    path: 'loginuser',
-    loadChildren: () => import('./pages/UserView/login-user/login-user.module').then(m => m.LoginUserModule)
-  },
-
-  {
     path: 'homeuser',
     loadChildren: () => import('./pages/UserView/home-user/home-user.module').then(m => m.HomeUserModule)
   },
 
   {
     path: 'answer',
-    loadChildren: () => import('./pages/UserView/answer-survey/answer-survey.module').then(m => m.AnswerSurveyModule)
+    loadChildren: () => import('./pages/answer-survey/answer-survey.module').then(m => m.AnswerSurveyModule)
   },
 
+  {
+    path: 'user-sur-details',
+    loadChildren: () => import('./pages/usersurvey-lis/usersurvey-lis.module').then(m => m.UserSurveyLisModule)
+
+  },
 
   {
     path: 'update-survey',
