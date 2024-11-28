@@ -12,7 +12,7 @@ export class SurveyDetailsComponent implements OnInit {
   secciones: any[] = [];
   preguntas: any[] = [];
   opciones: any[] = [];
-  selectedSection: any = null; // Sección seleccionada
+  selectedSection: any = null; 
   encuestaId: string | null = '';
   isSidebarActive: boolean = false;
 
@@ -36,9 +36,9 @@ export class SurveyDetailsComponent implements OnInit {
   loadSurveyDetails(id: string): void {
     this.surveyService.getSurveyDetails(id).subscribe(
       (response) => {
-        this.surveyDetails = response[0]; // Encuesta
-        this.secciones = this.filterSections(response[1], id); // Secciones asociadas a la encuesta
-        this.opciones = response[3]; // Cargar todas las opciones de la encuesta
+        this.surveyDetails = response[0]; 
+        this.secciones = this.filterSections(response[1], id); 
+        this.opciones = response[3]; 
         console.log('Secciones:', this.secciones);
       },
       (error) => {
@@ -79,6 +79,8 @@ export class SurveyDetailsComponent implements OnInit {
   getOptionsForQuestion(preguntaId: number): any[] {
     return this.opciones.filter((opcion) => opcion.pregunta?.id === preguntaId);
   }
-
+  logOut() {
+    this.router.navigate(['/login']);
+  }
   
 }

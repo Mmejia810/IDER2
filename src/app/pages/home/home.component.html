@@ -1,5 +1,5 @@
 <div class="home-content">
-  <!-- Barra superior -->
+
   <div class="top-bar">
     <div class="logo-container">
       <div class="menu-icon" (click)="toggleSidebar()">
@@ -15,14 +15,13 @@
     </div>
   </div>
 
-  <!-- Barra lateral (sidebar) -->
+  
   <app-sidebar [isActive]="isSidebarActive"></app-sidebar>
 
-  <!-- Overlay para opacar contenido cuando el sidebar esté activo -->
   <div class="overlay" *ngIf="isSidebarActive" (click)="toggleSidebar()"></div>
 
   <div class="content" [class.sidebar-active]="isSidebarActive">
-    <!-- Tarjeta de saludo -->
+    
     <div class="greeting-card">
       <div class="greeting-text">
         <p>{{ greetingMessage }}</p>
@@ -30,37 +29,42 @@
       <img src="../../../assets/imagenes/encuesta-online.png" alt="Imagen del Usuario" class="user-image" />
     </div>
   
-    <!-- Contenedor de las tarjetas -->
     <div class="cards-container">
-      <!-- Tarjeta de Crear Encuesta -->
+      
       <div class="card create-survey-card" (click)="createSurvey()">
         <img src="../../../assets/imagenes/votacion.png" alt="Crear Encuesta" class="card-icon" />
         <span class="card-text">Crear Encuesta</span>
       </div>
-  
-      <!-- Tarjeta de Listas Encuestas -->
+    
+      
       <div class="card list-surveys-card" (click)="redirectToListSurveys()">
         <img src="../../../assets/imagenes/portapapeles.png" alt="Listas Encuestas" class="card-icon" />
         <span class="card-text">Listas Encuestas</span>
       </div>
-  
-      <!-- Tarjeta de Ver Perfil -->
+    
+      
       <div class="card view-profile-card" (click)="viewProfile()">
         <img src="../../../assets/imagenes/ver-usuario.png" alt="Ver Perfil" class="card-icon" />
         <span class="card-text">Ver Perfil</span>
       </div>
-  
-      <!-- Tarjeta de Actualizar Perfil -->
-      <div class="card update-profile-card" (click)="updateProfile()">
-        <img src="../../../assets/imagenes/perfil-del-usuario.png" alt="Actualizar Perfil" class="card-icon" />
-        <span class="card-text">Actualizar Perfil</span>
-      </div>
-  
-      <!-- Tarjeta de Actualizar Perfiles de Usuario -->
+    
+      
+      
       <div class="card update-user-profiles-card" (click)="updateUserProfiles()">
         <img src="../../../assets/imagenes/boton-de-actualizacion-con-usuarios-dentro.png" alt="Actualizar Perfiles de Usuario" class="card-icon" />
         <span class="card-text">Actualizar Usuarios</span>
       </div>
+    
+      
+      <div class="card update-survey-card" (click)="updateSurvey()">
+        <img src="../../../assets/imagenes/evaluacion.png" alt="Actualizar Encuesta" class="card-icon" />
+        <span class="card-text">Actualizar Encuesta</span>
+      </div>
+    
+    
+      <div class="card delete-survey-card" (click)="deleteSurvey()">
+        <img src="../../../assets/imagenes/reporte.png" alt="Eliminar Encuesta" class="card-icon" />
+        <span class="card-text">Eliminar Encuesta</span>
+      </div>
     </div>
-  </div>
-  
+    

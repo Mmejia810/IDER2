@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrl: './sidebaruser.component.css'
 })
 export class SidebaruserComponent {
-  @Input() isActive: boolean = false;  // Recibe la variable de visibilidad desde el componente padre
+  @Input() isActiveU: boolean = false;  // Recibe la variable de visibilidad desde el componente padre
 
   constructor(private router: Router) {}
 

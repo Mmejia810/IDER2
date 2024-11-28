@@ -6,7 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { SurveyService } from '../../services/survey.service';
 
 
-import { SurveyDetailsRoutingModule } from './survey-details-routing.module'; // Asegúrate de importar correctamente el módulo de rutas
+import { SurveyDetailsRoutingModule } from './survey-details-routing.module'; 
 
 @NgModule({
   declarations: [SurveyDetailsComponent],
@@ -15,7 +15,7 @@ import { SurveyDetailsRoutingModule } from './survey-details-routing.module'; //
     SidebarModule,
     SharedModule,
     
-    SurveyDetailsRoutingModule // Este es el módulo de rutas que configura la navegación de esta página
+    SurveyDetailsRoutingModule 
   ],
   providers: [SurveyService]
 })

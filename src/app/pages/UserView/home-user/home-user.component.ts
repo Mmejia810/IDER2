@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-user',
-  templateUrl: './home-user.component.html',
+  templateUrl:'./home-user.component.html',
   styleUrl: './home-user.component.css'
 })
 export class HomeUserComponent implements OnInit {
 
-  isSidebarActive: boolean = false;
+  isSidebarActiveU: boolean = false;
   greetingMessage: string = ''; // Mensaje de saludo
 
   constructor(private router: Router) {}
@@ -40,7 +40,7 @@ export class HomeUserComponent implements OnInit {
   }
 
   toggleSidebar() {
-    this.isSidebarActive = !this.isSidebarActive;
+    this.isSidebarActiveU = !this.isSidebarActiveU;
   }
 
   navigateTo(route: string) {

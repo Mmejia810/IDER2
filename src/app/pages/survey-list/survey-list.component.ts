@@ -8,36 +8,42 @@ import { Router } from '@angular/router';
   styleUrls: ['./survey-list.component.scss'],
 })
 export class SurveyListComponent implements OnInit {
-  isSidebarActive: boolean = false; // Estado del sidebar (colapsable)
-  surveys: any[] = []; // Lista completa de encuestas
-  filteredSurveys: any[] = []; // Lista filtrada de encuestas
-  searchTerm: string = ''; // Término de búsqueda
-  selectedFilter: string = 'all'; // Filtro seleccionado
-  isLoading: boolean = true; // Indicador de carga
+  isSidebarActive: boolean = false;
+
+  surveys: any[] = []; 
+  filteredSurveys: any[] = []; 
+  searchTerm: string = ''; 
+  selectedFilter: string = 'all'; 
+  isLoading: boolean = true; 
   filterOptions = [
     { label: 'Todas', value: 'all' },
     { label: 'Fecha', value: 'date' },
     { label: 'Alfabéticamente', value: 'alphabetical' },
   ];
 
+  
+  selectedSurvey: any = null;
+  selectedSection: any = null;
+  selectedQuestion: any = null;
+  selectedOption: any = null;
+
   constructor(private surveyService: SurveyService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadSurveys(); // Cargar encuestas al inicializar
+    this.loadSurveys(); 
   }
 
-  // Método para cargar encuestas desde el servicio
+  toggleSidebar() {
+    this.isSidebarActive = !this.isSidebarActive;
+  }
+
   loadSurveys() {
-    this.isLoading = true; // Mostrar indicador de carga
+    this.isLoading = true;
     this.surveyService.getSurveys().subscribe(
       (data: any[]) => {
-        this.surveys = data.map((survey) => ({
-          ...survey,
-          startDate: survey.fecha_creacion || new Date().toISOString(),
-          closeDate: survey.fecha_cierre || new Date().toISOString(),
-        }));
-        this.filteredSurveys = [...this.surveys]; // Inicializar lista filtrada
-        this.isLoading = false; // Ocultar indicador de carga
+        this.surveys = data;
+        this.filteredSurveys = [...this.surveys]; 
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error al cargar encuestas:', error);
@@ -46,16 +52,85 @@ export class SurveyListComponent implements OnInit {
     );
   }
 
-  // Método para activar/desactivar el sidebar
-  toggleSidebar() {
-    this.isSidebarActive = !this.isSidebarActive;
+  
+  editSurvey(survey: any) {
+    this.selectedSurvey = { ...survey };  
+    this.selectedSection = null;
+    this.selectedQuestion = null;
+    this.selectedOption = null;
   }
 
-  // Método para buscar y filtrar encuestas dinámicamente
+  
+  editSection(section: any) {
+    this.selectedSection = { ...section };  
+  }
+
+  
+  editQuestion(question: any) {
+    this.selectedQuestion = { ...question };  
+  }
+
+  
+  editOption(option: any) {
+    this.selectedOption = { ...option };  
+  }
+
+  
+  saveSurvey() {
+    if (this.selectedSurvey) {
+      this.surveyService.updateSurvey(this.selectedSurvey).subscribe(
+        () => {
+          alert('Encuesta actualizada');
+          this.loadSurveys();  
+          this.selectedSurvey = null;
+        },
+        (error) => console.error('Error al actualizar encuesta:', error)
+      );
+    }
+  }
+
+  
+  saveSection() {
+    if (this.selectedSection) {
+      this.surveyService.updateSection(this.selectedSection).subscribe(
+        () => {
+          alert('Sección actualizada');
+          this.selectedSection = null;
+        },
+        (error) => console.error('Error al actualizar sección:', error)
+      );
+    }
+  }
+
+  
+  saveQuestion() {
+    if (this.selectedQuestion) {
+      this.surveyService.updateQuestion(this.selectedQuestion).subscribe(
+        () => {
+          alert('Pregunta actualizada');
+          this.selectedQuestion = null;
+        },
+        (error) => console.error('Error al actualizar pregunta:', error)
+      );
+    }
+  }
+
+  
+  saveOption() {
+    if (this.selectedOption) {
+      this.surveyService.updateOption(this.selectedOption).subscribe(
+        () => {
+          alert('Opción actualizada');
+          this.selectedOption = null;
+        },
+        (error) => console.error('Error al actualizar opción:', error)
+      );
+    }
+  }
+
+  
   filterSurveys() {
     let filtered = [...this.surveys];
-
-    // Filtrar por término de búsqueda
     if (this.searchTerm.trim()) {
       filtered = filtered.filter((survey) =>
         survey.titulo.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -63,7 +138,6 @@ export class SurveyListComponent implements OnInit {
       );
     }
 
-    // Ordenar según el filtro seleccionado
     if (this.selectedFilter === 'date') {
       filtered.sort((a, b) => new Date(a.fecha_creacion).getTime() - new Date(b.fecha_creacion).getTime());
     } else if (this.selectedFilter === 'alphabetical') {
@@ -73,13 +147,13 @@ export class SurveyListComponent implements OnInit {
     this.filteredSurveys = filtered;
   }
 
-  // Método para redirigir a los detalles de la encuesta
+  
   openSurvey(id: string) {
     this.router.navigate([`/survey-details/${id}`]);
   }
 
-  // Método para cerrar sesión
   logOut() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
   }
+  
 }

@@ -54,7 +54,7 @@ body {
   justify-content: space-between;
   background-color: #ffffff;
   padding: 10px 20px;
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .logo-container {

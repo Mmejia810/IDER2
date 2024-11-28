@@ -1,14 +1,34 @@
+<div class="home-content">
+  
+  <div class="top-bar">
+    <div class="logo-container">
+      <div class="menu-icon" (click)="toggleSidebar()">
+        <img src="../../../assets/imagenes/lista.png" alt="Menú" />
+      </div>
+      <span class="app-title">ENCUESTAS</span>
+      <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo" />
+    </div>
+    <div class="top-bar-options">
+      <div (click)="logOut()" class="logout-btn">
+        <img src="../../../assets/imagenes/cerrar-sesion.png" alt="Cerrar Sesión" class="logout-icon" />
+      </div>
+    </div>
+  </div>
 
+  
+  <app-sidebar [isActive]="isSidebarActive"></app-sidebar>
+
+  <div class="overlay" *ngIf="isSidebarActive" (click)="toggleSidebar()"></div>
 
 
 <div class="home-content">
-    <!-- Detalles de la encuesta -->
+    
     <div *ngIf="surveyDetails" class="card survey-card">
       <h2>{{ surveyDetails.titulo }}</h2>
       <p>{{ surveyDetails.descripcion }}</p>
     </div>
   
-    <!-- Secciones de la encuesta -->
+    
     <div *ngIf="secciones && secciones.length > 0" class="card section-card">
       <h3>Secciones</h3>
       <ul>
@@ -19,7 +39,6 @@
       </ul>
     </div>
   
-    <!-- Preguntas de la sección seleccionada -->
     <div *ngIf="preguntas && preguntas.length > 0" class="card question-card">
       <h3>Preguntas de la sección: {{ selectedSection?.titulo }}</h3>
       <ul>
@@ -28,7 +47,6 @@
           <p>Descripción: {{ pregunta.descripcion }}</p>
           <p>Tipo: {{ pregunta.tipo }}</p>
   
-          <!-- Opciones para preguntas de tipo "Opción múltiple" -->
           <div *ngIf="pregunta.tipo === 'Opcion multiple'">
             <h5>Opciones:</h5>
             <ul>
@@ -41,12 +59,10 @@
       </ul>
     </div>
   
-    <!-- Mensaje si no hay preguntas -->
     <div *ngIf="(!preguntas || preguntas.length === 0) && selectedSection">
       <p>No hay preguntas disponibles para esta sección.</p>
     </div>
   
-    <!-- Mensaje si no hay secciones -->
     <div *ngIf="!secciones || secciones.length === 0">
       <p>No hay secciones disponibles para esta encuesta.</p>
     </div>

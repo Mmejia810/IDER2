@@ -16,12 +16,12 @@
     </div>
   
     <!-- Barra lateral (sidebar) -->
-    <app-sidebar [isActive]="isSidebarActive"></app-sidebar>
+    <app-sidebaruser [isActiveU]="isSidebarActiveU"></app-sidebaruser>
   
     <!-- Overlay para opacar contenido cuando el sidebar esté activo -->
-    <div class="overlay" *ngIf="isSidebarActive" (click)="toggleSidebar()"></div>
+    <div class="overlay" *ngIf="isSidebarActiveU" (click)="toggleSidebar()"></div>
   
-    <div class="content" [class.sidebar-active]="isSidebarActive">
+    <div class="content" [class.sidebar-active]="isSidebarActiveU">
       <!-- Tarjeta de saludo -->
       <div class="greeting-card">
         <div class="greeting-text">

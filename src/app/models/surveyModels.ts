@@ -14,16 +14,25 @@ export interface Survey {
 
 export interface Section {
   id: number;
-  title: string;
-  questions: Question[];  // Cambiado de string[] a Question[]
+  titulo: string;
+  seccionId: string;  // Asegúrate de que este campo coincida
+
+
+  // Agrega otros campos según tu modelo de datos
 }
 
 export interface Question {
-  text: string;
-  type: 'abierta' | 'multiple';
-  options: Option[];
+  questionId: string;  // Asegúrate de que este campo coincida
+  id: number;
+  texto: string;
+  seccionId: number; // Relación con la sección
+  // Agrega otros campos según tu modelo de datos
 }
 
 export interface Option {
-  text: string;
+  id: number;
+  optionId: string;  // Asegúrate de que este campo coincida
+  texto: string;
+  questionId: string;  // Asegúrate de que esta propiedad esté aquí
+  // Agrega otros campos según tu modelo de datos
 }

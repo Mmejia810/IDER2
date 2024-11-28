@@ -1,10 +1,10 @@
 <div class="sidebar" [class.active]="isActive">
     <ul class="sidebar-links">
+      <li (click)="navigateTo('show-credentials')">Perfil</li>
       <li (click)="navigateTo('home')">Inicio</li>
-      <li (click)="navigateTo('surveys')">Mis Encuestas</li>
-      <li (click)="navigateTo('create-survey')">Crear Encuesta</li>
-      <li (click)="navigateTo('profile')">Perfil</li>
-      <li (click)="navigateTo('settings')">Configuración</li>
+      <li (click)="navigateTo('survey')">Crear Encuesta</li>
+      <li (click)="navigateTo('survey-list')">Lista encuestas</li>
+      <li (click)="navigateTo('update-survey')">Actualizar encuesta</li>
     </ul>
   </div>
   

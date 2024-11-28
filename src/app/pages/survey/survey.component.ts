@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SurveyService } from '../../services/survey.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../auth/auth.service';
 
 interface Option {
   id?: number;
@@ -38,7 +39,8 @@ export class SurveyComponent implements OnInit {
   sections: Section[] = [];
   expandedSectionIndex: number | null = null;
 
-  constructor(private surveyService: SurveyService, private router: Router) {}
+  constructor(private surveyService: SurveyService, private router: Router, private authService: AuthService // Inyectar el servicio de autenticación
+  ) {}
 
   ngOnInit() {
     const today = new Date();
@@ -64,18 +66,25 @@ export class SurveyComponent implements OnInit {
     }
   
     const formattedEndDate = this.endDate?.toISOString().slice(0, 10) || '';
+
+    const userId = this.authService.getUserId(); 
+  
+    if (!userId) {
+      alert('No se ha podido obtener el ID del usuario logueado.');
+      return;
+    }
   
     const newSurvey = {
       titulo: this.surveyTitle,
       descripcion: this.surveyDescription,
       estado: 'activa',
       fechaCierre: formattedEndDate,
-      usuario: { id: 1 }, // ID de usuario estático
+      usuario: { id: userId }, 
     };
   
     this.surveyService.saveSurvey(newSurvey).subscribe(
       (response: any) => {
-        this.surveyId = response.id; // Asegúrate de que el backend devuelve el ID
+        this.surveyId = response.id; 
         alert('Encuesta guardada exitosamente.');
       },
       (error: HttpErrorResponse) => {
@@ -114,14 +123,14 @@ export class SurveyComponent implements OnInit {
   }
 
   const sectionData = {
-    encuestaId: this.surveyId, // Pasar el surveyId
+    encuestaId: this.surveyId, 
     titulo: section.title,
   };
 
-  this.surveyService.saveSection(this.surveyId, sectionData).subscribe( // Para Opción 1
-  // O utiliza: this.surveyService.saveSection(sectionData).subscribe( // Para Opción 2
+  this.surveyService.saveSection(this.surveyId, sectionData).subscribe( 
+  
     (response: any) => {
-      section.id = response.id; // Asignar el ID retornado
+      section.id = response.id; 
       alert('Sección guardada exitosamente.');
     },
     (error: HttpErrorResponse) => {
@@ -140,11 +149,9 @@ export class SurveyComponent implements OnInit {
       const section = this.sections[sectionIndex];
 
       if (section.id === null) {
-        // Si la sección no está guardada, eliminar localmente
         this.sections.splice(sectionIndex, 1);
         alert('Sección eliminada localmente.');
       } else {
-        // Si la sección está guardada, eliminar también en la base de datos
         this.surveyService.deleteSection(section.id).subscribe(
           () => {
             this.sections.splice(sectionIndex, 1);
@@ -197,10 +204,10 @@ export class SurveyComponent implements OnInit {
 
   addOption(sectionId: number | null, question: Question) {
     if (question.type === 'multiple') {
-      question.options = question.options || []; // Inicializar si no existe
+      question.options = question.options || []; 
       question.options.push({
-        texto: '', // Texto inicial vacío
-        seleccionable: true, // Valor por defecto
+        texto: '', 
+        seleccionable: true, 
       });
     }
   }
@@ -212,21 +219,20 @@ export class SurveyComponent implements OnInit {
       return;
     }
   
-    // Datos a enviar al backend
+   
     const questionData = {
-      id: question.id || null, // Si es una pregunta nueva, id será null
+      id: question.id || null, 
       texto: question.text.trim(),
       tipo: question.type === 'abierta' ? 'Opcion abierta' : 'Opcion multiple',
-      seccionEncuesta: { id: sectionId }, // Asociar con la sección
+      seccionEncuesta: { id: sectionId }, 
     };
   
-    // Guardar la pregunta
+   
     this.surveyService.saveQuestion(questionData).subscribe(
       (response: any) => {
-        question.id = response.id; // Asignar el ID retornado a la pregunta
+        question.id = response.id; 
         alert('Pregunta guardada con éxito.');
   
-        // Si la pregunta es múltiple, habilitamos la funcionalidad de agregar opciones
         if (question.type === 'multiple') {
           alert('Ahora puede agregar opciones para esta pregunta.');
         }
@@ -272,22 +278,21 @@ export class SurveyComponent implements OnInit {
       return;
     }
   
-    // Validar y formatear la opción
+   
     const formattedOptions = question.options
       .map(option => ({
-        tipo: 'Texto libre', // Tipo de opción
-        texto: option.texto?.trim() || '', // Texto de la opción
-        seleccionable: option.seleccionable, // Si es seleccionable
-        pregunta: { id: question.id }, // Asociar con el ID de la pregunta
+        tipo: 'Texto libre', 
+        texto: option.texto?.trim() || '', 
+        seleccionable: option.seleccionable,
+        pregunta: { id: question.id }, 
       }))
-      .filter(option => option.texto !== ''); // Filtrar opciones vacías
+      .filter(option => option.texto !== ''); 
   
     if (formattedOptions.length === 0) {
       alert('Debe ingresar al menos una opción válida.');
       return;
     }
   
-    // Enviar cada opción como un objeto independiente
     formattedOptions.forEach(option => {
       this.surveyService.saveOption(option).subscribe(
         (response: any) => {

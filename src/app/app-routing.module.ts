@@ -12,15 +12,21 @@ const routes: Routes = [
     loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule)
   },
 
+  
+
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) // Ruta para cargar HomeModule
   },
+
   
   {
     path: 'survey-details',
     loadChildren: () => import('./pages/survey-details/survey-details.module').then(m => m.SurveyDetailsModule) // Ruta correcta al módulo de la página
   },
+
+  
+  
   {
     path: 'survey-list',
     loadChildren: () => import('./pages/survey-list/survey-list.module').then(m => m.SurveyListModule) // Ruta para cargar HomeModule
@@ -48,12 +54,26 @@ const routes: Routes = [
 
 
   {
-    path: 'recover-password',
-    loadChildren: () => import('./pages/recover-password/recover-password.module').then(m => m.RecoverPasswordModule)
+    path: 'update-survey',
+     loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule)
+   },
+
+   {
+    path: 'update-survey/:id',  // Definir ruta con parámetro id
+    loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule)
   },
   
-
   
+  {
+    path: 'show-credentials',
+    loadChildren: () => import('./pages/show-credentials/show-credentials.module').then(m => m.ShowCredentialsModule)
+  },
+
+  {
+    path: 'responder-encuesta',
+    loadChildren: () => import('./pages/responder-encuesta/responder-encuesta.module').then(m => m.ResponderEncuestaModule)
+  },
+    
   { path: 'survey', loadChildren: () => import('./pages/survey/survey.module').then(m => m.SurveyModule) },
   
   { path: '**', redirectTo: 'login' } // Ruta para manejar rutas no encontradas

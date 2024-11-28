@@ -1,6 +1,6 @@
- // src/app/components/survey-card/survey-card.component.ts
+ 
  import { Component, Input } from '@angular/core';
- import { Survey } from '../../models/surveyModels';  // Asegúrate de importar el tipo Survey
+ import { Survey } from '../../models/surveyModels';  
  
  @Component({
    selector: 'app-survey-card',
@@ -8,5 +8,5 @@
    styleUrls: ['./survey-card.component.css'],
  })
  export class SurveyCardComponent {
-   @Input() survey: Survey | undefined;  // Declara la propiedad 'survey' como Input
+   @Input() survey: Survey | undefined;  
  }

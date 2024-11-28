@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
 })
 export class CreateSurveyComponent {
 
-  // Asegúrate de que el método esté definido
+  
   createNewSurvey() {
-    // Lógica para crear una nueva encuesta
+    
     console.log("Nueva encuesta creada");
   }
 }

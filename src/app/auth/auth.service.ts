@@ -6,14 +6,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:9085/usuario'; // Cambia esto a tu URL de backend
+  private baseUrl = 'http://localhost:9085/usuario'; 
 
   constructor(private http: HttpClient) { }
 
-  login(credentials: { email: string, pass: string }): Observable<any> {
-    // Asegúrate de que la respuesta sea de tipo texto
-    return this.http.post(`${this.baseUrl}/login`, credentials, { responseType: 'text' });
+  login(credentials: { email: string, pass: string }): Observable<{ message: string, userId: number }> {
+    return this.http.post<{ message: string, userId: number }>(`${this.baseUrl}/login`, credentials);
   }
+  
 
   register(userData: { 
     identificacion: string; 
@@ -30,4 +30,26 @@ export class AuthService {
   recoverPassword(email: { email: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/recover-password`, email);
   }
+
+  getUserId(): string | null {
+    return localStorage.getItem('userId');
+  }
+
+  getUserProfile(): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) {
+      throw new Error('No user ID found. Please login first.');
+    }
+    return this.http.get(`${this.baseUrl}/${userId}`);
+  }
+
+  
+  updateUserProfile(userProfile: any): Observable<any> {
+    const userId = this.getUserId();
+    if (!userId) {
+      throw new Error('No user ID found. Please login first.');
+    }
+    return this.http.put(`${this.baseUrl}/${userId}`, userProfile);
+  }
+  
 }
