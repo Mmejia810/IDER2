@@ -16,7 +16,9 @@ export class SurveyService {
   private apiUrlEncuestaId = 'http://localhost:9085/encuesta';
   private apiUrlSecciones = 'http://localhost:9085/secciones';
   private apiUrlPreguntas = 'http://localhost:9085/preguntas';
-  private apiUrlOpciones = 'http://localhost:9085/opciones';  
+  private apiUrlOpciones = 'http://localhost:9085/opciones'; 
+  private apiUrlRespuestas = 'http://localhost:9085/respuestas';  // Nueva URL para respuestas
+ 
 
   constructor(private http: HttpClient) {}
 
@@ -136,7 +138,12 @@ getActiveSurveys(): Observable<any[]> {
   }
   
   saveResponses(encuestaId: string, respuestas: any[]): Observable<any> {
-    return this.http.post<any>(`/api/surveys/${encuestaId}/responses`, { respuestas });
+    return this.http.post<any>(`${this.apiUrlRespuestas}`, { encuestaId, respuestas }).pipe(
+      catchError((error) => {
+        console.error('Error al guardar respuestas:', error);
+        return throwError(() => new Error('Error al guardar respuestas'));
+      })
+    );
   }
   
   updateSurvey(survey: any): Observable<any> {
@@ -157,6 +164,11 @@ getActiveSurveys(): Observable<any[]> {
   updateOption(option: any): Observable<any> {
     return this.http.put(`${this.apiUrlOpciones}/actualizar/${option.id}`, option);
   }
+
+  enviarRespuesta(respuesta: any): Observable<any> {
+    return this.http.post(this.apiUrl, respuesta);
+  }
+  
   
 
 }

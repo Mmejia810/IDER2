@@ -1,8 +1,8 @@
 <div class="home-content">
   <!-- Información de la encuesta -->
   <div *ngIf="surveyDetails" class="card survey-card">
-    <h2>{{ surveyDetails.titulo }}</h2>
-    <p>{{ surveyDetails.descripcion }}</p>
+    <h2>{{ surveyDetails?.titulo }}</h2>
+    <p>{{ surveyDetails?.descripcion }}</p>
   </div>
 
   <!-- Secciones de la encuesta -->
@@ -10,8 +10,8 @@
     <h3>Secciones</h3>
     <ul>
       <li *ngFor="let seccion of secciones" (click)="loadQuestionsForSection(seccion.id)">
-        <h4>{{ seccion.titulo }}</h4>
-        <p>{{ seccion.descripcion }}</p>
+        <h4>{{ seccion?.titulo }}</h4>
+        <p>{{ seccion?.descripcion }}</p>
       </li>
     </ul>
   </div>
@@ -19,77 +19,50 @@
   <!-- Preguntas de la sección seleccionada -->
   <div *ngIf="preguntas && preguntas.length > 0" class="card question-card">
     <h3>Preguntas de la sección: {{ selectedSection?.titulo }}</h3>
-    <form (ngSubmit)="submitAnswers()">
+    <form>
       <ul>
         <li *ngFor="let pregunta of preguntas">
-          <h4>{{ pregunta.texto }}</h4>
+          <h4>{{ pregunta?.texto }}</h4>
 
           <!-- Pregunta de opción múltiple -->
           <div *ngIf="pregunta.tipo === 'Opcion multiple'">
-            <h5>Opciones:</h5>
-            <ul>
-              <li *ngFor="let opcion of getOptionsForQuestion(pregunta.id)">
+            <div *ngFor="let opcion of getOptionsForQuestion(pregunta.id)">
+              <label>
                 <input
-                  type="radio"
-                  [name]="pregunta.id"
-                  [value]="opcion.id"
-                  [(ngModel)]="pregunta.respuesta"
-                  required
+                  type="checkbox"
+                  [checked]="pregunta.opcionesSeleccionadas?.includes(opcion.id)"
+                  (change)="onOptionChange(pregunta, opcion.id, $event)"
                 />
-                {{ opcion.texto }}
-              </li>
-            </ul>
+                {{ opcion?.texto }}
+              </label>
+            </div>
           </div>
 
-          
+          <!-- Pregunta abierta -->
+          <div *ngIf="pregunta.tipo === 'Abierta'">
+            <textarea
+              [(ngModel)]="respuestaAbierta[pregunta.id]"
+              placeholder="Escribe tu respuesta aquí"
+            ></textarea>
+          </div>
 
-
-          <!-- Pregunta de tipo número -->
-          <div *ngIf="pregunta.tipo === 'Número'">
-            <label for="respuesta{{ pregunta.id }}">Respuesta (número):</label>
+          <!-- Comentarios -->
+          <div *ngIf="pregunta.tipo !== 'Opcion multiple' && pregunta.tipo !== 'Abierta'">
+            <label for="comentario{{ pregunta.id }}">Enviar respuesta:</label>
             <input
-              id="respuesta{{ pregunta.id }}"
-              type="number"
-              [(ngModel)]="pregunta.respuesta"
-              name="respuesta{{ pregunta.id }}"
-              required
+              type="text"
+              id="comentario{{ pregunta.id }}"
+              [(ngModel)]="comentarios[pregunta.id]"
+              name="comentario{{ pregunta.id }}"
+              placeholder="Escribe tu comentario aquí..."
             />
           </div>
-
-          <!-- <!-- Pregunta de texto -->
-<div *ngIf="pregunta.tipo === 'Texto'">
-  <label for="respuesta{{ pregunta.id }}">Tu respuesta:</label>
-  <input
-    id="respuesta{{ pregunta.id }}"
-    type="text"
-    [(ngModel)]="pregunta.respuesta"
-    name="respuesta{{ pregunta.id }}"
-    placeholder="Escribe tu respuesta aquí..."
-    required
-  />
-</div>
-
-<div *ngIf="pregunta.tipo === 'Abierta' || pregunta.comentario">
-  <label for="comentario{{ pregunta.id }}">:</label>
-  <input
-    id="comentario{{ pregunta.id }}"
-    type="text"
-    [(ngModel)]="pregunta.comentario"
-    name="comentario{{ pregunta.id }}"
-    placeholder="Escribe tu comentario aquí..."
-    class="form-control"
-  />
-</div>
-
-<div *ngIf="pregunta.tipo !== 'Opcion multiple' && pregunta.tipo !== 'Texto' && pregunta.tipo !== 'Número'">
-  <label for="comentario{{ pregunta.id }}">Comentario (opcional):</label>
-  <input type="text" id="comentario{{ pregunta.id }}" [(ngModel)]="comentarios[pregunta.id]" placeholder="Escribe tu comentario aquí...">
-</div>
-
         </li>
       </ul>
-      <button type="submit" [disabled]="!isFormValid()">Enviar Respuestas</button>
     </form>
+
+    <!-- Botón para enviar respuestas de la sección -->
+    <button (click)="saveAnswer(preguntas)">Guardar respuestas de esta sección</button>
   </div>
 
   <!-- Mensajes en caso de no haber preguntas o secciones -->
