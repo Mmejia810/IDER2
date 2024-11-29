@@ -1,0 +1,59 @@
+.update-user-profile {
+    padding: 20px;
+  }
+  
+  .update-user-profile h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .update-user-profile ul {
+    list-style-type: none;
+  }
+  
+  .update-user-profile li {
+    cursor: pointer;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+  
+  .update-user-profile li:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .update-user-profile form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .update-user-profile label {
+    margin-bottom: 5px;
+  }
+  
+  .update-user-profile input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .update-user-profile button {
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .update-user-profile button[type="button"] {
+    background-color: #f44336;
+  }
+  
+  .update-user-profile button:hover {
+    opacity: 0.8;
+  }
+  

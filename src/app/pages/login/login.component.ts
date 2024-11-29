@@ -29,23 +29,24 @@ export class LoginComponent implements OnInit {
         email: this.loginForm.value.email,
         pass: this.loginForm.value.password
       };
+      console.log('Enviando credenciales:', credentials); // Agrega esto
   
       this.authService.login(credentials).subscribe(
-        (response) => { // Ya no es necesario especificar el tipo explícitamente
-          console.log('Login exitoso', response);
+        (response) => {
+          console.log('Respuesta del backend:', response);
   
-          // Verifica si la respuesta tiene 'message' y 'userId'
-          if (response.message === 'Login successful' && response.userId) {
-            // Almacenar el userId en localStorage
-            localStorage.setItem('userId', response.userId.toString()); // Guardamos el userId en localStorage
+          if (response.message === 'Login successful' && response.userId && response.role) {
+            localStorage.setItem('userId', response.userId.toString());
   
-            // Si se espera un token JWT o algo similar, puedes almacenarlo aquí
-            // localStorage.setItem('authToken', 'your-jwt-token'); // Si tienes un token para almacenar
-  
-            this.router.navigate(['/home']);
+            if (response.role === 'Administrador') {
+              this.router.navigate(['/home']);
+            } else if (response.role === 'usuario') {
+              this.router.navigate(['/homeuser']);
+            } else {
+              console.error('Rol desconocido:', response.role);
+            }
           } else {
-            // Si no es "Login successful", muestra un mensaje de error
-            this.errorMessage = 'Error: No se recibió el userId o el mensaje de login.';
+            this.errorMessage = 'Error: No se recibió la información esperada.';
             console.error(this.errorMessage);
           }
         },
@@ -56,6 +57,8 @@ export class LoginComponent implements OnInit {
       );
     }
   }
+  
+  
   
   
 

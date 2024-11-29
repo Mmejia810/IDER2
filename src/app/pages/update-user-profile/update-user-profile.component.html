@@ -1,0 +1,30 @@
+<div class="update-user-profile">
+    <h2>Actualizar Perfil de Usuario</h2>
+  
+    <!-- Lista de usuarios -->
+    <div *ngIf="!selectedUser">
+      <h3>Usuarios</h3>
+      <ul>
+        <li *ngFor="let user of users" (click)="editUser(user)">
+          {{ user.nombre }} {{ user.apellido }} ({{ user.email }})
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Formulario de edición de usuario -->
+    <div *ngIf="selectedUser">
+      <h3>Editar Usuario</h3>
+      <form (ngSubmit)="updateUser()">
+        <label for="name">Nombre:</label>
+        <input id="name" [(ngModel)]="selectedUser.nombre" name="name" required />
+  
+        <label for="email">Correo Electrónico:</label>
+        <input id="email" [(ngModel)]="selectedUser.email" name="email" required />
+  
+        <!-- Botones de guardar o cancelar -->
+        <button type="submit">Guardar</button>
+        <button type="button" (click)="cancelEdit()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+  

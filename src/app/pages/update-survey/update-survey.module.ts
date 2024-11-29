@@ -12,7 +12,7 @@ import { UpdateSurveyRoutingModule } from './update-survey-routing.module';
 import { UpdateSurveyComponent } from './update-survey.component'; 
 
 @NgModule({
-  declarations: [UpdateSurveyComponent], 
+  declarations: [UpdateSurveyComponent], // AÑADE AQUÍ
   imports: [
     CommonModule,
     UpdateSurveyRoutingModule,

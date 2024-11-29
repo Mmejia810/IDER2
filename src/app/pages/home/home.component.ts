@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
 
   updateUserProfiles() {
     // Redirige para gestionar otros perfiles
-    this.router.navigate(['/admin/user-profiles']);
+    this.router.navigate(['/update-user-profile']);
   }
 
   updateSurvey() {

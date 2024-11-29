@@ -72,6 +72,9 @@ const routes: Routes = [
     
   { path: 'survey', loadChildren: () => import('./pages/survey/survey.module').then(m => m.SurveyModule) },
   
+  
+  { path: 'update-user-profile', loadChildren: () => import('./pages/update-user-profile/update-user-profile.module').then(m => m.UpdateUserProfileModule) },
+  
   { path: '**', redirectTo: 'login' } // Ruta para manejar rutas no encontradas
 ];
 

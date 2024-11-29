@@ -31,4 +31,4 @@ import { SidebarModule } from '../../sidebar/sidebar.module';
     SurveyCardModule,  
   ],
 })
-export class SurveyListModule {}
+export class SurveyListModule {}
