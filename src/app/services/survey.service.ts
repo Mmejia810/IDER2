@@ -137,14 +137,8 @@ getActiveSurveys(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/sections/${sectionId}/questions`);
   }
   
-  saveResponses(encuestaId: string, respuestas: any[]): Observable<any> {
-    return this.http.post<any>(`${this.apiUrlRespuestas}`, { encuestaId, respuestas }).pipe(
-      catchError((error) => {
-        console.error('Error al guardar respuestas:', error);
-        return throwError(() => new Error('Error al guardar respuestas'));
-      })
-    );
-  }
+  
+
   
   updateSurvey(survey: any): Observable<any> {
     return this.http.put(`${this.apiUrlEncuestaId}/actualizar/${survey.id}`, survey);
@@ -165,11 +159,43 @@ getActiveSurveys(): Observable<any[]> {
     return this.http.put(`${this.apiUrlOpciones}/actualizar/${option.id}`, option);
   }
 
-  enviarRespuesta(respuesta: any): Observable<any> {
-    return this.http.post(this.apiUrl, respuesta);
+  
+  saveOpenQuestionResponse(respuesta: string, usuarioId: number, seccionId: number, preguntaId: number): Observable<any> {
+    const payload = {
+      respuesta: respuesta,
+      usuario: { id: usuarioId },
+      seccionEncuesta: { id: seccionId },
+      pregunta: { id: preguntaId },
+      opciones: []  // Para preguntas abiertas, no hay opciones.
+    };
+  
+    console.log('Payload para guardar respuesta:', payload);
+  
+    return this.http.post<any>(this.apiUrlRespuestas, payload).pipe(
+      catchError((error) => {
+        console.error('Error al guardar respuesta de pregunta abierta:', error);
+        return throwError(() => new Error('Error al guardar respuesta de pregunta abierta'));
+      })
+    );
   }
   
+  saveMultipleChoiceQuestionResponse(respuesta: string, usuarioId: number, seccionId: number, preguntaId: number, opciones: { id: number }[]): Observable<any> {
+    const payload = {
+      respuesta: respuesta,
+      usuario: { id: usuarioId },
+      seccionEncuesta: { id: seccionId },
+      pregunta: { id: preguntaId },
+      opciones: opciones  // Las opciones seleccionadas para la pregunta de opción múltiple.
+    };
   
+    return this.http.post<any>(this.apiUrlRespuestas, payload).pipe(
+      catchError((error) => {
+        console.error('Error al guardar respuesta de opción múltiple:', error);
+        return throwError(() => new Error('Error al guardar respuesta de opción múltiple'));
+      })
+    );
+  }
+    
 
 }
 

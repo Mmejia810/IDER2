@@ -36,17 +36,26 @@
                 {{ opcion?.texto }}
               </label>
             </div>
+            <!-- Botón para guardar respuesta de opción múltiple -->
+            <button type="button" (click)="saveAnswerForMultipleChoiceQuestion(pregunta)">
+              Guardar respuesta
+            </button>
           </div>
 
           <!-- Pregunta abierta -->
           <div *ngIf="pregunta.tipo === 'Abierta'">
             <textarea
               [(ngModel)]="respuestaAbierta[pregunta.id]"
+              (blur)="saveAnswerForOpenQuestion(pregunta)"
               placeholder="Escribe tu respuesta aquí"
             ></textarea>
+            <!-- Botón para guardar respuesta abierta -->
+            <button type="button" (click)="saveAnswerForOpenQuestion(pregunta)">
+              Guardar respuesta
+            </button>
           </div>
 
-          <!-- Comentarios -->
+          <!-- Comentarios (para preguntas no abiertas ni de opción múltiple) -->
           <div *ngIf="pregunta.tipo !== 'Opcion multiple' && pregunta.tipo !== 'Abierta'">
             <label for="comentario{{ pregunta.id }}">Enviar respuesta:</label>
             <input
@@ -54,21 +63,24 @@
               id="comentario{{ pregunta.id }}"
               [(ngModel)]="comentarios[pregunta.id]"
               name="comentario{{ pregunta.id }}"
+              (blur)="saveAnswerForMultipleChoiceQuestion(pregunta)"
               placeholder="Escribe tu comentario aquí..."
             />
+            <!-- Botón para guardar comentario -->
+            <button type="button" (click)="saveAnswerForMultipleChoiceQuestion(pregunta)">
+              Guardar comentario
+            </button>
           </div>
         </li>
       </ul>
     </form>
-
-    <!-- Botón para enviar respuestas de la sección -->
-    <button (click)="saveAnswer(preguntas)">Guardar respuestas de esta sección</button>
   </div>
 
   <!-- Mensajes en caso de no haber preguntas o secciones -->
   <div *ngIf="(!preguntas || preguntas.length === 0) && selectedSection">
     <p>No hay preguntas disponibles para esta sección.</p>
   </div>
+
   <div *ngIf="!secciones || secciones.length === 0">
     <p>No hay secciones disponibles para esta encuesta.</p>
   </div>
