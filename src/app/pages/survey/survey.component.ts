@@ -4,6 +4,18 @@
   import { HttpErrorResponse } from '@angular/common/http';
   import { AuthService } from '../../auth/auth.service';
 
+  export interface Survey {
+    id: number;
+    name: string;
+    title: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    createdAt: string;
+    state: string;
+    sections: Section[];
+  }
+
   interface Option {
     id?: number;
     texto: string;
@@ -64,27 +76,27 @@
         alert('Debe rellenar todos los campos de la encuesta antes de guardarla.');
         return;
       }
-    
+
       const formattedEndDate = this.endDate?.toISOString().slice(0, 10) || '';
 
-      const userId = this.authService.getUserId(); 
-    
+      const userId = this.authService.getUserId();
+
       if (!userId) {
         alert('No se ha podido obtener el ID del usuario logueado.');
         return;
       }
-    
+
       const newSurvey = {
         titulo: this.surveyTitle,
         descripcion: this.surveyDescription,
-        estado: 'activa',
+        estado: 'abierta',
         fechaCierre: formattedEndDate,
-        usuario: { id: userId }, 
+        usuario: { id: userId },
       };
-    
+
       this.surveyService.saveSurvey(newSurvey).subscribe(
         (response: any) => {
-          this.surveyId = response.id; 
+          this.surveyId = response.id;
           alert('Encuesta guardada exitosamente.');
         },
         (error: HttpErrorResponse) => {
@@ -93,7 +105,7 @@
         }
       );
     }
-    
+
 
     addSection() {
       if (!this.surveyId) {
@@ -102,7 +114,7 @@
       }
 
       const newSection: Section = {
-        id: null,
+        id: 0,
         title: '',
         questions: [],
         showQuestionTypeSelector: false,
@@ -123,14 +135,14 @@
     }
 
     const sectionData = {
-      encuestaId: this.surveyId, 
+      encuestaId: this.surveyId,
       titulo: section.title,
     };
 
-    this.surveyService.saveSection(this.surveyId, sectionData).subscribe( 
-    
+    this.surveyService.saveSection(this.surveyId, sectionData).subscribe(
+
       (response: any) => {
-        section.id = response.id; 
+        section.id = response.id;
         alert('Sección guardada exitosamente.');
       },
       (error: HttpErrorResponse) => {
@@ -140,7 +152,7 @@
     );
   }
 
-    
+
 
     deleteSection(sectionId: number | null) {
       const sectionIndex = this.sections.findIndex((section) => section.id === sectionId);
@@ -204,35 +216,69 @@
 
     addOption(sectionId: number | null, question: Question) {
       if (question.type === 'multiple') {
-        question.options = question.options || []; 
+        question.options = question.options || [];
         question.options.push({
-          texto: '', 
-          seleccionable: true, 
+          texto: '',
+          seleccionable: true,
         });
       }
     }
-    
+
+    // saveQuestion(sectionId: number | null, question: Question) {
+    //   if (sectionId === null || !question.text.trim()) {
+    //     alert('Debe rellenar la pregunta antes de guardarla.');
+    //     return;
+    //   }
+
+    //   // Se prepara la data a enviar con el objeto seccionEncuesta en lugar de solo el id
+    //   const questionData: any = {
+    //     texto: question.text.trim(),
+    //     tipo: question.type === 'abierta' ? 'abierta' : 'multiple',
+    //     seccionEncuesta: { id: sectionId } // se envía como objeto
+    //   };
+
+    //   if (question.id != null) {
+    //     questionData.id = question.id;
+    //   }
+
+    //   console.log('Datos que se enviarán:', questionData);
+
+    //   // Se llama al servicio para guardar la pregunta
+    //   this.surveyService.saveQuestion(questionData).subscribe(
+    //     (response: any) => {
+    //       question.id = response.id;
+    //       alert('Pregunta guardada con éxito.');
+    //       if (question.type === 'multiple') {
+    //         alert('Ahora puede agregar opciones para esta pregunta.');
+    //       }
+    //     },
+    //     (error: HttpErrorResponse) => {
+    //       console.error('Error al guardar pregunta:', error);
+    //       alert('Ocurrió un error al guardar la pregunta. Revise los datos.');
+    //     }
+    //   );
+    // }
 
     saveQuestion(sectionId: number | null, question: Question) {
       if (sectionId === null || !question.text.trim()) {
         alert('Debe rellenar la pregunta antes de guardarla.');
         return;
       }
-    
-    
+
+
         const questionData = {
-          id: question.id || null, 
+          id: question.id || null,
           texto: question.text.trim(),
           tipo: question.type === 'abierta' ? 'Opcion abierta' : 'Opcion multiple',
-          seccionEncuesta: { id: sectionId }, 
+          seccionEncuesta: { id: sectionId },
         };
-    
-    
+
+
       this.surveyService.saveQuestion(questionData).subscribe(
         (response: any) => {
-          question.id = response.id; 
+          question.id = response.id;
           alert('Pregunta guardada con éxito.');
-    
+
           if (question.type === 'multiple') {
             alert('Ahora puede agregar opciones para esta pregunta.');
           }
@@ -243,7 +289,10 @@
         }
       );
     }
-    
+
+
+
+
 
     deleteQuestion(sectionId: number | null, question: Question) {
       if (question.id === null || question.id === undefined) {
@@ -277,22 +326,22 @@
         alert('La pregunta no está configurada correctamente. Guarde la pregunta antes de añadir opciones.');
         return;
       }
-    
-    
+
+
       const formattedOptions = question.options
         .map(option => ({
-          tipo: 'Texto libre', 
-          texto: option.texto?.trim() || '', 
+          tipo: 'Texto libre',
+          texto: option.texto?.trim() || '',
           seleccionable: option.seleccionable,
-          pregunta: { id: question.id }, 
+          pregunta: { id: question.id },
         }))
-        .filter(option => option.texto !== ''); 
-    
+        .filter(option => option.texto !== '');
+
       if (formattedOptions.length === 0) {
         alert('Debe ingresar al menos una opción válida.');
         return;
       }
-    
+
       formattedOptions.forEach(option => {
         this.surveyService.saveOption(option).subscribe(
           (response: any) => {
@@ -306,10 +355,10 @@
         );
       });
     }
-    
-    
-    
-    
+
+
+
+
     logOut() {
       this.router.navigate(['/login']);
     }

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersurveyLisComponent } from './usersurvey-lis.component';
 import { SidebarModule } from '../../sidebar/sidebar.module';
-import { SharedModule } from '../../shared/shared.module'; 
+import { SharedModule } from '../../shared/shared.module';
 import { SurveyService } from '../../services/survey.service';
 import { FormsModule } from '@angular/forms';
 
@@ -18,7 +18,8 @@ import { SidebaruserModule } from "../../services/userservices/sidebaruser/sideb
     SharedModule,
     UserSurveyLisRoutingModule,
     SidebaruserModule,
-    FormsModule
+    FormsModule,
+
 ],
   providers: [SurveyService]
 })

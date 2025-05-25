@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
+  // Inyecta el servicio de toast
 
 @Component({
   selector: 'app-home',
@@ -8,29 +10,28 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   isSidebarActive: boolean = false;
-  greetingMessage: string = ''; 
+  greetingMessage: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private ToastService: ToastService  // Inyecta el servicio
+  ) {}
 
   ngOnInit() {
-    this.setGreetingMessage(); 
+    this.setGreetingMessage();
   }
 
-  
+  // Función para establecer el mensaje de saludo dependiendo de la hora del día
   setGreetingMessage() {
     const hour = new Date().getHours();
-    let timeOfDay = 'día'; 
+    let timeOfDay = 'día';
 
-    
     if (hour >= 12 && hour < 18) {
       timeOfDay = 'tarde';
-    }
-    
-    else if (hour >= 18 || hour < 6) {
+    } else if (hour >= 18 || hour < 6) {
       timeOfDay = 'noche';
     }
 
-    
     if (timeOfDay === 'día') {
       this.greetingMessage = `Bienvenido a la creación de encuestas. ¡Ten un excelente día!`;
     } else {
@@ -38,50 +39,54 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  // Función para alternar el estado de la barra lateral
   toggleSidebar() {
     this.isSidebarActive = !this.isSidebarActive;
   }
 
+  // Función para navegar a una ruta
   navigateTo(route: string) {
     this.router.navigate([`/${route}`]);
     this.toggleSidebar();
   }
 
+  // Función de cierre de sesión con confirmación mediante Toast
   logOut() {
-    this.router.navigate(['/login']);
+    // Mostrar un mensaje toast preguntando si el usuario está seguro de cerrar sesión
+    this.ToastService.show('¿Estás seguro de que quieres cerrar sesión?', 'Sí', 5000);
+
+    // Redirigir después de que el usuario confirme (simulado con setTimeout)
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 5000);  // Esperar 5 segundos antes de redirigir
   }
 
+  // Funciones para navegar a diferentes páginas
   createSurvey() {
-    this.router.navigate(['/survey']); 
+    this.router.navigate(['/survey']);
   }
 
   redirectToListSurveys() {
-    this.router.navigate(['/survey-list']); 
+    this.router.navigate(['/survey-list']);
   }
 
   viewProfile() {
-    
     this.router.navigate(['/show-credentials']);
   }
 
-  
-
   updateUserProfiles() {
-    // Redirige para gestionar otros perfiles
     this.router.navigate(['/update-user-profile']);
   }
 
   updateSurvey() {
-    console.log('Actualizar Encuesta');
-  
-    this.router.navigate(['/update-survey']); // Cambiar por la ruta correspondiente
+    this.router.navigate(['/update-survey']);
   }
 
   deleteSurvey() {
-    console.log('Eliminar Encuesta');
-    // Lógica para navegación o confirmación de eliminación
-    this.router.navigate(['/delete-survey']); // Cambiar por la ruta correspondiente
+    this.router.navigate(['/delete-survey']);
   }
-  
-  
+
+  encuestaTabla(){
+    this.router.navigate(['/encuestas-tabla'])
+  }
 }

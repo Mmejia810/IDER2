@@ -1,4 +1,4 @@
-<!-- LISTA DE ENCUESTAS -->
+<!-- Lista de Encuestas -->
 <div *ngIf="!surveyDetails && !isLoading" class="survey-list">
   <h2>Lista de Encuestas</h2>
   <div
@@ -40,5 +40,73 @@
   </form>
 </div>
 
+<!-- Secciones de la Encuesta -->
+<div *ngIf="surveyDetails && sections.length > 0 && !isLoading" class="card section-card">
+  <h3>Secciones</h3>
+
+  <div *ngFor="let section of sections" class="section-item">
+    <form (ngSubmit)="updateSection(section)">
+      <label for="titulo-{{section.id}}">Título de la Sección</label>
+      <input
+        type="text"
+        id="titulo-{{section.id}}"
+        [(ngModel)]="section.titulo"
+        name="titulo{{section.id}}"
+        required
+      />
+
+      <button type="submit" [disabled]="isLoading">Actualizar Sección</button>
+      <button type="button" (click)="deleteSection(section.id)" [disabled]="isLoading">Eliminar</button>
+    </form>
+
+    <!-- Mostrar preguntas por Sección -->
+    <div *ngIf="getQuestionsBySection(section.id).length > 0">
+      <h4>Preguntas de la sección: {{ section.titulo }}</h4>
+
+      <div *ngFor="let question of getQuestionsBySection(section.id)" class="question-item">
+        <!-- Mostrar título actual -->
+        <p><strong>Título actual:</strong> {{ question.texto }}</p>
+
+        <!-- Formulario para editar la pregunta -->
+        <form (ngSubmit)="updateQuestion(question)">
+          <label for="question-{{question.id}}">Nuevo título</label>
+          <input
+            type="text"
+            id="question-{{question.id}}"
+            [(ngModel)]="question.texto"
+            name="question{{question.id}}"
+            required
+          />
+          <button type="submit" [disabled]="isLoading">Actualizar Pregunta</button>
+          <button type="button" (click)="deleteQuestion(question.id)" [disabled]="isLoading">Eliminar</button>
+        </form>
+
+        <!-- Mostrar opciones de la pregunta -->
+        <div class="options-section" *ngIf="getOptionsByQuestion(question.id).length > 0">
+          <h5>Opciones:</h5>
+          <ul>
+            <li *ngFor="let Option of getOptionsByQuestion(question.id)">
+              {{ Option.texto }}
+            </li>
+          </ul>
+        </div>
+        <div *ngIf="getOptionsByQuestion(question.id).length === 0">
+          <p>No hay opciones disponibles para esta pregunta.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje si no hay preguntas en esta sección -->
+    <div *ngIf="getQuestionsBySection(section.id).length === 0">
+      <p>No hay preguntas disponibles para esta sección.</p>
+    </div>
+  </div>
+</div>
+
 <!-- Mensaje de carga -->
 <div *ngIf="isLoading">Cargando...</div>
+
+<!-- Mensaje si no hay secciones -->
+<div *ngIf="surveyDetails && sections.length === 0 && !isLoading">
+  <p>No hay secciones disponibles para esta encuesta.</p>
+</div>

@@ -1,0 +1,24 @@
+.tabla-container {
+  padding: 1rem;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+.filtro {
+  width: 300px;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  min-width: 800px;
+}
+
+ul {
+  padding-left: 1rem;
+  margin: 0;
+}

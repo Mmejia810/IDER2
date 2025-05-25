@@ -6,27 +6,27 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:9085/usuario'; 
+  private baseUrl = 'http://localhost:9085/usuario';
 
   constructor(private http: HttpClient) { }
 
   login(credentials: { email: string, pass: string }): Observable<{ message: string, userId: number, role: string }> {
     return this.http.post<{ message: string, userId: number, role: string }>(`${this.baseUrl}/login`, credentials);
   }
-  
-  
 
-  register(userData: { 
-    identificacion: string; 
-    nombre: string; 
-    apellido: string; 
-    estado: string; 
-    email: string; 
-    pass: string; 
+
+
+  register(userData: {
+    identificacion: string;
+    nombre: string;
+    apellido: string;
+    estado: string;
+    email: string;
+    pass: string;
   }): Observable<any> {
       return this.http.post(`${this.baseUrl}/registrar`, userData);
   }
-  
+
 
   recoverPassword(email: { email: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/recover-password`, email);
@@ -44,7 +44,7 @@ export class AuthService {
     return this.http.get(`${this.baseUrl}/${userId}`);
   }
 
-  
+
   updateUserProfile(userProfile: any): Observable<any> {
     const userId = this.getUserId();
     if (!userId) {
@@ -52,5 +52,5 @@ export class AuthService {
     }
     return this.http.put(`${this.baseUrl}/${userId}`, userProfile);
   }
-  
+
 }

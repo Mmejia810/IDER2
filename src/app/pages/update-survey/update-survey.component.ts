@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyService } from '../../services/survey.service';
-import { Section, Question, Option } from '../../models/surveyModels';  
+import { Section, Question, Option } from '../../models/surveyModels';
 
 @Component({
   selector: 'app-update-survey',
@@ -28,6 +28,7 @@ export class UpdateSurveyComponent implements OnInit {
     const surveyId = this.route.snapshot.paramMap.get('id');
     if (surveyId) {
       this.loadSurveyDetails(surveyId);
+      this.loadSurveySections(surveyId);
     } else {
       this.loadSurveys();
     }
@@ -52,20 +53,20 @@ export class UpdateSurveyComponent implements OnInit {
     this.isLoading = true;
     this.surveyService.getSurveyDetails(id).subscribe(
       (response) => {
-        console.log("Full response:", response);  
-  
+        console.log("Full response:", response);
+
         const [encuesta, secciones, preguntas, opciones] = response;
-  
+
         console.log("Survey Details:", encuesta);
         console.log("Sections:", secciones);
         console.log("Questions:", preguntas);
         console.log("Options:", opciones);
-  
+
         this.surveyDetails = encuesta;
         this.sections = secciones;
         this.questions = preguntas;
         this.options = opciones;
-  
+
         this.isLoading = false;
       },
       (error) => {
@@ -74,7 +75,58 @@ export class UpdateSurveyComponent implements OnInit {
       }
     );
   }
-  
+
+  loadSurveySections(surveyId: string): void {
+    this.isLoading = true;
+    this.surveyService.getSectionsBySurveyId(surveyId).subscribe(
+      (sections) => {
+        this.sections = sections;
+
+        // Cargar preguntas para cada sección
+        this.sections.forEach(section => {
+          this.surveyService.getQuestionBySeccionId(section.id).subscribe(
+            (questions) => {
+              section.questions = questions;
+            },
+            (error) => console.error(`Error al obtener preguntas de sección ${section.id}:`, error)
+          );
+        });
+
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error al obtener las secciones:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  loadQuestionsBySection(seccionId: number): void {
+    this.isLoading = true;
+    this.surveyService.getQuestionsBySection(seccionId.toString()).subscribe(
+      (questions) => {
+        const section = this.sections.find(s => s.id === seccionId);
+        if (section) {
+          section.questions = questions;
+        }
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error al obtener las preguntas:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  getQuestionsBySection(sectionId: number): Question[] {
+    return this.sections
+      .find(section => section.id === sectionId)?.questions || [];
+  }
+
+  // ✅ MÉTODO AGREGADO PARA SOLUCIONAR EL ERROR
+  getOptionsByQuestion(questionId: number): Option[] {
+    return this.options.filter(opt => opt.questionId === questionId);
+  }
 
   updateSurvey(): void {
     if (this.surveyDetails) {

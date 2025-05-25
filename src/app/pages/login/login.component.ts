@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../auth/auth.service'; // Asegúrate de tener el servicio correctamente importado
+import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,34 +10,42 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  isPasswordVisible: boolean = false;  // Controla la visibilidad de la contraseña
-  errorMessage: string | null = null; // Propiedad para el mensaje de error
+  isPasswordVisible: boolean = false;
+  errorMessage: string | null = null;
 
-  // Uso del operador de aserción "!" para indicar que se inicializará correctamente
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],  // Cambié de 'username' a 'email'
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.loginForm.valid) {
       const credentials = {
         email: this.loginForm.value.email,
         pass: this.loginForm.value.password
       };
-      console.log('Enviando credenciales:', credentials); // Agrega esto
-  
+
+      console.log('Enviando credenciales:', credentials);
+
       this.authService.login(credentials).subscribe(
         (response) => {
           console.log('Respuesta del backend:', response);
-  
-          if (response.message === 'Login successful' && response.userId && response.role) {
+
+          if (
+            response.message === 'Login successful' &&
+            response.userId &&
+            response.role
+          ) {
             localStorage.setItem('userId', response.userId.toString());
-  
+
             if (response.role === 'Administrador') {
               this.router.navigate(['/home']);
             } else if (response.role === 'usuario') {
@@ -57,22 +65,15 @@ export class LoginComponent implements OnInit {
       );
     }
   }
-  
-  
-  
-  
 
-  // Navegar al registro
-  goToRegister() {
+  goToRegister(): void {
     this.router.navigate(['/register']);
   }
 
-  // Navegar a la recuperación de contraseña
-  goToRecoverPassword() {
+  goToRecoverPassword(): void {
     this.router.navigate(['/recover-password']);
   }
 
-  // Alternar la visibilidad de la contraseña
   togglePasswordVisibility(): void {
     this.isPasswordVisible = !this.isPasswordVisible;
   }

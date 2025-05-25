@@ -5,22 +5,22 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-answer-survey',
   templateUrl: './answer-survey.component.html',
-  styleUrl: './answer-survey.component.css'
+  styleUrls: ['./answer-survey.component.css']
 })
-export class AnswerSurveyComponent implements OnInit{
-  isSidebarActiveU: boolean = false;
+export class AnswerSurveyComponent implements OnInit {
+  isSidebarActiveU = false;
 
-  surveys: any[] = []; 
-  activeSurveys: any[] = []; 
-  searchTerm: string = ''; 
-  isLoading: boolean = true; 
+  surveys: any[] = [];         // Datos originales
+  activeSurveys: any[] = [];   // Datos filtrados para mostrar
+  searchTerm = '';
+  isLoading = true;
+
   filterOptions = [
     { label: 'Todas', value: 'all' },
     { label: 'Fecha', value: 'date' },
     { label: 'Alfabéticamente', value: 'alphabetical' },
   ];
 
-  
   selectedSurvey: any = null;
   selectedSection: any = null;
   selectedQuestion: any = null;
@@ -29,125 +29,105 @@ export class AnswerSurveyComponent implements OnInit{
   constructor(private surveyService: SurveyService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadActiveSurveys(); 
+    this.loadActiveSurveys();
   }
 
-  toggleSidebarU() {
+  toggleSidebarU(): void {
     this.isSidebarActiveU = !this.isSidebarActiveU;
   }
 
- // Método para cargar encuestas
- 
+  loadActiveSurveys(): void {
+    this.isLoading = true;
+    this.surveyService.getActiveSurveys().subscribe({
+      next: (data) => {
+        this.surveys = data;
+        this.activeSurveys = data.filter(survey => survey.estado === 'abierta'); // Filtra sólo activas
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar encuestas activas:', error);
+        this.isLoading = false;
+      }
+    });
+  }
 
-loadActiveSurveys(): void {
-  this.surveyService.getActiveSurveys().subscribe({
-    next: (data) => {
-      this.activeSurveys = data;
-      this.isLoading = false;
-    },
-    error: (error) => {
-      console.error('Error al cargar encuestas activas:', error);
-      this.isLoading = false;
-    }
-  });
-}
+  filterActiveSurveys(): void {
+    const term = this.searchTerm.toLowerCase();
+    this.activeSurveys = this.surveys.filter(survey =>
+      survey.estado === 'abierta' &&
+      (survey.titulo.toLowerCase().includes(term) || survey.descripcion.toLowerCase().includes(term))
+    );
+  }
 
-// Método para filtrar solo las encuestas activas
-filterActiveSurveys(): void {
-  const term = this.searchTerm.toLowerCase();
-  this.activeSurveys = this.surveys.filter(survey =>
-    survey.estado === 'activa' && 
-    (survey.titulo.toLowerCase().includes(term) || survey.descripcion.toLowerCase().includes(term))
-  );
-}
-
-// Método para manejar cambios en el término de búsqueda
-onSearchChange(): void {
-  this.filterActiveSurveys();
-}
-
-  
-  editSurvey(survey: any) {
-    this.selectedSurvey = { ...survey };  
+  editSurvey(survey: any): void {
+    this.selectedSurvey = { ...survey };
     this.selectedSection = null;
     this.selectedQuestion = null;
     this.selectedOption = null;
   }
 
-  
-  editSection(section: any) {
-    this.selectedSection = { ...section };  
+  editSection(section: any): void {
+    this.selectedSection = { ...section };
   }
 
-  
-  editQuestion(question: any) {
-    this.selectedQuestion = { ...question };  
+  editQuestion(question: any): void {
+    this.selectedQuestion = { ...question };
   }
 
-  
-  editOption(option: any) {
-    this.selectedOption = { ...option };  
+  editOption(option: any): void {
+    this.selectedOption = { ...option };
   }
 
-  
-  saveSurvey() {
-    if (this.selectedSurvey) {
-      this.surveyService.updateSurvey(this.selectedSurvey).subscribe(
-        () => {
-          alert('Encuesta actualizada');
-          this.loadActiveSurveys();  
-          this.selectedSurvey = null;
-        },
-        (error) => console.error('Error al actualizar encuesta:', error)
-      );
-    }
+  saveSurvey(): void {
+    if (!this.selectedSurvey) return;
+    this.surveyService.updateSurvey(this.selectedSurvey).subscribe({
+      next: () => {
+        alert('Encuesta actualizada');
+        this.loadActiveSurveys();
+        this.selectedSurvey = null;
+      },
+      error: (error) => console.error('Error al actualizar encuesta:', error)
+    });
   }
 
-  
-  saveSection() {
-    if (this.selectedSection) {
-      this.surveyService.updateSection(this.selectedSection).subscribe(
-        () => {
-          alert('Sección actualizada');
-          this.selectedSection = null;
-        },
-        (error) => console.error('Error al actualizar sección:', error)
-      );
-    }
+  saveSection(): void {
+    if (!this.selectedSection) return;
+    this.surveyService.updateSection(this.selectedSection).subscribe({
+      next: () => {
+        alert('Sección actualizada');
+        this.selectedSection = null;
+      },
+      error: (error) => console.error('Error al actualizar sección:', error)
+    });
   }
 
-  
-  saveQuestion() {
-    if (this.selectedQuestion) {
-      this.surveyService.updateQuestion(this.selectedQuestion).subscribe(
-        () => {
-          alert('Pregunta actualizada');
-          this.selectedQuestion = null;
-        },
-        (error) => console.error('Error al actualizar pregunta:', error)
-      );
-    }
+  saveQuestion(): void {
+    if (!this.selectedQuestion) return;
+    this.surveyService.updateQuestion(this.selectedQuestion).subscribe({
+      next: () => {
+        alert('Pregunta actualizada');
+        this.selectedQuestion = null;
+      },
+      error: (error) => console.error('Error al actualizar pregunta:', error)
+    });
   }
 
-  
-  saveOption() {
-    if (this.selectedOption) {
-      this.surveyService.updateOption(this.selectedOption).subscribe(
-        () => {
-          alert('Opción actualizada');
-          this.selectedOption = null;
-        },
-        (error) => console.error('Error al actualizar opción:', error)
-      );
-    }
+  saveOption(): void {
+    if (!this.selectedOption) return;
+    this.surveyService.updateOption(this.selectedOption).subscribe({
+      next: () => {
+        alert('Opción actualizada');
+        this.selectedOption = null;
+      },
+      error: (error) => console.error('Error al actualizar opción:', error)
+    });
   }
-  
-  openSurvey(id: string) {
+
+  openSurvey(id: string): void {
     this.router.navigate([`/user-sur-details/${id}`]);
   }
 
-  logOut() {
+  logOut(): void {
     this.router.navigate(['/login']);
   }
-  
 }

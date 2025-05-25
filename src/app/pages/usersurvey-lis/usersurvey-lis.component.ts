@@ -1,30 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { SurveyService } from '../../services/survey.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../auth/auth.service'; 
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-usersurvey-lis',
   templateUrl: './usersurvey-lis.component.html',
 })
 export class UsersurveyLisComponent implements OnInit {
-  respuestas: { [key: number]: any } = {}; // Respuestas de opción
-  respuestaAbierta: { [key: number]: string } = {}; // Respuestas abiertas
-  comentarios: { [key: number]: string } = {}; // Comentarios
-  surveyDetails: any = {}; // Detalles de la encuesta
-  secciones: any[] = []; // Secciones de la encuesta
-  preguntas: any[] = []; // Preguntas de las secciones
-  opciones: any[] = []; // Opciones de respuesta
+  respuestas: { [key: number]: any } = {};
+  respuestaAbierta: { [key: number]: string } = {};
+  comentarios: { [key: number]: string } = {};
+  surveyDetails: any = {};
+  secciones: any[] = [];
+  preguntas: any[] = [];
+  opciones: any[] = [];
   selectedSection: any = null;
-  encuestaId: string = ''; // ID de la encuesta
+  encuestaId: string = '';
   isSidebarActiveU: boolean = false;
-  userId: number | null = null;  // Variable para almacenar el ID del usuario
+  userId: number | null = null;
 
   constructor(
     private surveyService: SurveyService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService  // Inyectamos el AuthService
+    private authService: AuthService
   ) {}
 
   toggleSidebarU() {
@@ -33,64 +33,54 @@ export class UsersurveyLisComponent implements OnInit {
 
   ngOnInit(): void {
     const userIdFromStorage = this.authService.getUserId();
-    this.userId = userIdFromStorage ? Number(userIdFromStorage) : null; // Convertir el userId a número si existe, de lo contrario será null.
+    this.userId = userIdFromStorage ? Number(userIdFromStorage) : null;
 
     if (!this.userId) {
       console.error('Usuario no autenticado');
-      this.router.navigate(['/login']);  // Si no está autenticado, redirigir al login
+      this.router.navigate(['/login']);
       return;
     }
-    console.log("ID de usuario autenticado:", this.userId);
 
     this.encuestaId = this.route.snapshot.paramMap.get('id') || '';
-    console.log("ID de la encuesta desde la URL:", this.encuestaId);
-  
+
     if (this.encuestaId) {
-      this.loadSurveyDetails(this.encuestaId); 
+      this.loadSurveyDetails(this.encuestaId);
     } else {
       console.error('El ID de la encuesta no se encuentra en la URL');
-      this.router.navigate(['/encuestas']); // Redirige si no hay ID
+      this.router.navigate(['/encuestas']);
     }
   }
 
   loadSurveyDetails(id: string): void {
-    console.log("Cargando detalles para la encuesta con ID:", id);
-    this.surveyService.getSurveyDetails(id).subscribe(
-      (response) => {
-        console.log('Detalles de la encuesta recibidos:', response);
+    this.surveyService.getSurveyDetails(id).subscribe({
+      next: (response) => {
         this.surveyDetails = response[0];
         this.secciones = this.filterSections(response[1], id);
         this.opciones = response[3];
       },
-      (error) => {
-        console.error('Error al obtener los detalles de la encuesta:', error);
+      error: () => {
         alert('No se pudo cargar la encuesta. Intente nuevamente.');
       }
-    );
+    });
   }
 
   filterSections(secciones: any[], encuestaId: string): any[] {
-    console.log("Filtrando secciones con el ID de encuesta:", encuestaId);
     return secciones.filter(
       (seccion) => seccion.encuesta?.id === parseInt(encuestaId, 10)
     );
   }
 
-  loadQuestionsForSection(sectionId: number): void {
-    this.selectedSection = this.secciones.find(
-      (seccion) => seccion.id === sectionId
-    );
+ loadQuestionsForSection(sectionId: number): void {
+    this.selectedSection = this.secciones.find((seccion) => seccion.id === sectionId);
 
     if (this.selectedSection) {
       this.surveyService.getQuestions().subscribe(
         (allQuestions) => {
-          console.log("Preguntas cargadas para la sección:", sectionId);
           this.preguntas = allQuestions.filter(
             (pregunta) => pregunta.seccionEncuesta?.id === sectionId
           );
         },
         (error) => {
-          console.error('Error al obtener las preguntas de la sección:', error);
           alert('No se pudieron cargar las preguntas. Intente nuevamente.');
         }
       );
@@ -98,7 +88,6 @@ export class UsersurveyLisComponent implements OnInit {
   }
 
   onOptionChange(pregunta: any, opcionId: number, event: any): void {
-    console.log("Cambio en opción de la pregunta:", pregunta.id, "Opción ID:", opcionId);
     if (!pregunta.opcionesSeleccionadas) {
       pregunta.opcionesSeleccionadas = [];
     }
@@ -113,81 +102,79 @@ export class UsersurveyLisComponent implements OnInit {
         pregunta.opcionesSeleccionadas.splice(index, 1);
       }
     }
-  }   
-
+  }
 
   saveAnswerForOpenQuestion(pregunta: any): void {
-    console.log('Respuesta antes de enviar:', this.respuestaAbierta[pregunta.id]);
-    const respuestaParaEnviar: any = {
-      respuesta: this.respuestaAbierta[pregunta.id]?.trim() || '',
-      usuario: { id: this.userId },  // Usamos el userId autenticado
-      seccionEncuesta: { id: this.selectedSection?.id ?? -1 }, // Si no hay sección, asignamos un valor por defecto
-      pregunta: { id: pregunta.id },
-      opciones: [] // Opciones vacías para preguntas abiertas
-    };
-    
-    if (!respuestaParaEnviar.respuesta) {
+    const respuestaTexto = this.respuestaAbierta[pregunta.id]?.trim() || '';
+
+    if (!respuestaTexto) {
       alert('Debe escribir una respuesta antes de guardarla.');
       return;
     }
-  
-    this.surveyService.saveOpenQuestionResponse(
-      respuestaParaEnviar.respuesta,
-      this.userId!,
-      this.selectedSection?.id ?? -1, // Usamos un valor por defecto si no hay sección
-      pregunta.id
-    ).subscribe(
-      (response) => {
-        console.log('Respuesta guardada exitosamente:', response);
-        alert('Respuesta guardada correctamente.');
-      },
-      (error) => {
-        console.error('Error al guardar la respuesta:', error);
-        alert('Hubo un error al guardar la respuesta. Intente nuevamente.');
-      }
-    );
-  }
-  
 
-  
-  
-  saveAnswerForMultipleChoiceQuestion(pregunta: any): void {
-    const respuestaParaEnviar: any = {
-      respuesta: "", // Para preguntas de opción múltiple, no es necesario texto adicional.
-      usuario: { id: this.userId }, // Usamos el userId autenticado
-      seccionEncuesta: { id: this.selectedSection?.id ?? -1 }, // Aseguramos que no sea null
-      pregunta: { id: pregunta.id }, // ID de la pregunta
-      opciones: [] // Opciones seleccionadas
+    const respuestaParaEnviar = {
+      usuario: { id: this.userId },
+      seccionEncuesta: { id: this.selectedSection?.id ?? -1 },
+      pregunta: { id: pregunta.id },
+      opciones: [],
+      respuesta: respuestaTexto
     };
-  
-    if (pregunta.opcionesSeleccionadas?.length > 0) {
-      respuestaParaEnviar.opciones = pregunta.opcionesSeleccionadas.map((opcionId: number) => ({ id: opcionId }));
+
+    this.surveyService.saveResponse(respuestaParaEnviar).subscribe({
+      next: () => alert('Respuesta guardada correctamente.'),
+      error: () => alert('Hubo un error al guardar la respuesta.')
+    });
+  }
+
+  saveAnswerForMultipleChoiceQuestion(pregunta: any): void {
+  if (!pregunta.opcionesSeleccionadas || pregunta.opcionesSeleccionadas.length === 0) {
+    alert('Debe seleccionar al menos una opción.');
+    return;
+  }
+
+  const opcionesSeleccionadas = pregunta.opcionesSeleccionadas.map((id: number) => ({ id }));
+
+  const respuestaParaEnviar = {
+    usuario: { id: this.userId },
+    seccionEncuesta: { id: this.selectedSection?.id ?? -1 },
+    pregunta: { id: pregunta.id },
+    opciones: opcionesSeleccionadas,
+    respuesta: ''
+  };
+
+  console.log('Enviando respuesta:', respuestaParaEnviar);
+
+  this.surveyService.saveResponse(respuestaParaEnviar).subscribe({
+    next: () => alert('Respuesta guardada correctamente.'),
+    error: (error) => {
+      console.error('Error al guardar la respuesta:', error);
+      alert('Hubo un error al guardar la respuesta.');
     }
-  
-    if (respuestaParaEnviar.opciones.length === 0) {
-      alert('Debe seleccionar al menos una opción.');
+  });
+}
+
+
+  saveAnswerForCommentQuestion(pregunta: any): void {
+    const comentarioTexto = this.comentarios[pregunta.id]?.trim() || '';
+
+    if (!comentarioTexto) {
+      alert('Debe escribir un comentario antes de guardarlo.');
       return;
     }
-  
-    this.surveyService.saveMultipleChoiceQuestionResponse(
-      respuestaParaEnviar.respuesta,   // String vacío, no necesario en preguntas de opción múltiple
-      this.userId!,
-      this.selectedSection?.id ?? -1,  // Usamos un valor por defecto si no hay sección
-      pregunta.id,
-      respuestaParaEnviar.opciones
-    ).subscribe(
-      (response) => {
-        console.log('Respuesta guardada exitosamente:', response);
-        alert('Respuesta guardada correctamente.');
-      },
-      (error) => {
-        console.error('Error al guardar la respuesta:', error);
-        alert('Hubo un error al guardar la respuesta. Intente nuevamente.');
-      }
-    );
+
+    const respuestaParaEnviar = {
+      usuario: { id: this.userId },
+      seccionEncuesta: { id: this.selectedSection?.id ?? -1 },
+      pregunta: { id: pregunta.id },
+      opciones: [],
+      respuesta: comentarioTexto
+    };
+
+    this.surveyService.saveResponse(respuestaParaEnviar).subscribe({
+      next: () => alert('Comentario guardado correctamente.'),
+      error: () => alert('Hubo un error al guardar el comentario.')
+    });
   }
-  
-  
 
   getOptionsForQuestion(preguntaId: number): any[] {
     return this.opciones.filter((opcion) => opcion.pregunta?.id === preguntaId);

@@ -68,15 +68,15 @@
     </div>
   </div>
 
- 
+
   <div *ngIf="section.showQuestionTypeSelector" class="question-type-selector">
     <button (click)="addOpenQuestionInput(section.id)" class="btn-question-type">Pregunta Abierta</button>
     <button (click)="addMultipleChoiceQuestionInput(section.id)" class="btn-question-type">Pregunta Múltiple</button>
   </div>
 
-  
+
   <div *ngFor="let question of section.questions; let qIndex = index">
-   
+
     <div *ngIf="question.type === 'abierta'" class="open-question-card">
       <mat-form-field appearance="fill">
         <mat-label>Pregunta abierta {{ qIndex + 1 }}</mat-label>
@@ -90,13 +90,13 @@
       </button>
     </div>
 
-   
+
     <div *ngIf="question.type === 'multiple'" class="multiple-choice-card">
       <mat-form-field appearance="fill">
         <mat-label>Pregunta múltiple {{ qIndex + 1 }}</mat-label>
         <input matInput [(ngModel)]="question.text" placeholder="Escriba la pregunta" />
       </mat-form-field>
-    
+
       <div *ngFor="let option of question.options; let oIndex = index" class="option-container">
         <mat-form-field appearance="fill">
           <mat-label>Opción {{ oIndex + 1 }}</mat-label>
@@ -107,15 +107,15 @@
           <mat-icon>delete</mat-icon> Eliminar Opción
         </button>
       </div>
-    
+
       <button (click)="addOption(section.id, question)" class="btn-add-option">
         <mat-icon>add</mat-icon> Agregar Opción
       </button>
-    
+
       <button (click)="saveQuestion(section.id, question)" class="btn-save-options" [disabled]="!question.text">
         <mat-icon>save</mat-icon> Guardar Pregunta
       </button>
-    
+
       <button (click)="saveOptions(question)" class="btn-save-options" [disabled]="!question.id || question.options.length === 0">
         <mat-icon>save</mat-icon> Guardar Opciones
       </button>

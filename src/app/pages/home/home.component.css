@@ -212,4 +212,12 @@
     .card-text {
       font-size: 14px;
     }
+
+    .error-message {
+      color: #ff4d4d;
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
   }

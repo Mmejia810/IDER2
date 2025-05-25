@@ -7,6 +7,10 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module'; // Mantén esta importación
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { FormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { EncuestasTablaComponent } from './pages/encuestas-tabla/encuestas-tabla.component';
+
 
 
 
@@ -17,12 +21,14 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
-    
-    
-   
-   
-    
-   
+
+
+
+
+
+
+
+
      // No incluyas InputFieldComponent aquí
   ],
   imports: [
@@ -31,7 +37,9 @@ import { FormsModule } from '@angular/forms';
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule, // Asegúrate de importar el SharedModule
-    FormsModule
+    FormsModule,
+    MatSnackBarModule,  // Incluir MatSnackBarModule
+    MatButtonModule     // Incluir MatButtonModule si usas botones
   ],
   providers: [
     provideClientHydration(),
