@@ -9,6 +9,7 @@
     <h3>{{ survey.titulo }}</h3>
     <p>Descripción: {{ survey.descripcion }}</p>
   </div>
+
 </div>
 
 <!-- Detalles de la encuesta -->
@@ -78,7 +79,9 @@
             required
           />
           <button type="submit" [disabled]="isLoading">Actualizar Pregunta</button>
-          <button type="button" (click)="deleteQuestion(question.id)" [disabled]="isLoading">Eliminar</button>
+        <button (click)="deleteQuestion(question.id)" [disabled]="isLoading">Eliminar</button>
+
+
         </form>
 
         <!-- Mostrar opciones de la pregunta -->

@@ -166,6 +166,7 @@ export class UpdateSurveyComponent implements OnInit {
   }
 
   deleteQuestion(questionId: number): void {
+     console.log('Eliminando pregunta con ID:', questionId); // ← esto te dice si llega bien
     this.surveyService.deleteQuestion(questionId).subscribe(
       () => this.questions = this.questions.filter(q => q.id !== questionId),
       (error) => console.error('Error al eliminar la pregunta:', error)
@@ -193,4 +194,7 @@ export class UpdateSurveyComponent implements OnInit {
   navigateToSurveyDetails(surveyId: string): void {
     this.router.navigate(['/update-survey', surveyId]);
   }
+
+
 }
+
