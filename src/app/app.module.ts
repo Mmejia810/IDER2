@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { EncuestasTablaComponent } from './pages/encuestas-tabla/encuestas-tabla.component';
 import { ConfirmarEliminarDialogComponent } from './components/confirmar-eliminar-dialog/confirmar-eliminar-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgChartsModule } from 'ng2-charts';
 
 
 
@@ -42,7 +43,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule, // Asegúrate de importar el SharedModule
     FormsModule,
     MatSnackBarModule,  // Incluir MatSnackBarModule
-    MatButtonModule,    // Incluir MatButtonModule si usas botones
+    MatButtonModule,
+    NgChartsModule    // Incluir MatButtonModule si usas botones
   ],
   providers: [
     provideClientHydration(),

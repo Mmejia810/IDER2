@@ -1,3 +1,52 @@
+<div class="dashboard-container">
+  <h2>Dashboard de Encuestas</h2>
+
+  <!-- Pie Chart de tipos de preguntas -->
+  <div class="chart-card">
+    <h3>Tipos de Preguntas</h3>
+    <canvas baseChart
+      [data]="tipoPreguntaChartData"
+      [type]="'pie'">
+    </canvas>
+  </div>
+
+  <!-- Bar Chart de respuestas por usuario -->
+  <div class="chart-card">
+    <h3>Respuestas por Usuario</h3>
+    <canvas baseChart
+      [data]="respuestasPorUsuarioData"
+      [type]="'bar'">
+    </canvas>
+  </div>
+
+  <!-- Bar Chart de respuestas por sección -->
+  <div class="chart-card">
+    <h3>Respuestas por Sección</h3>
+    <canvas baseChart
+      [data]="respuestasPorSeccionData"
+      [type]="'bar'">
+    </canvas>
+  </div>
+
+  <!-- Bar Chart de respuestas por email -->
+  <div class="chart-card">
+    <h3>Respuestas por Email</h3>
+    <canvas baseChart
+      [data]="respuestasPorEmailData"
+      [type]="'bar'">
+    </canvas>
+  </div>
+
+  <!-- Pie Chart de opciones más seleccionadas -->
+  <div class="chart-card">
+    <h3>Opciones más Seleccionadas</h3>
+    <canvas baseChart
+      [data]="opcionesRepetidasData"
+      [type]="'pie'">
+    </canvas>
+  </div>
+</div>
+
 <div class="tabla-container">
   <h2>Respuestas de Encuestas</h2>
 

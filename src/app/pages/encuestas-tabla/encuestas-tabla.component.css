@@ -1,24 +1,92 @@
-.tabla-container {
-  padding: 1rem;
-  max-width: 100%;
-  overflow-x: auto;
+.dashboard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 24px;
+  background-color: #f5f7fa;
 }
 
-h2 {
-  margin-bottom: 1rem;
+.chart-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  animation: fadeIn 0.8s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-5px);
+}
+
+.chart-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.tabla-container {
+  background-color: #ffffff;
+  padding: 24px;
+  margin: 32px 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.tabla-container h2 {
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+  color: #222;
 }
 
 .filtro {
-  width: 300px;
-  margin-bottom: 1rem;
+  width: 100%;
+  margin-bottom: 16px;
 }
 
-table {
+.mat-form-field {
+  background-color: #f1f1f1;
+  border-radius: 8px;
+}
+
+table.mat-table {
   width: 100%;
-  min-width: 800px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.mat-header-row, .mat-row {
+  font-size: 0.95rem;
+}
+
+.mat-header-cell {
+  background-color: #e3e9f0;
+  font-weight: 600;
+  color: #2a2a2a;
+}
+
+.mat-cell {
+  color: #444;
 }
 
 ul {
-  padding-left: 1rem;
+  padding-left: 16px;
   margin: 0;
+}
+
+li {
+  list-style: disc;
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
