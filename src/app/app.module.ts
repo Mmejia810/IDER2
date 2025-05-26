@@ -42,7 +42,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule, // Asegúrate de importar el SharedModule
     FormsModule,
     MatSnackBarModule,  // Incluir MatSnackBarModule
-    MatButtonModule     // Incluir MatButtonModule si usas botones
+    MatButtonModule,    // Incluir MatButtonModule si usas botones
   ],
   providers: [
     provideClientHydration(),

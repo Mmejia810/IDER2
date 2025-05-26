@@ -301,9 +301,5 @@ getRespuestas(): Observable<any[]> {
   return this.http.delete<void>(`${this.endpoints.encuestaPorId}/eliminar/${id}`);
 }
 
-
-
-
-
 }
 

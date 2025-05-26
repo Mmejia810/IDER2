@@ -1,14 +1,26 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Usuario {
+  id: number;
+  nombre: string;
+  apellido: string;
+  email: string;
+  // otros campos si los tienes
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
+  private baseUrl = 'http://localhost:8080/api/usuario'; // Cambia esta URL por la de tu backend
+
+  constructor(private http: HttpClient) { }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token'); // devuelve true si hay token
+    return !!localStorage.getItem('token');
   }
 
   logout(): void {
@@ -16,20 +28,19 @@ export class AuthService {
     localStorage.removeItem('userId');
   }
 
-  // Aquí podrías tener tu método login() que devuelva un Observable simulado o real
-  login(credentials: { email: string; pass: string }) {
-    // Aquí iría la llamada HTTP real
-    // return this.http.post('tu-backend/login', credentials);
-    // Por ahora esto es solo un placeholder
-    return {
-      subscribe: (next: any, error: any) => {
-        // simula una respuesta exitosa
-        next({
-          message: 'Login successful',
-          userId: 1,
-          role: 'Administrador'
-        });
-      }
-    };
+  login(credentials: { email: string; pass: string }): Observable<any> {
+    // Aquí va la llamada HTTP real
+    return this.http.post<any>('http://localhost:8080/api/login', credentials);
+  }
+
+  // Obtener lista de usuarios (filtrados por backend)
+  getUserProfile(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.baseUrl + '/id2');
+    // suponiendo que la ruta para usuarios con id 2 sea /api/users/id2
+  }
+
+  // Actualizar usuario
+  updateUserProfile(user: Usuario): Observable<Usuario> {
+    return this.http.put<Usuario>(`${this.baseUrl}/${user.id}`, user);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth/auth.service'; // Asegúrate de importar tu servicio
+import { AuthService } from '../../auth/auth.service'; // Importa tu servicio real
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,20 +8,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./update-user-profile.component.css']
 })
 export class UpdateUserProfileComponent implements OnInit {
-  users: any[] = []; // Para almacenar la lista de usuarios
-  selectedUser: any = null; // Para almacenar el usuario seleccionado
+  users: any[] = []; // Lista de usuarios (ya filtrados por backend)
+  selectedUser: any = null; // Usuario seleccionado para edición
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.getUsers(); // Traer los usuarios al cargar el componente
+    this.getUsers(); // Carga los usuarios al iniciar el componente
   }
 
-  // Método para obtener todos los usuarios
+  // Obtener usuarios del backend (ya solo los con id 2)
   getUsers(): void {
     this.authService.getUserProfile().subscribe(
-      (users: any) => {
-        this.users = users; // Guardamos los usuarios traídos desde la API
+      (users: any[]) => {
+        this.users = users;  // No necesitas filtrar porque backend ya envía solo id 2
       },
       (error) => {
         console.error('Error al obtener usuarios:', error);
@@ -29,24 +29,24 @@ export class UpdateUserProfileComponent implements OnInit {
     );
   }
 
-  // Método para seleccionar un usuario a editar
+  // Seleccionar un usuario para editar
   editUser(user: any): void {
-    this.selectedUser = { ...user }; // Creamos una copia del usuario para editarlo
+    this.selectedUser = { ...user }; // Clonamos para evitar mutar la lista original
   }
 
-  // Método para cancelar la edición
+  // Cancelar edición
   cancelEdit(): void {
-    this.selectedUser = null; // Limpiamos el usuario seleccionado
+    this.selectedUser = null;
   }
 
-  // Método para actualizar los datos del usuario
+  // Actualizar usuario
   updateUser(): void {
     if (this.selectedUser) {
       this.authService.updateUserProfile(this.selectedUser).subscribe(
         (response) => {
           console.log('Usuario actualizado:', response);
-          this.selectedUser = null; // Limpiamos después de la actualización
-          this.getUsers(); // Refrescamos la lista de usuarios
+          this.selectedUser = null;
+          this.getUsers(); // Recarga usuarios para refrescar lista
         },
         (error) => {
           console.error('Error al actualizar el perfil:', error);

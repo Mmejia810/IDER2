@@ -224,41 +224,6 @@
       }
     }
 
-    // saveQuestion(sectionId: number | null, question: Question) {
-    //   if (sectionId === null || !question.text.trim()) {
-    //     alert('Debe rellenar la pregunta antes de guardarla.');
-    //     return;
-    //   }
-
-    //   // Se prepara la data a enviar con el objeto seccionEncuesta en lugar de solo el id
-    //   const questionData: any = {
-    //     texto: question.text.trim(),
-    //     tipo: question.type === 'abierta' ? 'abierta' : 'multiple',
-    //     seccionEncuesta: { id: sectionId } // se envía como objeto
-    //   };
-
-    //   if (question.id != null) {
-    //     questionData.id = question.id;
-    //   }
-
-    //   console.log('Datos que se enviarán:', questionData);
-
-    //   // Se llama al servicio para guardar la pregunta
-    //   this.surveyService.saveQuestion(questionData).subscribe(
-    //     (response: any) => {
-    //       question.id = response.id;
-    //       alert('Pregunta guardada con éxito.');
-    //       if (question.type === 'multiple') {
-    //         alert('Ahora puede agregar opciones para esta pregunta.');
-    //       }
-    //     },
-    //     (error: HttpErrorResponse) => {
-    //       console.error('Error al guardar pregunta:', error);
-    //       alert('Ocurrió un error al guardar la pregunta. Revise los datos.');
-    //     }
-    //   );
-    // }
-
     saveQuestion(sectionId: number | null, question: Question) {
       if (sectionId === null || !question.text.trim()) {
         alert('Debe rellenar la pregunta antes de guardarla.');
