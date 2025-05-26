@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog'; // Asegúrate de importar esto
 import { ActivatedRoute, Router } from '@angular/router';
 import { SurveyService } from '../../services/survey.service';
 import { Section, Question, Option } from '../../models/surveyModels';
+import { ConfirmarEliminarDialogComponent } from '../../components/confirmar-eliminar-dialog/confirmar-eliminar-dialog.component';
+
 
 @Component({
   selector: 'app-update-survey',
@@ -21,7 +24,8 @@ export class UpdateSurveyComponent implements OnInit {
   constructor(
     private surveyService: SurveyService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -119,8 +123,7 @@ export class UpdateSurveyComponent implements OnInit {
   }
 
   getQuestionsBySection(sectionId: number): Question[] {
-    return this.sections
-      .find(section => section.id === sectionId)?.questions || [];
+    return this.sections.find(section => section.id === sectionId)?.questions || [];
   }
 
   // ✅ MÉTODO AGREGADO PARA SOLUCIONAR EL ERROR
@@ -152,10 +155,24 @@ export class UpdateSurveyComponent implements OnInit {
   }
 
   deleteSection(sectionId: number): void {
-    this.surveyService.deleteSection(sectionId).subscribe(
-      () => this.sections = this.sections.filter(sec => sec.id !== sectionId),
-      (error) => console.error('Error al eliminar la sección:', error)
-    );
+    if (confirm('¿Estás seguro de eliminar esta sección? Se eliminarán todas sus preguntas y opciones.')) {
+      this.surveyService.deleteSection(sectionId).subscribe(
+        () => {
+          // Remover la sección de la lista local
+          this.sections = this.sections.filter(sec => sec.id !== sectionId);
+
+          // También eliminar preguntas y opciones relacionadas localmente para evitar inconsistencias
+          this.questions = this.questions.filter(q => q.seccionId !== sectionId);
+          this.options = this.options.filter(opt => {
+            const question = this.questions.find(q => q.id === opt.questionId);
+            return question !== undefined;
+          });
+
+          alert('Sección eliminada con éxito');
+        },
+        (error) => console.error('Error al eliminar la sección:', error)
+      );
+    }
   }
 
   updateQuestion(question: Question): void {
@@ -166,11 +183,28 @@ export class UpdateSurveyComponent implements OnInit {
   }
 
   deleteQuestion(questionId: number): void {
-     console.log('Eliminando pregunta con ID:', questionId); // ← esto te dice si llega bien
-    this.surveyService.deleteQuestion(questionId).subscribe(
-      () => this.questions = this.questions.filter(q => q.id !== questionId),
-      (error) => console.error('Error al eliminar la pregunta:', error)
-    );
+    if (confirm('¿Estás seguro de eliminar esta pregunta? Se eliminarán todas sus opciones.')) {
+      console.log('Eliminando pregunta con ID:', questionId); // ← esto te dice si llega bien
+      this.surveyService.deleteQuestion(questionId).subscribe(
+        () => {
+          // Eliminar pregunta localmente
+          this.questions = this.questions.filter(q => q.id !== questionId);
+
+          // Eliminar opciones relacionadas a esa pregunta localmente
+          this.options = this.options.filter(opt => opt.questionId !== questionId);
+
+          // También actualizar la sección que contenía esta pregunta
+          this.sections.forEach(section => {
+            if (section.questions) {
+              section.questions = section.questions.filter(q => q.id !== questionId);
+            }
+          });
+
+          alert('Pregunta eliminada con éxito');
+        },
+        (error) => console.error('Error al eliminar la pregunta:', error)
+      );
+    }
   }
 
   updateOption(option: Option): void {
@@ -181,10 +215,15 @@ export class UpdateSurveyComponent implements OnInit {
   }
 
   deleteOption(optionId: number): void {
-    this.surveyService.deleteOption(optionId).subscribe(
-      () => this.options = this.options.filter(opt => opt.id !== optionId),
-      (error) => console.error('Error al eliminar la opción:', error)
-    );
+    if (confirm('¿Estás seguro de eliminar esta opción?')) {
+      this.surveyService.deleteOption(optionId).subscribe(
+        () => {
+          this.options = this.options.filter(opt => opt.id !== optionId);
+          alert('Opción eliminada con éxito');
+        },
+        (error) => console.error('Error al eliminar la opción:', error)
+      );
+    }
   }
 
   goBackToSurveyList(): void {
@@ -195,6 +234,40 @@ export class UpdateSurveyComponent implements OnInit {
     this.router.navigate(['/update-survey', surveyId]);
   }
 
+   eliminarEncuesta(id: number): void {
+    if (confirm('¿Estás seguro de que deseas eliminar esta encuesta?')) {
+      this.surveyService.eliminarEncuesta(id).subscribe({
+        next: () => {
+          alert('Encuesta eliminada correctamente');
+          this.loadSurveys(); // Recargar lista actualizada
+        },
+        error: err => {
+          console.error('Error al eliminar la encuesta', err);
+          alert('Error al eliminar la encuesta');
+        }
+      });
+    }
+  }
+  abrirConfirmacionEliminar(event: MouseEvent, id: number): void {
+  event.stopPropagation(); // evita que se dispare el click de navegar
 
+  const dialogRef = this.dialog.open(ConfirmarEliminarDialogComponent, {
+    width: '300px'
+  });
+
+  dialogRef.afterClosed().subscribe(resultado => {
+    if (resultado) {
+      this.surveyService.eliminarEncuesta(id).subscribe({
+        next: () => {
+          this.filteredSurveys = this.filteredSurveys.filter(e => e.id !== id);
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Error al eliminar la encuesta.');
+        }
+      });
+    }
+  });
 }
 
+}
