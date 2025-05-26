@@ -1,0 +1,10 @@
+<h2>¿Estás seguro?</h2>
+
+<div>
+  Esta acción no se puede deshacer.
+</div>
+
+<div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;">
+  <button mat-button (click)="onCancelar()">Cancelar</button>
+  <button mat-button color="warn" (click)="onConfirmar()">Eliminar</button>
+</div>

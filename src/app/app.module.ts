@@ -10,7 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { EncuestasTablaComponent } from './pages/encuestas-tabla/encuestas-tabla.component';
-
+import { ConfirmarEliminarDialogComponent } from './components/confirmar-eliminar-dialog/confirmar-eliminar-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -21,6 +22,7 @@ import { EncuestasTablaComponent } from './pages/encuestas-tabla/encuestas-tabla
 @NgModule({
   declarations: [
     AppComponent,
+    ConfirmarEliminarDialogComponent,
 
 
 
@@ -35,6 +37,7 @@ import { EncuestasTablaComponent } from './pages/encuestas-tabla/encuestas-tabla
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     SharedModule, // Asegúrate de importar el SharedModule
     FormsModule,

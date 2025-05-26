@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
             response.role
           ) {
             localStorage.setItem('userId', response.userId.toString());
+            localStorage.setItem('token', 'true'); // <- clave para AuthGuard
 
             if (response.role === 'Administrador') {
               this.router.navigate(['/home']);

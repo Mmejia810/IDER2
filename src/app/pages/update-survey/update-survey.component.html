@@ -4,10 +4,20 @@
   <div
     *ngFor="let survey of filteredSurveys"
     class="survey-item"
-    (click)="navigateToSurveyDetails(survey.id)"
   >
-    <h3>{{ survey.titulo }}</h3>
-    <p>Descripción: {{ survey.descripcion }}</p>
+    <h3 (click)="navigateToSurveyDetails(survey.id)">
+      {{ survey.titulo }}
+    </h3>
+    <p (click)="navigateToSurveyDetails(survey.id)">Descripción: {{ survey.descripcion }}</p>
+
+    <!-- Botón eliminar (no propaga el click a navigateToSurveyDetails) -->
+    <button
+      mat-button
+      color="warn"
+      (click)="abrirConfirmacionEliminar($event, survey.id)"
+    >
+      Eliminar
+    </button>
   </div>
 </div>
 
@@ -78,7 +88,9 @@
             required
           />
           <button type="submit" [disabled]="isLoading">Actualizar Pregunta</button>
-          <button type="button" (click)="deleteQuestion(question.id)" [disabled]="isLoading">Eliminar</button>
+        <button (click)="deleteQuestion(question.id)" [disabled]="isLoading">Eliminar</button>
+
+
         </form>
 
         <!-- Mostrar opciones de la pregunta -->
