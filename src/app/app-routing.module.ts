@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
@@ -12,18 +13,15 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule)
   },
-
-
-
   {
     path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) // Ruta para cargar HomeModule
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule),
+    canActivate: [AuthGuard]  // <-- protegemos esta ruta
   },
-
-
   {
     path: 'survey-details',
-    loadChildren: () => import('./pages/survey-details/survey-details.module').then(m => m.SurveyDetailsModule) // Ruta correcta al módulo de la página
+    loadChildren: () => import('./pages/survey-details/survey-details.module').then(m => m.SurveyDetailsModule),
+    canActivate: [AuthGuard]  // <-- protegemos esta ruta
   },
 
 
@@ -49,14 +47,16 @@ const routes: Routes = [
 
   },
 
-  {
+    {
     path: 'update-survey',
-     loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule)
-   },
+    loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule),
+    canActivate: [AuthGuard]
+  },
 
    {
-    path: 'update-survey/:id',  // Definir ruta con parámetro id
-    loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule)
+    path: 'update-survey/:id',
+    loadChildren: () => import('./pages/update-survey/update-survey.module').then(m => m.UpdateSurveyModule),
+    canActivate: [AuthGuard]
   },
 
 
