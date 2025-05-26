@@ -1,19 +1,17 @@
 <div class="fondo-difuminado"></div>
 
 <div class="top-bar">
-  <div class="logo-container">
-    <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo">
-  </div>
-  <div class="texto-barra">¡Cartagena se transforma! Estamos trabajando de sur a norte para transformar la calidad de vida de todos los cartageneros.</div>
+  <div class="texto-barra"><strong>¡Cartagena se transforma! Estamos trabajando de sur a norte para transformar la calidad de vida de todos los cartageneros.</strong></div>
   <div class="top-bar-options">
-    <img src="../../../assets/imagenes/cerrar-sesion.png" alt="Logout" class="logout-icon" (click)="logOut()">
+    <img src="../../../assets/imagenes/volver.png" alt="Logout" class="logout-icon" (click)="logOut()">
   </div>
 </div>
 
 <div class="register-container">
   <div class="register-card">
-    <h1>Registro Formulario</h1>
-    <h2>IDER</h2>
+    <div class="logo-container">
+      <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo">
+    </div>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <div class="input-field">
         <label for="identificacion">Identificación</label>

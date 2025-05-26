@@ -1,9 +1,8 @@
 <!-- Barra superior -->
 <div class="top-bar">
-  <div class="logo-container">
-    <img src="../../../assets/imagenes/logoIder.png" alt="Logo de IDER" class="logo">
-  </div>
-  <p class="app-title">¡Cartagena se transforma! Estamos trabajando de sur a norte para transformar la calidad de vida de todos los cartageneros.</p>
+  <p class="app-title">
+    <strong>¡Cartagena se transforma! Estamos trabajando de sur a norte para transformar la calidad de vida de todos los cartageneros.</strong>
+  </p>
   <div class="top-bar-options">
     <button class="boton-registro" (click)="goToRegister()">Registrarse</button>
   </div>
@@ -12,14 +11,14 @@
 <!-- Fondo Difuminado -->
 <div class="fondo-difuminado"></div>
 
-<!-- Contenedor de Login -->
-<div class="login-container">
-  <!-- Tarjeta de Login -->
-  <div class="login-card">
-    <!-- Título -->
-    <div class="contenedor-titulo-logo">
+  <div class="login-container">
+    <!-- Tarjeta de Login -->
+    <div class="login-card">
+      <div class="logo-container">
+        <img src="../../../assets/imagenes/logoIder.png" alt="Logo de IDER" class="logo">
+      </div>
+      <!-- Título -->
       <h1 class="bienvenido">Bienvenido a IDER</h1>
-    </div>
 
     <!-- Formulario de Login -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
