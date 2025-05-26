@@ -55,22 +55,23 @@
             </button>
           </div>
 
-          <!-- Comentarios (para preguntas no abiertas ni de opción múltiple) -->
-          <div *ngIf="pregunta.tipo !== 'Opcion multiple' && pregunta.tipo !== 'Abierta'">
-            <label for="comentario{{ pregunta.id }}">Enviar respuesta:</label>
-            <input
-              type="text"
-              id="comentario{{ pregunta.id }}"
-              [(ngModel)]="comentarios[pregunta.id]"
-              name="comentario{{ pregunta.id }}"
-              (blur)="saveAnswerForMultipleChoiceQuestion(pregunta)"
-              placeholder="Escribe tu comentario aquí..."
-            />
-            <!-- Botón para guardar comentario -->
-            <button type="button" (click)="saveAnswerForMultipleChoiceQuestion(pregunta)">
-              Guardar comentario
-            </button>
-          </div>
+       <!-- Comentarios (para preguntas no abiertas ni de opción múltiple) -->
+<div *ngIf="pregunta.tipo !== 'Opcion multiple' && pregunta.tipo !== 'Abierta'">
+  <label for="comentario{{ pregunta.id }}">Enviar respuesta:</label>
+  <input
+    type="text"
+    id="comentario{{ pregunta.id }}"
+    [(ngModel)]="comentarios[pregunta.id]"
+    name="comentario{{ pregunta.id }}"
+    (blur)="saveAnswerForCommentQuestion(pregunta)"
+    placeholder="Escribe tu comentario aquí..."
+  />
+  <!-- Botón para guardar comentario -->
+  <button type="button" (click)="saveAnswerForCommentQuestion(pregunta)">
+    Guardar comentario
+  </button>
+</div>
+
         </li>
       </ul>
     </form>

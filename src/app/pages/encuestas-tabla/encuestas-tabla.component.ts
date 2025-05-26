@@ -42,86 +42,102 @@ export class EncuestasTablaComponent implements OnInit {
     });
   }
 
-  private generarColoresAleatorios(cantidad: number): string[] {
-    const colores: string[] = [];
-    for (let i = 0; i < cantidad; i++) {
-      const color = `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`;
-      colores.push(color);
-    }
-    return colores;
+  generarColoresAleatorios(cantidad: number): string[] {
+  const colores: string[] = [];
+  for (let i = 0; i < cantidad; i++) {
+    const color = `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`;
+    colores.push(color);
   }
+  return colores;
+}
+
 
   generarGraficas(respuestas: Respuesta[]): void {
-    const tipoPreguntaCount: Record<string, number> = {};
-    const usuarioCount: Record<string, number> = {};
-    const seccionCount: Record<string, number> = {};
-    const emailCount: Record<string, number> = {};
-    const opcionTextCount: Record<string, number> = {};
+  const tipoPreguntaCount: Record<string, number> = {};
+  const usuarioCount: Record<string, number> = {};
+  const seccionCount: Record<string, number> = {};
+  const emailCount: Record<string, number> = {};
+  const opcionCount: Record<string, number> = {};
 
-    respuestas.forEach(r => {
-      tipoPreguntaCount[r.tipoPregunta] = (tipoPreguntaCount[r.tipoPregunta] || 0) + 1;
-      usuarioCount[r.usuario] = (usuarioCount[r.usuario] || 0) + 1;
-      seccionCount[r.seccion] = (seccionCount[r.seccion] || 0) + 1;
-      emailCount[r.email] = (emailCount[r.email] || 0) + 1;
+  respuestas.forEach(r => {
+    // Tipo de pregunta
+    tipoPreguntaCount[r.tipoPregunta] = (tipoPreguntaCount[r.tipoPregunta] || 0) + 1;
 
-      if (Array.isArray(r.opciones)) {
-        r.opciones.forEach(opcionTexto => {
-          opcionTextCount[opcionTexto] = (opcionTextCount[opcionTexto] || 0) + 1;
-        });
-      }
-    });
+    // Usuario
+    usuarioCount[r.usuario] = (usuarioCount[r.usuario] || 0) + 1;
 
-    const coloresTipo = this.generarColoresAleatorios(Object.keys(tipoPreguntaCount).length);
-    const coloresUsuario = this.generarColoresAleatorios(Object.keys(usuarioCount).length);
-    const coloresSeccion = this.generarColoresAleatorios(Object.keys(seccionCount).length);
-    const coloresEmail = this.generarColoresAleatorios(Object.keys(emailCount).length);
-    const coloresOpciones = this.generarColoresAleatorios(Object.keys(opcionTextCount).length);
+    // Sección
+    seccionCount[r.seccion] = (seccionCount[r.seccion] || 0) + 1;
 
-    this.tipoPreguntaChartData = {
-      labels: Object.keys(tipoPreguntaCount),
-      datasets: [{
-        label: 'Tipos de Pregunta',
-        data: Object.values(tipoPreguntaCount),
-        backgroundColor: coloresTipo
-      }]
-    };
+    // Email
+    emailCount[r.email] = (emailCount[r.email] || 0) + 1;
 
-    this.respuestasPorUsuarioData = {
-      labels: Object.keys(usuarioCount),
-      datasets: [{
-        label: 'Respuestas por Usuario',
-        data: Object.values(usuarioCount),
-        backgroundColor: coloresUsuario
-      }]
-    };
+    // Opciones seleccionadas
+    if (Array.isArray(r.opciones)) {
+      r.opciones.forEach(opcion => {
+        opcionCount[opcion] = (opcionCount[opcion] || 0) + 1;
+      });
+    }
+  });
 
-    this.respuestasPorSeccionData = {
-      labels: Object.keys(seccionCount),
-      datasets: [{
-        label: 'Respuestas por Sección',
-        data: Object.values(seccionCount),
-        backgroundColor: coloresSeccion
-      }]
-    };
+  // Colores aleatorios para cada gráfico
+  const coloresTipo = this.generarColoresAleatorios(Object.keys(tipoPreguntaCount).length);
+  const coloresUsuario = this.generarColoresAleatorios(Object.keys(usuarioCount).length);
+  const coloresSeccion = this.generarColoresAleatorios(Object.keys(seccionCount).length);
+  const coloresEmail = this.generarColoresAleatorios(Object.keys(emailCount).length);
+  const coloresOpciones = this.generarColoresAleatorios(Object.keys(opcionCount).length);
 
-    this.respuestasPorEmailData = {
-      labels: Object.keys(emailCount),
-      datasets: [{
-        label: 'Respuestas por Email',
-        data: Object.values(emailCount),
-        backgroundColor: coloresEmail
-      }]
-    };
+  // Datos para gráfico: Tipos de pregunta
+  this.tipoPreguntaChartData = {
+    labels: Object.keys(tipoPreguntaCount),
+    datasets: [{
+      label: 'Tipos de Pregunta',
+      data: Object.values(tipoPreguntaCount),
+      backgroundColor: coloresTipo
+    }]
+  };
 
-    this.opcionesRepetidasData = {
-      labels: Object.keys(opcionTextCount),
-      datasets: [{
-        label: 'Frecuencia de Opciones Seleccionadas',
-        data: Object.values(opcionTextCount),
-        backgroundColor: coloresOpciones
-      }]
-    };
-  }
+  // Datos para gráfico: Respuestas por usuario
+  this.respuestasPorUsuarioData = {
+    labels: Object.keys(usuarioCount),
+    datasets: [{
+      label: 'Respuestas por Usuario',
+      data: Object.values(usuarioCount),
+      backgroundColor: coloresUsuario
+    }]
+  };
+
+  // Datos para gráfico: Respuestas por sección
+  this.respuestasPorSeccionData = {
+    labels: Object.keys(seccionCount),
+    datasets: [{
+      label: 'Respuestas por Sección',
+      data: Object.values(seccionCount),
+      backgroundColor: coloresSeccion
+    }]
+  };
+
+  // Datos para gráfico: Respuestas por email
+  this.respuestasPorEmailData = {
+    labels: Object.keys(emailCount),
+    datasets: [{
+      label: 'Respuestas por Email',
+      data: Object.values(emailCount),
+      backgroundColor: coloresEmail
+    }]
+  };
+
+  // Datos para gráfico: Opciones más seleccionadas
+  this.opcionesRepetidasData = {
+    labels: Object.keys(opcionCount),
+    datasets: [{
+      label: 'Frecuencia de Opciones Seleccionadas',
+      data: Object.values(opcionCount),
+      backgroundColor: coloresOpciones
+    }]
+  };
+}
+
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
