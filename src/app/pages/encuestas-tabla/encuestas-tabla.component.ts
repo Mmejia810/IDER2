@@ -3,6 +3,19 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SurveyService } from '../../services/survey.service';
 import { Respuesta } from '../../models/surveyModels';
 
+interface ChartDataset {
+  data: number[];
+  label?: string;
+  backgroundColor?: string[] | string;
+  borderColor?: string[] | string;
+  borderWidth?: number;
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
 @Component({
   selector: 'app-encuestas-tabla',
   templateUrl: './encuestas-tabla.component.html',
@@ -14,11 +27,11 @@ export class EncuestasTablaComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Respuesta>([]);
 
-  tipoPreguntaChartData: any;
-  respuestasPorUsuarioData: any;
-  respuestasPorSeccionData: any;
-  respuestasPorEmailData: any;
-  opcionesRepetidasData: any;
+  tipoPreguntaChartData!: ChartData;
+  respuestasPorUsuarioData!: ChartData;
+  respuestasPorSeccionData!: ChartData;
+  respuestasPorEmailData!: ChartData;
+  opcionesRepetidasData!: ChartData;
 
   constructor(private surveyService: SurveyService) {}
 
@@ -52,10 +65,10 @@ export class EncuestasTablaComponent implements OnInit {
       emailCount[r.email] = (emailCount[r.email] || 0) + 1;
 
       if (Array.isArray(r.opciones)) {
-  r.opciones.forEach(opcionTexto => {
-    opcionTextCount[opcionTexto] = (opcionTextCount[opcionTexto] || 0) + 1;
-  });
-}
+        r.opciones.forEach(opcionTexto => {
+          opcionTextCount[opcionTexto] = (opcionTextCount[opcionTexto] || 0) + 1;
+        });
+      }
     });
 
     const coloresTipo = this.generarColoresAleatorios(Object.keys(tipoPreguntaCount).length);
