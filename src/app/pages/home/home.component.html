@@ -5,9 +5,8 @@
       <div class="menu-icon" (click)="toggleSidebar()">
         <img src="../../../assets/imagenes/lista.png" alt="Menú" />
       </div>
-      <span class="app-title">ENCUESTAS</span>
-      <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo" />
     </div>
+    <h1 class="texto"><strong>¡Cartagena se transforma! Estamos trabajando de sur a norte para transformar la calidad de vida de todos los cartageneros.</strong></h1>
     <div class="top-bar-options">
       <div (click)="logOut()" class="logout-btn">
         <img src="../../../assets/imagenes/cerrar-sesion.png" alt="Cerrar Sesión" class="logout-icon" />
@@ -21,11 +20,14 @@
 
   <div class="content" [class.sidebar-active]="isSidebarActive">
 
-    <div class="greeting-card">
-      <div class="greeting-text">
-        <p>{{ greetingMessage }}</p>
+    <div class="greeting-card column-layout">
+      <img src="../../../assets/imagenes/logoIder.png" alt="Logo" class="logo" />
+      <div class="content-row">
+        <div class="greeting-text">
+          <p>{{ greetingMessage }}</p>
+        </div>
+        <img src="../../../assets/imagenes/encuesta-online.png" alt="Imagen del Usuario" class="user-image" />
       </div>
-      <img src="../../../assets/imagenes/encuesta-online.png" alt="Imagen del Usuario" class="user-image" />
     </div>
 
     <div class="cards-container">

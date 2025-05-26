@@ -16,12 +16,12 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule),
-    canActivate: [AuthGuard]  // <-- protegemos esta ruta
+    ///canActivate: [AuthGuard]  // <-- protegemos esta ruta
   },
   {
     path: 'survey-details',
     loadChildren: () => import('./pages/survey-details/survey-details.module').then(m => m.SurveyDetailsModule),
-    canActivate: [AuthGuard]  // <-- protegemos esta ruta
+    ///canActivate: [AuthGuard]  // <-- protegemos esta ruta
   },
 
 
